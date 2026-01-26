@@ -107,7 +107,7 @@ hugo mod tidy
 下記コマンドでサーバを起動後、 http://localhost:1313 で確認できます。
 
 ```
-hugo server --renderToDisk --cleanDestinationDir --bind 0.0.0.0
+hugo server --cleanDestinationDir --bind 0.0.0.0
 ```
 
 ※ `--bind 0.0.0.0` は、他の端末やコンテナ環境からアクセスするために指定しています。
