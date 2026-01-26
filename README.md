@@ -152,6 +152,18 @@ draft: true  # 記事執筆中か否か
 #date: ""    # Gitの日時を使用しない場合は、ここに記載する
 ```
 
+`archetypes/default.md` は次のような構成にすることで `hugo new content/*.md` コマンドで自動的にFront Matterを設定してくれます。
+
+```
+---
+title: '{{ replace .File.ContentBaseName "-" " " | title }}'
+weight: 0
+draft: true
+#slug: ""
+#date: "{{.Date}}"
+---
+```
+
 ## Shortcodes
 
 ### タブ
