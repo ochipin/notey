@@ -1,0 +1,17 @@
+{{ define "main" }}
+
+  {{/* 子ページを持つ Section は最初の子へ送る */}}
+  {{ if gt (len .Pages) 0 }}
+    {{ $target := index .Pages 0 }}
+    <!doctype html>
+    <meta http-equiv="refresh" content="0; url={{ $target.RelPermalink }}">
+    <link rel="canonical" href="{{ $target.RelPermalink }}">
+    <p>
+      Redirecting to
+      <a href="{{ $target.RelPermalink }}">{{ $target.Title }}</a>
+    </p>
+  {{ else }}
+    {{/* 子が無い Section は無効 */}}
+    {{ errorf "section %q has no pages" .Title }}
+  {{ end }}
+{{ end }}

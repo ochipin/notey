@@ -1,0 +1,185 @@
+@font-face {
+  font-family: 'icomoon';
+  /*src: url('{{ "fonts/icomoon.woff?bcsw52" | relURL }}') format('woff');*/
+  src: url('../fonts/icomoon.woff?bcsw52') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-up:before {
+  content: "\e932";
+}
+.icon-right-arrow:before {
+  content: "\e909";
+}
+.icon-history:before {
+  content: "\e933";
+}
+.icon-bug:before {
+  content: "\e920";
+}
+.icon-save:before {
+  content: "\e92b";
+}
+.icon-cloud:before {
+  content: "\e92c";
+}
+.icon-database:before {
+  content: "\e92d";
+}
+.icon-deploy:before {
+  content: "\e92e";
+}
+.icon-security:before {
+  content: "\e92f";
+}
+.icon-settings:before {
+  content: "\e930";
+}
+.icon-circle:before {
+  content: "\e931";
+}
+.icon-star:before {
+  content: "\e929";
+}
+.icon-book:before {
+  content: "\e92a";
+}
+.icon-remove:before {
+  content: "\e921";
+}
+.icon-none:before {
+  content: "\e921";
+}
+.icon-guide:before {
+  content: "\e922";
+}
+.icon-dashboard:before {
+  content: "\e923";
+}
+.icon-overview:before {
+  content: "\e924";
+}
+.icon-thumb-up:before {
+  content: "\e925";
+}
+.icon-thumb-down:before {
+  content: "\e926";
+}
+.icon-help:before {
+  content: "\e927";
+}
+.icon-home:before {
+  content: "\e928";
+}
+.icon-windows:before {
+  content: "\e91e";
+}
+.icon-git:before {
+  content: "\e91f";
+}
+.icon-mail:before {
+  content: "\e918";
+}
+.icon-terminal:before {
+  content: "\e919";
+}
+.icon-date:before {
+  content: "\e91a";
+}
+.icon-code:before {
+  content: "\e91b";
+}
+.icon-network:before {
+  content: "\e91c";
+}
+.icon-docker:before {
+  content: "\e91d";
+}
+.icon-proxmox:before {
+  content: "\e916";
+}
+.icon-tux:before {
+  content: "\e917";
+}
+.icon-linux:before {
+  content: "\e917";
+}
+.icon-drop-arrow:before {
+  content: "\e915";
+}
+.icon-menu:before {
+  content: "\e914";
+}
+.icon-edit:before {
+  content: "\e910";
+}
+.icon-translate:before {
+  content: "\e911";
+}
+.icon-light:before {
+  content: "\e912";
+}
+.icon-brightness:before {
+  content: "\e913";
+}
+.icon-unlink:before {
+  content: "\e90a";
+}
+.icon-arrow-left:before {
+  content: "\e90b";
+}
+.icon-arrow-right:before {
+  content: "\e90c";
+}
+.icon-link:before {
+  content: "\e90d";
+}
+.icon-docs:before {
+  content: "\e90e";
+}
+.icon-copy:before {
+  content: "\e90f";
+}
+.icon-search:before {
+  content: "\e900";
+}
+.icon-tag:before {
+  content: "\e901";
+}
+.icon-checkbox-off:before {
+  content: "\e902";
+}
+.icon-checkbox-on:before {
+  content: "\e903";
+}
+.icon-info:before {
+  content: "\e904";
+}
+.icon-tips:before {
+  content: "\e905";
+}
+.icon-danger:before {
+  content: "\e906";
+}
+.icon-close:before {
+  content: "\e907";
+}
+.icon-warning:before {
+  content: "\e908";
+}

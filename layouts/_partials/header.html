@@ -1,0 +1,31 @@
+<div class="l-left">
+  <a class="top-link" href="{{ .Site.Home.RelPermalink }}">
+    <img class="favicon" src="/favicon.png" width="40px" height="40px" />
+    <h1>{{ site.Title }}</h1>
+  </a>
+</div>
+<div class="l-left full-width">
+  <button id="search-button" class="search-button">
+    <span class="icon icon-search"></span>
+    <span>Search</span>
+  </button>
+  {{ if and (gt (len .Site.Languages) 1) .IsTranslated }}
+    <label class="translate-language">
+      <span class="icon icon-translate"></span>
+      <select id="select-language" class="select-language">
+        <option value="{{ .Permalink }}" selected>
+          {{ .Site.Language.LanguageName }}
+        </option>
+        {{ range .Translations }}
+          <option value="{{ .Permalink }}">
+            {{ .Language.LanguageName }}
+          </option>
+        {{ end }}
+      </select>
+      <span class="icon icon-drop-arrow"></span>
+    </label>
+  {{ end }}
+</div>
+<div class="l-right menu">
+  <button id="menu-button" class="menu-button"><span class="icon-menu"></span></button>
+</div>

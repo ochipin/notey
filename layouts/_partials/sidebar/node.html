@@ -1,0 +1,34 @@
+<li>
+  {{/* Section only */}}
+  {{ $open := or
+    (eq .Node.RelPermalink .Current.CurrentSection.RelPermalink)
+    (.Node.IsAncestor .Current)
+  }}
+
+  <details {{ if $open }}open{{ end }}>
+    <summary>
+      <span class="name">{{ .Node.Title }}</span>
+      <span class="icon icon-right-arrow"></span>
+    </summary>
+
+    <ul class="lists">
+      {{ range .Node.Pages }}
+        {{ if .IsSection }}
+          {{ partial "sidebar/node.html" (dict
+            "Node" .
+            "Current" $.Current
+          ) }}
+        {{ else }}
+          <li>
+            <a
+              href="{{ .RelPermalink }}"
+              aria-current="{{ if eq .RelPermalink $.Current.RelPermalink }}page{{ else }}false{{ end }}"
+            >
+              {{ .Title }}
+            </a>
+          </li>
+        {{ end }}
+      {{ end }}
+    </ul>
+  </details>
+</li>

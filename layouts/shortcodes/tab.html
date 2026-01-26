@@ -1,0 +1,10 @@
+{{- $title := .Get "title" -}}
+{{- $active := .Get "active" -}}
+
+<div
+  class="tab-panel"
+  data-tab-title="{{ $title }}"
+  {{ if not $active }}hidden{{ end }}
+>
+  {{ .Inner | markdownify }}
+</div>

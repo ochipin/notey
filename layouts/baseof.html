@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}" data-search-json="{{ "search.json" | relLangURL }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+
+<body tabindex="-1" {{ if .IsHome}}class="home"{{end}}>
+{{ partial "dialog.html" . }}
+{{ if .IsHome }}
+  <div class="page">
+    <!-- ヘッダ -->
+    <header class="l-header blur">
+      {{ partial "header.html" . }}
+    </header>
+    <!-- 背景 -->
+    <div class="bg-line">
+      <div class="bg-grad-blue"></div>
+      <div class="bg-grad-red"></div>
+    </div>
+    <!-- ヒーローセクション -->
+    <div class="l-content">
+      {{ block "main" . }}{{ end }}
+    </div>
+  </div>
+{{ else }}
+  <div class="page">
+    <!-- ヘッダ -->
+    <header class="l-header">
+      {{ partial "header.html" . }}
+    </header>
+
+    <div class="l-content flex">
+      <!-- 左サイドバー -->
+      <div class="l-sidebar">
+        <div class="sidebar-content">
+{{/* 404 / home ではサイドバーを出さない */}}
+{{ if and (ne .Kind "404") (.Page.FirstSection) }}
+
+  {{ $topic := .Page.FirstSection }}
+
+  {{ partial "sidebar/topics.html" (dict
+    "Site" .Site
+    "Topic" $topic
+  ) }}
+
+  {{ partial "sidebar.html" (dict
+    "Topic" $topic
+    "Page"  .Page
+  ) }}
+
+{{ end }}
+        </div>
+      </div>
+      <main id="_top" class="l-main">
+        {{ block "main" . }}{{ end }}
+      </main>
+    </div>
+  </div>
+{{ end }}
+</body>
+</html>

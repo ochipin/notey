@@ -1,0 +1,26 @@
+{{ define "main" }}
+  <div class="hero">
+    <div class="logo-title l-flex">
+      <div class="title">
+        <h1>{{.Site.Title}}</h1>
+        <p>{{.Params.catchcopy | default "ため込む・整理する・取り出すの3つのコンセプトを持つリスのようなテーマ"}}</p>
+        {{ with first 1 (sort .Site.Sections "Weight") }}
+          {{ range . }}
+            <a href="{{ .RelPermalink }}">Get started<span class="icon icon-arrow-right"></span></a>
+          {{ end }}
+        {{ end }}
+      </div>
+      <div class='logo-image'>
+        <img src='{{.Params.favicon | default "/favicon.png"}}' width="100%"/>
+      </div>
+    </div>
+    <div class="card-grid">
+      {{.Content}}
+    </div>
+  </div>
+  <footer style="margin-top: 1.5rem">
+    <div class="l-padding">
+      <p style="text-align: center;">Copyright {{ now.Year }} All rights reserved.</p>
+    </div>
+  </footer>
+{{ end }}

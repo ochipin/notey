@@ -1,0 +1,19 @@
+<ul class="sidebar-lists">
+  {{ range .Topic.Pages }}
+    {{ if .IsSection }}
+      {{ partial "sidebar/node.html" (dict
+        "Node" .
+        "Current" $.Page
+      ) }}
+    {{ else }}
+      <li>
+        <a
+          href="{{ .RelPermalink }}"
+          aria-current="{{ if eq .RelPermalink $.Page.RelPermalink }}page{{ else }}false{{ end }}"
+        >
+          {{ .Title }}
+        </a>
+      </li>
+    {{ end }}
+  {{ end }}
+</ul>

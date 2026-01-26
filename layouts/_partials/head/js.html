@@ -1,0 +1,4 @@
+{{- $js := resources.Match "js/*.js" -}}
+{{- range $js -}}
+  <script src="{{ .RelPermalink }}"></script>
+{{- end -}}

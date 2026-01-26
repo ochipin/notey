@@ -1,0 +1,6 @@
+{{- $p := . -}}
+{{- if $p.Parent -}}
+  {{- partial "utils/top-section.html" $p.Parent -}}
+{{- else -}}
+  {{- $.Scratch.Set "topic" $p -}}
+{{- end -}}

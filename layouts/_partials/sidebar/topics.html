@@ -1,0 +1,14 @@
+<ul class="sidebar-topics">
+  {{ range .Site.Sections }}
+    {{ $isCurrent := eq .RelPermalink $.Topic.RelPermalink }}
+    <li>
+      <a
+        class="topics-link{{ if $isCurrent }} current{{ end }}"
+        href="{{ .RelPermalink }}"
+      >
+        <span class="icon icon-{{ .Params.icon | default "book" }}"></span>
+        <span class="title">{{ .Title }}</span>
+      </a>
+    </li>
+  {{ end }}
+</ul>

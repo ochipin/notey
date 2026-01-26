@@ -1,0 +1,21 @@
+{{- $cssList := slice }}
+
+{{- range resources.Match "css/*.css" }}
+  {{- $css := . | resources.ExecuteAsTemplate (printf "%s" .Name) $ }}
+  {{- $cssList = $cssList | append $css }}
+{{- end }}
+
+{{- if hugo.IsDevelopment }}
+  {{- range $cssList }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}" />
+  {{- end }}
+{{- else }}
+  {{- with ($cssList | resources.Concat "css/bundle.css" | minify | fingerprint) }}
+    <link
+      rel="stylesheet"
+      href="{{ .RelPermalink }}"
+      integrity="{{ .Data.Integrity }}"
+      crossorigin="anonymous"
+    />
+  {{- end }}
+{{- end }}

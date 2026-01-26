@@ -1,0 +1,70 @@
+{{ define "main" }}
+  <div class="l-flex">
+    <div class="l-main-content">
+      <!-- 表題 -->
+      <div class="l-border">
+        <div class="l-padding right">
+          <nav class="breadcrumbs">
+            <ul>
+              <li><a href="{{ .Site.Home.RelPermalink }}"><span class="icon-home"></span></a></li>
+              {{ range .Ancestors.Reverse }}
+                {{ if .Title }}
+                  <li><span href="{{ .RelPermalink }}">{{ .Title }}</span></li>
+                {{ end }}
+              {{ end }}
+              <li aria-current="page">{{ .Title }}</li>
+            </ul>
+          </nav>
+          {{- $icon := partial "resolve-icon.html" . -}}
+          <h1 id="_top" class="page-title">
+            <span class="icon icon-{{$icon}}"></span>{{ .Title }}
+          </h1>
+        </div>
+      </div>
+      <!-- メインコンテンツ -->
+      <div class="l-border non-border" style="flex: 1">
+        <div id="readme" class="l-padding right">
+          <!-- 日時 -->
+          <ul class="tag-lists">
+            <li>
+              <span class="icon-date"></span>
+              {{- $t := .Date -}}
+
+              {{- with .GitInfo -}}
+                {{- if not .AuthorDate.IsZero -}}
+                  {{- $t = .AuthorDate -}}
+                {{- end -}}
+              {{- end -}}
+
+              {{- if not $t.IsZero -}}
+                <time class="relative-time" title='{{$t.Format "2006-01-02T15:04:05"}}' datetime='{{$t.Format "2006-01-02T15:04:05"}}'>{{ $t.Format "2006-01-02" }}</time>
+              {{- else -}}
+                <time>日付未設定</time>
+              {{- end -}}
+            </li>
+            <li>
+              {{ if not $t.IsZero }}
+                <span class="icon-history"></span>
+                <span id="relative-history"></span>
+              {{ end }}
+            </li>
+          </ul>
+          <!-- 本文 -->
+          {{ .Content }}
+        </div>
+      </div>
+      <footer>
+        {{ partial "footer-prev-next.html" . }}
+        <hr style="border: 0; border-top: 1px solid #ECEEF2; height: 0px; margin-top: .5rem" />
+        <div class="l-padding right">
+          <p style="text-align: center;">Copyright {{ now.Year }} All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+    <div class="l-right-sidebar">
+      <div id="toc" class="right-sidebar">
+        <h2>目次</h2>
+      </div>
+    </div>
+  </div>
+{{ end }}

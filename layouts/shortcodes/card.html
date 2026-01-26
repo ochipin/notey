@@ -1,0 +1,13 @@
+<article class='card {{if .Get "wide"}}wide{{end}}'>
+  <div>
+    {{with .Get "icon"}}
+      <span class="icon icon-{{.}}"></span>
+    {{else}}
+      <span class="icon icon-tips"></span>
+    {{end}}
+    {{with .Get "title"}}
+      <h5>{{.}}</h5>
+    {{end}}
+  </div>
+  {{ .Inner }}
+</article>

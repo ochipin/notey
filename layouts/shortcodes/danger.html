@@ -1,0 +1,10 @@
+{{ $value := .Get "title" | default "Danger" }}
+<aside class="remarks danger">
+  <p class="title"><span class="icon-danger"></span>{{ $value }}</p>
+  {{- $raw := .InnerDeindent -}}
+  {{- if and (ne ($raw | trim " \n\t\r") "") (not (hasPrefix ($raw | trim " \n\t\r") "<")) -}}
+    <p>{{ $raw | markdownify | safeHTML }}</p>
+  {{- else -}}
+    {{ $raw | markdownify | safeHTML }}
+  {{- end -}}
+</aside>
