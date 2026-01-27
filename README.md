@@ -120,7 +120,9 @@ content/
   +-- _index.md ### HOME画面
   +-- category1/
   |     +-- _index.md ### カテゴリアイコンの設定等を行う
-  |     +-- page.md   ### 記事の本文
+  |     +-- page/     ### 記事の本文置き場
+  |     |     +-- index.md  ### 本文
+  |     |     `-- image.png ### 記事に貼る画像など
   |     `-- nested/
   |           `-- _index.md ### 階層構造
   `-- category2/
@@ -165,6 +167,12 @@ draft: true
 ```
 
 ## Shortcodes
+
+### 折り畳み
+
+~~~details {title="詳細を表示する"}
+折り畳み内容をここに記載する。。。
+~~~
 
 ### タブ
 `{{<tab>}}` を使用することで記事内にタブ型の文書を記載できます。

@@ -132,13 +132,22 @@
     color: #353841;
     display: block;
     font-family: var(--font-system);
-    font-size: 1rem;
+    font-size: .875rem;
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
   }
   p:empty{display:none}
+  summary{
+    color: #3D50F5;
+    font-family: var(--font-system);
+    font-size: .875rem;
+    font-weight: 600;
+    margin-block-start: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
   /* コード */
   pre,code{font-family: var(--font-system-mono)}
   code{
@@ -191,11 +200,12 @@
     border-bottom: 1px solid #C0C2C7;
     color: #353841;
     font-family: var(--font-system);
+    font-size: .8125rem;
     padding: .5rem 1rem;
     vertical-align: baseline;
   }
   tr th:last-child, tr td:last-child {
-    width: 100%;
+    width: auto;
   }
   /* 引用 */
   blockquote {
@@ -1249,7 +1259,7 @@
   }
   .highlight * {
     border: none;
-    font-size: .875rem;
+    font-size: .75rem;
     margin:  0;
     padding: 0;
   }
