@@ -1,0 +1,17 @@
+{{- if eq .Type "details" -}}
+  {{/* details用の処理 */}}
+  <details class="my-custom-details">
+    <summary>{{ .Attributes.title | default "詳細を見る" }}</summary>
+    <div class="details-content">
+    {{- $raw := .Inner -}}
+    {{- if and (ne ($raw | trim " \n\t\r") "") (not (hasPrefix ($raw | trim " \n\t\r") "<")) -}}
+        <p>{{ $raw | markdownify | safeHTML }}</p>
+    {{- else -}}
+        {{ $raw | markdownify | safeHTML }}
+    {{- end -}}
+    </div>
+  </details>
+{{- else -}}
+  {{/* それ以外はHugoの標準ハイライター（Chroma）にそのまま渡す */}}
+  {{ transform.Highlight .Inner .Type .Options }}
+{{- end -}}

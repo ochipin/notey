@@ -1,0 +1,20 @@
+{{- $img := .Page.Resources.GetMatch .Destination -}}
+
+{{- if not $img -}}
+  {{/* 今のページに見つからない場合、他言語（デフォルト言語など）の同じページから探す */}}
+  {{- range .Page.AllTranslations -}}
+    {{- with .Resources.GetMatch $.Destination -}}
+      {{- $img = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $img -}}
+  <img src="{{ $img.RelPermalink }}"
+       alt="{{ .Text }}"
+       {{ with .Title }}title="{{ . }}"{{ end }}
+       loading="lazy">
+{{- else -}}
+  {{/* 外部URLや見つからない場合はそのまま出力 */}}
+  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
+{{- end -}}
