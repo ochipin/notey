@@ -139,15 +139,6 @@
     margin-inline-end: 0px;
   }
   p:empty{display:none}
-  summary{
-    color: #3D50F5;
-    font-family: var(--font-system);
-    font-size: .875rem;
-    font-weight: 600;
-    margin-block-start: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-  }
   /* コード */
   pre,code{font-family: var(--font-system-mono)}
   code{
@@ -1012,6 +1003,19 @@
     width: 1px;
   }
   #readme ol:not(.num ol) > li + li {margin-top: 0}
+
+  /* 折り畳みスタイル
+   * ----------------------------------------------------------------------- */
+  .my-custom-details summary{
+    color: #3D50F5;
+    cursor: pointer;
+    font-family: var(--font-system);
+    font-size: .875rem;
+    font-weight: 600;
+    margin-block-start: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
 
   /* カード
    * ----------------------------------------------------------------------- */
