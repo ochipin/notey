@@ -1,0 +1,15 @@
+{{ $value := .Get "title" | default "Tips" }}
+{{- $raw := .InnerDeindent -}}
+<table class="TipsBox" data-custom-style="TipsBox" custom-style="TipsBox">
+  <tr>
+    <td style="padding: 10pt;">
+      <p><strong>💡 {{ $value }}</strong></p>
+
+      {{- if and (ne ($raw | trim " \n\t\r") "") (not (hasPrefix ($raw | trim " \n\t\r") "<")) -}}
+        <p>{{ $raw | markdownify | safeHTML }}</p>
+      {{- else -}}
+        {{ $raw | markdownify | safeHTML }}
+      {{- end -}}
+    </td>
+  </tr>
+</table>

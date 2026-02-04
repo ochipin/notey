@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+  <meta charset="utf-8">
+
+  {{/* title */}}
+  <title>{{ .Title }}</title>
+
+  {{/* author / date from Git */}}
+  {{- $author := "不明" -}}
+  {{- $date := "不明" -}}
+
+  {{- if .GitInfo -}}
+    {{- with .GitInfo.AuthorName -}}
+      {{- $author = . -}}
+    {{- end -}}
+    {{- with .GitInfo.AuthorDate -}}
+      {{- $date = .Format "2006-01-02" -}}
+    {{- end -}}
+  {{- end -}}
+
+  <meta name="author" content="{{ $author }}">
+  <meta name="date" content="{{ $date }}">
+
+  {{/* Pandoc / Word 表紙向け（より確実） */}}
+  <meta name="dc.title" content="{{ .Title }}">
+  <meta name="dc.creator" content="{{ $author }}">
+  <meta name="dc.date" content="{{ $date }}">
+
+</head>
+<body>
+{{ .Content }}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{{- $img := .Page.Resources.GetMatch .Destination -}}
+
+{{- if not $img -}}
+  {{- range .Page.AllTranslations -}}
+    {{- with .Resources.GetMatch $.Destination -}}
+      {{- $img = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $img -}}
+  {{/*
+    Pandoc 用：
+    - Web 用の RelPermalink（/ja/...）を
+    - Docker マウント先の物理パス（/data/ja/...）に変換
+  */}}
+  <img src="/data/public{{ $img.RelPermalink }}"
+       alt="{{ .Text }}"
+       {{ with .Title }}title="{{ . }}"{{ end }}>
+{{- else -}}
+  {{/* 外部URL等 */}}
+  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
+{{- end -}}
