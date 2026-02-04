@@ -14,7 +14,7 @@ ShortCodesを利用して次のように記載することで、横いっぱい�
   ...
 </card>
 ```
-ShortCodesは、必ず"`{{...}}`" で囲んでください。{{% icon name="tux" %}}s
+ShortCodesは、必ず"`{{...}}`" で囲んでください。
 {{%/card%}}
 
 
