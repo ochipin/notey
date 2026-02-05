@@ -59,22 +59,12 @@
     color: #070707;
     display: block;
     font-family: var(--font-system);
-    font-size: 2.625rem;
+    font-size: 2.1875rem;
     font-weight: 600;
     line-height: 1.2;
     margin-top: 1rem;
   }
   h2 {
-    color: #070707;
-    display: block;
-    font-family: var(--font-system);
-    font-size: 2.1875rem;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-top: 1.5em;
-    padding-inline-end: calc(.8275em + .25em);
-  }
-  h3 {
     color: #070707;
     display: block;
     font-family: var(--font-system);
@@ -84,11 +74,21 @@
     margin-top: 1.5em;
     padding-inline-end: calc(.8275em + .25em);
   }
-  h4 {
+  h3 {
     color: #070707;
     display: block;
     font-family: var(--font-system);
     font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-top: 1.5em;
+    padding-inline-end: calc(.8275em + .25em);
+  }
+  h4 {
+    color: #070707;
+    display: block;
+    font-family: var(--font-system);
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.2;
     margin-top: 1.5em;
@@ -960,6 +960,9 @@
 
   /* 数字付きリストのスタイル
    * ----------------------------------------------------------------------- */
+  #readme h1 {
+    margin-block-start: 1.25em;
+  }
   #readme ol:not(.num ol) {
     --bullet-size: calc(1.75 * 1rem);
     --bullet-margin: .375rem;
@@ -1464,9 +1467,9 @@
         flex: 1;
         flex-direction: column;
       }
-      h1 {font-size: 2.1875rem}
-      h2 {font-size: 1.8125rem}
-      h3 {font-size: 1.5rem}
+      h1 {font-size: 1.8125rem}
+      h2 {font-size: 1.5rem}
+      h3 {font-size: 1.25rem}
       h4 {font-size: 1.125rem}
       h5 {font-size: 1rem}
     }

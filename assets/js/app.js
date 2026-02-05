@@ -485,13 +485,17 @@ class TableOfContents {
   // (^^ゞ) 対策：見出し文字列に依存せず番号で安定IDを振る（常に上書き）
   assignHeadingIds() {
     if (!this.readme) return;
-    let h2 = 0, h3 = 0;
-    this.readme.querySelectorAll("h2, h3").forEach(h => {
-      if (h.tagName === "H2") {
-        h.id = `page-link-id-${++h2}`;
+    let h1 = 0, h2 = 0, h3 = 0;
+    this.readme.querySelectorAll("h1, h2, h3").forEach(h => {
+      if (h.tagName === "H1") {
+        h.id = `page-link-id-${++h1}`;
+        h2 = 0;
+        h3 = 0;
+      } else if (h.tagName === "H2") {
+        h.id = `page-link-id-${h1}-${++h2}`;
         h3 = 0;
       } else {
-        h.id = `page-link-id-${h2}-${++h3}`;
+        h.id = `page-link-id-${h1}-${h2}-${++h3}`;
       }
     });
   }
@@ -499,26 +503,37 @@ class TableOfContents {
   build() {
     if (!this.readme || !this.toc) return;
 
-    const headings = this.readme.querySelectorAll("h2, h3");
+    const headings = this.readme.querySelectorAll("h1, h2, h3");
     const root = document.createElement("ul");
     root.style.setProperty("--depth", "0");
 
     root.innerHTML = `<li><a href="#_top">概要</a></li>`;
 
+    let currentH1 = null;
     let currentH2 = null;
 
     headings.forEach(h => {
       const li = document.createElement("li");
       li.innerHTML = `<a href="#${h.id}">${Utils.escapeHtml(h.textContent)}</a>`;
 
-      if (h.tagName === "H2") {
+      if (h.tagName === "H1") {
         root.appendChild(li);
-        currentH2 = li;
-      } else if (currentH2) {
-        let ul = currentH2.querySelector("ul");
+        currentH1 = li;
+        currentH2 = null;
+      } else if (h.tagName === "H2" && currentH1) {
+        let ul = currentH1.querySelector("ul");
         if (!ul) {
           ul = document.createElement("ul");
           ul.style.setProperty("--depth", "1");
+          currentH1.appendChild(ul);
+        }
+        ul.appendChild(li);
+        currentH2 = li;
+      } else if (h.tagName === "H3" && currentH2) {
+        let ul = currentH2.querySelector("ul");
+        if (!ul) {
+          ul = document.createElement("ul");
+          ul.style.setProperty("--depth", "2");
           currentH2.appendChild(ul);
         }
         ul.appendChild(li);
@@ -548,7 +563,7 @@ class TableOfContents {
       if (!el) return false;
       if (el.id === "_top") return true;
       if (el instanceof HTMLHeadingElement) {
-        return el.tagName === "H2" || el.tagName === "H3";
+        return el.tagName === "H1" || el.tagName === "H2" || el.tagName === "H3";
       }
       return false;
     };
@@ -599,7 +614,7 @@ class TableOfContents {
     // --- 監視対象 ---
     // 見出し＋見出し以外のブロックも含める（Starlightと同じ発想）
     const targets = this.readme.querySelectorAll(
-      "[id], h2, h3, p, ul, ol, pre, blockquote"
+      "[id], h1, h2, h3, p, ul, ol, pre, blockquote"
     );
 
     targets.forEach(el => observer.observe(el));
@@ -850,8 +865,8 @@ class SearchDialog {
       this.pageCache.set(url, []);
       return [];
     }
-    const html = await res.text();
 
+    const html = await res.text();
     const doc = new DOMParser().parseFromString(html, "text/html");
     const readme = doc.getElementById("readme");
     if (!readme) {
@@ -859,20 +874,26 @@ class SearchDialog {
       return [];
     }
 
-    // 見出しに安定IDを振る（このdoc内で）
-    let h2 = 0, h3 = 0;
-    const headings = [...readme.querySelectorAll("h2, h3")];
+    // --- 安定ID付与（h1/h2/h3） ---
+    let h1 = 0, h2 = 0, h3 = 0;
+    const headings = [...readme.querySelectorAll("h1, h2, h3")];
+
     for (const h of headings) {
-      if (h.tagName === "H2") {
-        h.id = `page-link-id-${++h2}`;
+      if (h.tagName === "H1") {
+        h.id = `page-link-id-${++h1}`;
+        h2 = 0;
+        h3 = 0;
+      } else if (h.tagName === "H2") {
+        h.id = `page-link-id-${h1}-${++h2}`;
         h3 = 0;
       } else {
-        h.id = `page-link-id-${h2}-${++h3}`;
+        h.id = `page-link-id-${h1}-${h2}-${++h3}`;
       }
     }
 
-    // セクション抽出
+    // --- セクション抽出 ---
     const sections = [];
+
     for (let i = 0; i < headings.length; i++) {
       const h = headings[i];
       const next = headings[i + 1];
@@ -883,9 +904,7 @@ class SearchDialog {
 
       while (node && node !== next) {
         if (node.nodeType === 1) {
-          const el = node;
-          // 見出し自体は除外されてるので、そのままテキスト取得
-          texts.push(el.textContent || "");
+          texts.push(node.textContent || "");
         } else if (node.nodeType === 3) {
           texts.push(node.nodeValue || "");
         }
