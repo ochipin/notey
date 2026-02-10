@@ -866,11 +866,12 @@
     --pad-inline: .5rem;
     border-radius: 4px;
     color: #545861;
-    display: inline;
+    display: inline-block;
     font-size: .8125rem;
     line-height: 1.25;
     margin-top: .25rem;
     margin-inline: calc(1rem * var(--depth) + var(--pad-inline)) var(--pad-inline);
+    max-width: 100%;
     overflow-wrap: anywhere;
     padding-block: .25rem;
     padding: 4px 12px;
