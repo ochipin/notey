@@ -62,6 +62,9 @@ markup:
     noClasses: false
     style: none
     codeFences: true
+  goldmark:
+    parser:
+      autoHeadingID: false
 
 # テーマ
 module:
@@ -72,14 +75,21 @@ module:
   #replacements:
     #- github.com/ochipin/notey -> notey
 
-# 検索用のJSONファイル出力設定
+# publicファイル出力設定
 outputs:
   home: ["HTML", "JSON"]
+  page: ["HTML", "word"]
 outputFormats:
+  # 検索用のJSONファイル出力設定
   JSON:
     mediaType: application/json
     baseName: search
     isPlainText: true
+  # Word
+  word:
+    mediaType: text/html
+    baseName: word
+    isHTML: true
 
 # デフォルト言語の設定
 defaultContentLanguage: ja
@@ -90,10 +100,11 @@ languages:
     languageName: 日本語
     languageCode: ja-JP
     weight: 1
-  en:
-    languageName: English
-    languageCode: en-US
-    weight: 2
+  # 必要なら英語ページも設定可
+  #en:
+    #languageName: English
+    #languageCode: en-US
+    #weight: 2
 ```
 
 ### Hugo Modulesのインストール
