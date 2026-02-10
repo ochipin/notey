@@ -123,7 +123,7 @@
     color: #353841;
     display: list-item;
     font-family: var(--font-system);
-    font-size: 1rem;
+    font-size: .875rem;
     line-height: 1.75;
   }
   li + li {margin-top: .25rem}
