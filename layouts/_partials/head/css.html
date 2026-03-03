@@ -1,9 +1,11 @@
 {{- $cssList := slice }}
 
-{{- range resources.Match "css/*.css" }}
+{{- range resources.Match "css/*.css"}}
   {{- $css := . | resources.ExecuteAsTemplate (printf "%s" .Name) $ }}
   {{- $cssList = $cssList | append $css }}
 {{- end }}
+
+{{- $cssList = sort $cssList "Name" }}
 
 {{- if hugo.IsDevelopment }}
   {{- range $cssList }}

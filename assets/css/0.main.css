@@ -18,6 +18,9 @@
   --font-system: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* コーディング用等幅フォント */
   --font-system-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* フォントの太さ */
+  --font-weight-bold: 600;
+  --font-weight-normal: 400;
 }
 
 /*
@@ -60,7 +63,7 @@
     display: block;
     font-family: var(--font-system);
     font-size: 2.1875rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     margin-top: 1rem;
   }
@@ -69,7 +72,7 @@
     display: block;
     font-family: var(--font-system);
     font-size: 1.8125rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     margin-top: 1.5em;
     padding-inline-end: calc(.8275em + .25em);
@@ -79,7 +82,7 @@
     display: block;
     font-family: var(--font-system);
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     margin-top: 1.5em;
     padding-inline-end: calc(.8275em + .25em);
@@ -89,7 +92,7 @@
     display: block;
     font-family: var(--font-system);
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     margin-top: 1.5em;
     padding-inline-end: calc(.8275em + .25em);
@@ -99,7 +102,7 @@
     display: block;
     font-family: var(--font-system);
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     margin-top: 1.25em;
   }
@@ -124,6 +127,7 @@
     display: list-item;
     font-family: var(--font-system);
     font-size: .875rem;
+    font-weight: var(--font-weight-normal);
     line-height: 1.75;
   }
   li + li {margin-top: .25rem}
@@ -133,6 +137,7 @@
     display: block;
     font-family: var(--font-system);
     font-size: .875rem;
+    font-weight: var(--font-weight-normal);
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
@@ -145,6 +150,7 @@
     background-color: #ECEEF2;
     border-radius: 2px;
     font-size: .8125rem;
+    font-weight: var(--font-weight-normal);
     padding: .125rem .375rem;
   }
   pre {
@@ -172,6 +178,7 @@
   button{
     font-family: var(--font-system);
     font-size: 1rem;
+    font-weight: var(--font-weight-normal);
     outline: none;
   }
   thead, tbody {
@@ -192,6 +199,7 @@
     color: #353841;
     font-family: var(--font-system);
     font-size: .8125rem;
+    font-weight: var(--font-weight-normal);
     padding: .5rem 1rem;
     vertical-align: baseline;
   }
@@ -204,6 +212,7 @@
     border-left: 2px solid #C0C2C7;
     color: #353841;
     font-size: .8rem;
+    font-weight: var(--font-weight-normal);
     line-height: 1.4;
     margin: .5rem 0;
     margin-top: 1rem;
@@ -333,7 +342,7 @@
   }
   .hero .logo-title .title p {
     font-size: clamp(20px, calc(.125rem + 1vw), 10px);
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
   }
   .hero .logo-title .title a, a.back-button {
     align-items: center;
@@ -354,7 +363,7 @@
     color: #353841;
     font-family: lobster;
     font-size: 2.1875rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     letter-spacing: 2px;
     line-height: normal;
     margin-top: 0;
@@ -477,7 +486,7 @@
     color: #3D50F5;
     cursor: pointer;
     display: flex;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     font-size: .875rem;
     justify-content: center;
     padding-left: 1rem;
@@ -496,7 +505,7 @@
   /* 検索結果件数などのメッセージを表示するスタイル */
   .search-box .search-message {
     font-size: .8125rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
   }
 
   /* 検索結果を表示するリスト
@@ -519,7 +528,7 @@
   .search-result::before {
     content: attr(data-topic);
     font-size: .875rem;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
   }
   /* 見つかったページタイトル部分 */
   .search-result .page-title {
@@ -528,7 +537,7 @@
     border-radius: 4px 4px 0 0;
     color: #070707;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);;
     padding: 12px 16px;
     padding-inline-start: 48px;
     position: relative;
@@ -567,7 +576,7 @@
   }
   .page-result .subtitle {
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
   }
   .search-result a {
     color: #070707;
@@ -583,7 +592,7 @@
   }
   .page-result .excerpt {
     font-size: .8125rem;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     margin-top: 4px;
   }
   /* 次を検索するボタン */
@@ -595,7 +604,7 @@
     cursor: pointer;
     font-family: var(--font-system);
     font-size: .875rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     height: 38px;
     margin-top: 1rem;
     padding: 0 10px;
@@ -740,7 +749,7 @@
   .sidebar-topics li>a {
     display: flex;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
     gap: .5rem;
     color: #070707;
     padding: .3em .5em;
@@ -782,7 +791,7 @@
     cursor: pointer;
     display: flex;
     flex: 1 1 0;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
     height: 20px;
   }
   .sidebar-lists .icon {
@@ -819,7 +828,7 @@
     padding: .3em .5em;
     text-decoration: none;
   }
-  .sidebar-lists>li>a{font-size: 1rem; font-weight: bold}
+  .sidebar-lists>li>a{font-size: 1rem; font-weight: var(--font-weight-bold);}
   .sidebar-lists li a:hover {
     background:#EFF1F4;
     color:#070707;
@@ -829,7 +838,7 @@
     border-right: 3px solid #3056D5;
     border-radius: .25rem 0 0 .25rem;
     color: #3056D5;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
   }
 
   /* 右サイドバーに表示するスタイル
@@ -881,7 +890,7 @@
   .right-sidebar a[aria-current=true] {
     background-color: #3D50F5;
     color: white;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
   }
   .right-sidebar a:hover {
     background-color: #DEE2E6;
@@ -903,7 +912,7 @@
     margin-right: .5rem;
   }
   .breadcrumbs ul, .breadcrumbs li + li, .breadcrumbs li {
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -988,7 +997,7 @@
     color: #070707;
     content: counter(steps-counter);
     font-size: .8125rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     height: var(--bullet-size);
     inset-inline-start: 0;
     line-height: var(--bullet-size);
@@ -1015,7 +1024,7 @@
     cursor: pointer;
     font-family: var(--font-system);
     font-size: .875rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     margin-block-start: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
@@ -1055,7 +1064,7 @@
   }
   .card-grid .card h5 {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     margin: 0;
     padding: 0;
@@ -1130,7 +1139,7 @@
     align-items: center;
     display: flex;
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     gap: .5rem;
     line-height: 1.2;
     margin-top: 0;
@@ -1207,7 +1216,7 @@
     user-select: none;
   }
   .tablist li a[aria-selected=true], .tablist li button[aria-selected=true] {
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
     border-color: #3D50F5;
     pointer-events: none;
   }
@@ -1396,7 +1405,7 @@
   @font-face {
     font-family: 'lobster';
     src: url('../fonts/lobster.woff') format('woff');
-    font-weight: normal;
+    font-weight: var(--font-weight-normal);
     font-style: normal;
     font-display: block;
   }
