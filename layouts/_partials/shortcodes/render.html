@@ -10,6 +10,19 @@
   {{- $source = replace $source .source .token -}}
 {{- end -}}
 
+{{- /* .Inner has already evaluated real children and unescaped literal
+     shortcode examples. Protect only the remaining openers from RenderString's
+     shortcode pass, retaining source lines for highlighting and code copying.
+     Treat these as escaped inline text when restoring HTML and heading IDs. */ -}}
+{{- $literalID := crypto.SHA256 $source -}}
+{{- range $index, $opener := slice "{{<" "{{%" -}}
+  {{- if strings.Contains $source $opener -}}
+    {{- $token := printf "NOTEYLITERAL%d%sEND" $index $literalID -}}
+    {{- $source = replace $source $opener $token -}}
+    {{- $children = $children | append (dict "token" $token "html" ($opener | htmlEscape) "inline" true) -}}
+  {{- end -}}
+{{- end -}}
+
 {{- /* Remove only the common whitespace prefix of nonempty source lines.
      Doing this after protection preserves all child code and raw HTML bytes. */ -}}
 {{- $indent := "" -}}
