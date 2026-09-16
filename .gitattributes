@@ -1,0 +1,4 @@
+# These source files are verified by their original upstream SHA-256 bytes.
+LICENSES/Apache-2.0.txt text eol=lf
+static/fonts/LICENSES/Apache-2.0.txt text eol=lf
+icons/material-symbols/svg/*.svg text eol=lf
