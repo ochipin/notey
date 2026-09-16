@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div class="lp">
   <div class="prose lp-content" data-pagefind-body>
-    {{ .Content }}
+    {{ partial "render-content.html" . }}
   </div>
   {{ partial "footer.html" . }}
 </div>

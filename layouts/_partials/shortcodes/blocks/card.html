@@ -16,7 +16,7 @@
 {{- if $feature }}{{ $class = "lp-feature" }}{{ end -}}
 {{- if eq (lower (printf "%v" (.Get "wide"))) "true" }}{{ $class = printf "%s card--wide" $class }}{{ end -}}
 {{- if $href -}}
-<a class="{{ $class }}{{ if not $feature }} card--link{{ end }}" href="{{ $href | partial "site-url.html" }}">
+<a class="{{ $class }}{{ if not $feature }} card--link{{ end }}" href="{{ partial "page-url.html" (dict "page" .Page "href" $href) }}">
 {{- else -}}
 <article class="{{ $class }}">
 {{- end }}

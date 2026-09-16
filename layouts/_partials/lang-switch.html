@@ -1,4 +1,8 @@
 {{- if hugo.IsMultilingual }}
+{{- $translations := dict -}}
+{{- range .AllTranslations -}}
+  {{- $translations = merge $translations (dict .Language.Name .) -}}
+{{- end -}}
 <div class="picker" data-picker>
   <button class="picker-btn" aria-expanded="false" aria-label="{{ i18n "ui.language" }}">
     <span class="icon icon-translate" aria-hidden="true"></span>
@@ -7,14 +11,10 @@
   </button>
   <ul class="picker-menu" hidden>
     <li><a href="{{ .Permalink }}" aria-current="true">{{ site.Language.Label }}</a></li>
-    {{ range .AllTranslations }}
+    {{ range .Site.Home.AllTranslations }}
       {{ if ne .Language.Name $.Language.Name }}
-        <li><a href="{{ .Permalink }}">{{ .Language.Label }}</a></li>
-      {{ end }}
-    {{ end }}
-    {{ range site.Home.AllTranslations }}
-      {{ if and (ne .Language.Name $.Language.Name) (not $.IsTranslated) }}
-        <li><a href="{{ .Permalink }}">{{ .Language.Label }}</a></li>
+        {{- $target := index $translations .Language.Name | default . -}}
+        <li><a href="{{ $target.Permalink }}">{{ .Language.Label }}</a></li>
       {{ end }}
     {{ end }}
   </ul>

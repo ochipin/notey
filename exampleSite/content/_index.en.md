@@ -10,7 +10,7 @@ params:
 
 {{< hero >}}
 {{< actions >}}
-{{< button href="/en/guides/" primary=true arrow=true >}}Get started{{< /button >}}
+{{< button href="/guides/" primary=true arrow=true >}}Get started{{< /button >}}
 {{< /actions >}}
 {{< /hero >}}
 

@@ -11,8 +11,6 @@
 <meta property="og:locale" content="{{ replace site.Language.Locale "-" "_" }}">
 {{- $og := partial "head/og-image.html" . -}}
 {{ with $og }}<meta property="og:image" content="{{ . }}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{ . }}">{{ end }}
 <meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">

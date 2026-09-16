@@ -3,6 +3,9 @@
     {{ partial "search-button.html" . }}
   </div>
 
+  {{ partial "main-menu.html" (dict "page" . "class" "sidebar-mobile sidebar-nav" "linkClass" "sidebar-link") }}
+
+  {{ if and (ne .Kind "404") (not .IsHome) (ne .Kind "term") }}
   {{ with site.Sections }}
     <ul class="topics" aria-label="{{ i18n "ui.sections" }}">
       {{ $top := $.Page.FirstSection }}
@@ -19,6 +22,7 @@
 
   {{ with .Page.FirstSection }}
     {{ partial "sidebar/tree.html" (dict "Node" . "Current" $.Page "Depth" 0) }}
+  {{ end }}
   {{ end }}
 
   <div class="sidebar-mobile sidebar-foot">

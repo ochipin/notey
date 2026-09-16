@@ -6,7 +6,7 @@
     {{ with .Params.lead | default .Description }}<p class="doc-lead">{{ . | markdownify }}</p>{{ end }}
     {{ partial "toc-inline.html" . }}
     <div class="prose" data-pagefind-body>
-      {{ .Content }}
+      {{ partial "render-content.html" . }}
       {{ with .Pages.ByWeight }}
         <div class="cards">
           {{ range . }}

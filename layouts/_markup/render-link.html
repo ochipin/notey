@@ -2,6 +2,6 @@
 {{- $same := and $ext (strings.Contains .Destination (urls.Parse site.BaseURL).Host) -}}
 {{- $dest := .Destination -}}
 {{- if and (strings.HasPrefix $dest "/") (not (strings.HasPrefix $dest "//")) -}}
-  {{- $dest = partial "site-url.html" $dest -}}
+  {{- $dest = partial "page-url.html" (dict "page" .Page "href" $dest) -}}
 {{- end -}}
 <a href="{{ $dest | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if and $ext (not $same) }} target="_blank" rel="noopener noreferrer" class="ext-link"{{ end }}>{{ .Text | safeHTML }}{{ if and $ext (not $same) }}<span class="icon icon-link ext-mark" aria-hidden="true"></span>{{ end }}</a>

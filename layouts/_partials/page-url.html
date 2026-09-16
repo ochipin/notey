@@ -1,0 +1,21 @@
+{{- /* Resolve content paths in the current language; leave asset URLs to site-url. */ -}}
+{{- $dest := printf "%s" .href -}}
+{{- if and (strings.HasPrefix $dest "/") (not (strings.HasPrefix $dest "//")) -}}
+  {{- $url := urls.Parse $dest -}}
+  {{- $path := $url.Path -}}
+  {{- $base := (urls.Parse .page.Site.BaseURL).Path | default "/" -}}
+  {{- if ne $base "/" -}}
+    {{- if eq $path (strings.TrimSuffix "/" $base) -}}
+      {{- $path = "/" -}}
+    {{- else if strings.HasPrefix $path $base -}}
+      {{- $path = printf "/%s" (strings.TrimPrefix $base $path) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .page.Site.GetPage $path -}}
+    {{- with .RelPermalink -}}
+      {{- $suffix := replaceRE "^[^?#]*" "" $dest -}}
+      {{- return (printf "%s%s" . $suffix) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return (partial "site-url.html" $dest) -}}

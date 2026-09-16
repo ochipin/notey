@@ -40,10 +40,9 @@
 {{- end -}}
 {{- $rendered := .shortcode.Page.RenderString (dict "display" (.display | default "block")) $source -}}
 {{- range $children -}}
-  {{- if not .inline -}}
-    {{- $rendered = replace $rendered (printf "<p>%s</p>" .token) .html -}}
+  {{- if .inline -}}
+    {{- $rendered = replace $rendered .token .html -}}
   {{- end -}}
-  {{- $rendered = replace $rendered .token .html -}}
 {{- end -}}
 
 {{- /* Heading IDs are generated before inline children are restored. Replace
@@ -90,6 +89,24 @@
   {{- $href := strings.TrimSuffix `"` (strings.TrimPrefix `href="` .) -}}
   {{- with $anchors.Get (urls.Parse $href).Fragment -}}
     {{- $rendered = replace $rendered (printf `href="%s"` $href) (printf `href="#%s"` .) -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Record this Markdown fragment's scope before restoring block children.
+     The complete page resolves collisions after all fragments are available,
+     without a page-global counter or changing existing unique anchors. */ -}}
+{{- $scope := partial "shortcodes/heading-scope.html" .shortcode -}}
+{{- range findRE `<h[1-6]\b[^>]* class="h-anchor"[^>]*>` $rendered -}}
+  {{- $tag := replaceRE `>$` (printf ` data-notey-heading-scope="%s">` $scope) . -}}
+  {{- $rendered = replace $rendered . $tag -}}
+{{- end -}}
+{{- range findRE `<a\b[^>]* href="#[^"]*"[^>]*>` $rendered -}}
+  {{- $tag := replaceRE `>$` (printf ` data-notey-link-scope="%s">` $scope) . -}}
+  {{- $rendered = replace $rendered . $tag -}}
+{{- end -}}
+{{- range $children -}}
+  {{- if not .inline -}}
+    {{- $rendered = replace $rendered (printf "<p>%s</p>" .token) .html -}}
+    {{- $rendered = replace $rendered .token .html -}}
   {{- end -}}
 {{- end -}}
 {{- return ($rendered | safeHTML) -}}

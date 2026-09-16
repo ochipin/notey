@@ -3,7 +3,7 @@
 
 @param {string} [title] カードの見出し。
 @param {string} [icon=tips] Notey のアイコン名。例: tips、book、settings。
-@param {string} [href] カード全体のリンク先。省略するとリンクのないカードになります。
+@param {string} [href] カード全体のリンク先。/guides/ のようなページのパスは現在の言語の公開 URL に解決します。省略するとリンクのないカードになります。
 @param {string} [link] href の別名。両方指定した場合は href を優先します。
 @param {bool} [wide=false] card-grid 内で全列幅にする場合は true を指定します。文字列の "true" / "false" も利用できます。
 @param {string} [variant=default] default は通常のカード、feature はトップページ向けのカードです。省略時は親 card-grid の variant を引き継ぎます。

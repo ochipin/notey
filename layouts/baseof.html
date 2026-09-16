@@ -10,8 +10,8 @@
 
   {{ $withSidebar := and (ne .Kind "404") (not .IsHome) (ne .Kind "term") }}
   <div class="shell{{ if not $withSidebar }} shell--plain{{ end }}">
-    {{ if $withSidebar }}
-      <aside id="sidebar" class="sidebar" aria-label="{{ i18n "ui.docs_nav" }}">
+    {{ if or $withSidebar site.Menus.main }}
+      <aside id="sidebar" class="sidebar{{ if not $withSidebar }} sidebar--mobile-only{{ end }}" aria-label="{{ if $withSidebar }}{{ i18n "ui.docs_nav" }}{{ else }}{{ i18n "ui.site_nav" }}{{ end }}">
         {{ partial "sidebar.html" . }}
       </aside>
       <div id="scrim" class="scrim" hidden></div>

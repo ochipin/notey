@@ -19,7 +19,7 @@
     <div class="code-bar">
       <span class="code-lang">{{ $label }}</span>
       {{ with $title }}<span class="code-title">{{ . }}</span>{{ end }}
-      <button type="button" class="code-copy" data-copy aria-label="{{ i18n "ui.copy" }}">
+      <button type="button" class="code-copy" data-copy data-copy-text="{{ .Inner }}" aria-label="{{ i18n "ui.copy" }}">
         <span class="icon icon-copy" aria-hidden="true"></span>
         <span class="code-copy-label">{{ i18n "ui.copy" }}</span>
       </button>

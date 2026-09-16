@@ -1,0 +1,7 @@
+{{- /* Ordinals are local to each parent; their full path identifies nested
+     shortcodes independently of evaluation order or filesystem location. */ -}}
+{{- $scope := printf "%d" .Ordinal -}}
+{{- with .Parent -}}
+  {{- $scope = printf "%s-%s" (partial "shortcodes/heading-scope.html" .) $scope -}}
+{{- end -}}
+{{- return $scope -}}

@@ -1,0 +1,72 @@
+{{- /* RenderString gives each shortcode an independent heading-ID registry.
+     Resolve its collisions only after the complete page has been rendered.
+     Ordinary Markdown headings retain their IDs, keeping Hugo's TOC intact;
+     unique shortcode headings (including explicit IDs) retain theirs too. */ -}}
+{{- $html := printf "%s" .Content -}}
+{{- $headings := findRE `<h[1-6]\b[^>]* data-notey-heading-scope="[^"]+"[^>]*>[\s\S]*?</h[1-6]>` $html -}}
+{{- if $headings -}}
+  {{- $reserved := $html -}}
+  {{- range $headings -}}
+    {{- $reserved = replace $reserved (index (findRE `^<h[1-6]\b[^>]*>` . 1) 0) "" -}}
+  {{- end -}}
+  {{- $used := newScratch -}}
+  {{- range findRE ` id="[^"]+"` $reserved -}}
+    {{- $id := strings.TrimSuffix `"` (strings.TrimPrefix ` id="` .) | htmlUnescape -}}
+    {{- $used.Set $id true -}}
+  {{- end -}}
+  {{- /* Reserve every original spelling, so an added suffix can never steal
+       a later heading's intentional ID. */ -}}
+  {{- $originals := newScratch -}}
+  {{- range findRE ` id="[^"]+"` $html -}}
+    {{- $id := strings.TrimSuffix `"` (strings.TrimPrefix ` id="` .) | htmlUnescape -}}
+    {{- $originals.Set $id true -}}
+  {{- end -}}
+  {{- $anchors := newScratch -}}
+  {{- range $headings -}}
+    {{- $opening := index (findRE `^<h[1-6]\b[^>]*>` . 1) 0 -}}
+    {{- $scope := replaceRE `^.* data-notey-heading-scope="([^"]+)".*$` "$1" $opening -}}
+    {{- $original := replaceRE `^.* id="([^"]*)".*$` "$1" $opening | htmlUnescape -}}
+    {{- $anchor := $original -}}
+    {{- if $used.Get $anchor -}}
+      {{- $base := printf "%s--notey-%s" $original $scope -}}
+      {{- $anchor = $base -}}
+      {{- if or ($used.Get $anchor) ($originals.Get $anchor) -}}
+        {{- range seq (add (len (findRE ` id="[^"]*"` $html)) 1) -}}
+          {{- $anchor = printf "%s-%d" $base . -}}
+          {{- if not (or ($used.Get $anchor) ($originals.Get $anchor)) }}{{ break }}{{ end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $used.Set $anchor true -}}
+    {{- $key := printf "%s:%s" $scope $original -}}
+    {{- if not ($anchors.Get $key) -}}
+      {{- $anchors.Set $key $anchor -}}
+    {{- end -}}
+    {{- $tag := replace $opening (printf ` id="%s"` ($original | htmlEscape)) (printf ` id="%s"` ($anchor | htmlEscape)) -}}
+    {{- $tag = replaceRE ` data-notey-heading-scope="[^"]+"` "" $tag -}}
+    {{- $heading := replace . $opening $tag 1 -}}
+    {{- range findRE `<a\b[^>]* class="anchor-link"[^>]*>` $heading -}}
+      {{- $href := index (findRE ` href="[^"]*"` . 1) 0 -}}
+      {{- $link := replace . $href (printf ` href="#%s"` ($anchor | htmlEscape)) -}}
+      {{- $link = replaceRE ` data-notey-link-scope="[^"]+"` "" $link -}}
+      {{- $heading = replace $heading . $link -}}
+    {{- end -}}
+    {{- $html = replace $html . $heading 1 -}}
+  {{- end -}}
+  {{- /* Scope only local fragment links; links in another shortcode, normal
+       Markdown, code samples and external URLs remain independent. */ -}}
+  {{- range findRE `<a\b[^>]* data-notey-link-scope="[^"]+"[^>]*>` $html -}}
+    {{- $scope := replaceRE `^.* data-notey-link-scope="([^"]+)".*$` "$1" . -}}
+    {{- $href := replaceRE `^.* href="([^"]*)".*$` "$1" . -}}
+    {{- $fragment := (urls.Parse ($href | htmlUnescape)).Fragment -}}
+    {{- $tag := . -}}
+    {{- with $anchors.Get (printf "%s:%s" $scope $fragment) -}}
+      {{- $tag = replace $tag (printf ` href="%s"` $href) (printf ` href="#%s"` (. | htmlEscape)) -}}
+    {{- end -}}
+    {{- $tag = replaceRE ` data-notey-link-scope="[^"]+"` "" $tag -}}
+    {{- $html = replace $html . $tag -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Fragments can contain links without any headings. */ -}}
+{{- $html = replaceRE ` data-notey-link-scope="[^"]+"` "" $html -}}
+{{- return ($html | safeHTML) -}}

@@ -55,8 +55,8 @@ params:
   fonts:
     google: true
   og:
-    default: "/og-default.png"
-    # assets/fonts/og.ttf を置くと、ページごとの OG 画像を自動生成します
+    default: "/favicon.png"  # 同梱画像。サイト用の共有画像に置き換えられます
+    # assets/og/base.png と assets/fonts/og.ttf を置くと、ページごとの OG 画像を自動生成します
     font: "fonts/og.ttf"
   versions:
     - name: "v2"

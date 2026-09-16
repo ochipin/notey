@@ -15,6 +15,7 @@
     empty: "{{ i18n "ui.search_empty" }}",
     searching: "{{ i18n "ui.search_running" }}",
     missing: "{{ i18n "ui.search_missing" }}",
+    failed: "{{ i18n "ui.search_failed" }}",
     count: "{{ i18n "ui.search_count" }}"
   };
   var BASE = "{{ "pagefind/pagefind.js" | relURL }}";
@@ -22,16 +23,18 @@
 
   var pf = null, loading = null, results = [], shown = 0, PAGE = 6, timer = 0;
   var focusTimer = 0, searchVersion = 0;
+  var pendingBatch = null;
 
   function load() {
     if (pf) return Promise.resolve(pf);
     if (loading) return loading;
     loading = import(BASE)
       .then(function (m) {
-        pf = m;
-        return pf.options({ language: LANG }).then(function () { return pf.init(); }).then(function () { return pf; });
+        return Promise.resolve(m.options({ language: LANG }))
+          .then(function () { return m.init(); })
+          .then(function () { pf = m; return pf; });
       })
-      .catch(function () { pf = null; return null; });
+      .catch(function () { loading = null; return null; });
     return loading;
   }
 
@@ -73,11 +76,20 @@
   }
 
   function render(reset) {
+    if (!dlg.open || pendingBatch) return;
     var version = searchVersion;
     if (reset) { list.innerHTML = ""; shown = 0; }
     var slice = results.slice(shown, shown + PAGE);
-    Promise.all(slice.map(function (r) { return r.data(); })).then(function (rows) {
-      if (!dlg.open || version !== searchVersion) return;
+    if (!slice.length) { more.hidden = true; return; }
+    var batch = { start: shown };
+    pendingBatch = batch;
+    more.disabled = true;
+    function current() { return dlg.open && version === searchVersion && pendingBatch === batch; }
+    Promise.all(slice.map(function (r) {
+      return Promise.resolve().then(function () { return r.data(); });
+    })).then(function (rows) {
+      if (!current()) return;
+      var fragment = doc.createDocumentFragment();
       rows.forEach(function (d) {
         var sub = (d.sub_results && d.sub_results[0]) || null;
         var url = (sub && sub.url) || d.url;
@@ -88,11 +100,32 @@
           '<span class="sdlg-hit-title">' + esc((d.meta && d.meta.title) || d.url) + "</span>" +
           '<span class="sdlg-hit-excerpt">' + ((sub && sub.excerpt) || d.excerpt || "") + "</span>" +
           "</a>";
-        list.appendChild(li);
+        fragment.appendChild(li);
       });
-      shown += slice.length;
+      list.appendChild(fragment);
+      shown = batch.start + slice.length;
+      status.hidden = true;
       more.hidden = shown >= results.length;
+    }).catch(function () {
+      if (!current()) return;
+      status.hidden = false;
+      status.textContent = T.failed;
+      // Keep the same offset so a retry cannot skip any failed results.
+      more.hidden = false;
+    }).finally(function () {
+      if (pendingBatch !== batch) return;
+      pendingBatch = null;
+      more.disabled = false;
     });
+  }
+
+  function resetResults() {
+    pendingBatch = null;
+    results = [];
+    shown = 0;
+    list.innerHTML = "";
+    more.hidden = true;
+    more.disabled = false;
   }
 
   function run(q) {
@@ -103,20 +136,27 @@
     load().then(function (api) {
       if (!dlg.open || version !== searchVersion) return;
       if (!api) { status.textContent = T.missing; return; }
-      api.debouncedSearch(q, {}, 120).then(function (res) {
+      return api.debouncedSearch(q, {}, 120).then(function (res) {
         if (!res || !dlg.open || version !== searchVersion) return;
         results = res.results;
         if (!results.length) { list.innerHTML = ""; status.textContent = T.empty; more.hidden = true; return; }
         status.hidden = true;
         render(true);
       });
+    }).catch(function () {
+      if (!dlg.open || version !== searchVersion) return;
+      status.hidden = false;
+      status.textContent = T.failed;
     });
   }
 
   input.addEventListener("input", function () {
     clearTimeout(timer);
     searchVersion += 1;
+    resetResults();
     var q = input.value.trim();
+    status.hidden = false;
+    status.textContent = q ? T.searching : T.hint;
     timer = setTimeout(function () { run(q); }, 90);
   });
   more.addEventListener("click", function () { render(false); });
@@ -149,12 +189,9 @@
     clearTimeout(timer);
     clearTimeout(focusTimer);
     searchVersion += 1;
-    results = [];
-    shown = 0;
+    resetResults();
     input.value = "";
-    list.innerHTML = "";
     status.hidden = false;
     status.textContent = T.hint;
-    more.hidden = true;
   });
 })();

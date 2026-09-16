@@ -25,27 +25,50 @@
   var menuBtn = doc.getElementById("menu-btn");
   var sidebar = doc.getElementById("sidebar");
   var scrim = doc.getElementById("scrim");
-  function closeNav() {
+  function closeNav(restoreFocus) {
+    var wasOpen = doc.body.classList.contains("nav-open");
     doc.body.classList.remove("nav-open");
     if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
     if (scrim) scrim.hidden = true;
+    if (sidebar) closePickers(sidebar);
+    if (wasOpen && restoreFocus) {
+      var target = menuBtn && menuBtn.getClientRects().length ? menuBtn : doc.querySelector(".brand");
+      if (target) target.focus();
+    }
   }
   function openNav() {
     doc.body.classList.add("nav-open");
     menuBtn.setAttribute("aria-expanded", "true");
     if (scrim) scrim.hidden = false;
+    requestAnimationFrame(function () {
+      if (!doc.body.classList.contains("nav-open")) return;
+      var first = sidebar.querySelector("button, a[href], input, [tabindex='0']");
+      if (first) first.focus();
+    });
   }
   if (menuBtn && sidebar) {
     menuBtn.addEventListener("click", function () {
-      doc.body.classList.contains("nav-open") ? closeNav() : openNav();
+      doc.body.classList.contains("nav-open") ? closeNav(true) : openNav();
     });
-    if (scrim) scrim.addEventListener("click", closeNav);
+    if (scrim) scrim.addEventListener("click", function () { closeNav(true); });
     sidebar.addEventListener("click", function (e) {
       if (e.target.closest("a[href]")) closeNav();
     });
-    addEventListener("keydown", function (e) { if (e.key === "Escape") closeNav(); });
+    addEventListener("keydown", function (e) {
+      if (!doc.body.classList.contains("nav-open") || doc.querySelector("dialog[open]")) return;
+      if (e.key === "Escape") { e.preventDefault(); closeNav(true); }
+      if (e.key === "Tab") {
+        var focusable = [menuBtn].concat(Array.from(sidebar.querySelectorAll('a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]')))
+          .filter(function (el) { return !el.disabled && el.getClientRects().length && getComputedStyle(el).visibility !== "hidden"; });
+        var i = focusable.indexOf(doc.activeElement);
+        var next = i < 0 ? (e.shiftKey ? focusable.length - 1 : 0)
+          : (i + (e.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
+        e.preventDefault();
+        focusable[next].focus();
+      }
+    });
     var mq = matchMedia("(min-width: 861px)");
-    mq.addEventListener("change", closeNav);
+    mq.addEventListener("change", function () { closeNav(true); });
   }
 
   /* 現在ページをサイドバー内に見えるようにする（スクロール位置調整） */
@@ -56,6 +79,10 @@
   }
 
   /* ---- ドロップダウン（バージョン / 言語） ---- */
+  function closePickers(scope) {
+    (scope || doc).querySelectorAll(".picker-menu").forEach(function (m) { m.hidden = true; });
+    (scope || doc).querySelectorAll(".picker-btn").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
+  }
   doc.querySelectorAll("[data-picker]").forEach(function (p) {
     var btn = p.querySelector(".picker-btn");
     var menu = p.querySelector(".picker-menu");
@@ -63,15 +90,20 @@
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
       var open = menu.hidden;
-      doc.querySelectorAll(".picker-menu").forEach(function (m) { m.hidden = true; });
-      doc.querySelectorAll(".picker-btn").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
+      closePickers();
       menu.hidden = !open;
       btn.setAttribute("aria-expanded", String(open));
     });
   });
-  doc.addEventListener("click", function () {
-    doc.querySelectorAll(".picker-menu").forEach(function (m) { m.hidden = true; });
-    doc.querySelectorAll(".picker-btn").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
+  doc.addEventListener("click", function () { closePickers(); });
+  doc.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" || doc.querySelector("dialog[open]")) return;
+    var open = doc.querySelector('.picker-btn[aria-expanded="true"]');
+    if (!open) return;
+    e.preventDefault();
+    e.stopPropagation();
+    closePickers();
+    open.focus();
   });
 
   /* ---- コードコピー ---- */
@@ -79,13 +111,13 @@
     var btn = e.target.closest("[data-copy], [data-copy-text]");
     if (!btn) return;
     var text = btn.dataset.copyText;
-    if (!text) {
+    if (text === undefined) {
       var block = btn.closest(".code, .lp-install");
       var pre = block && block.querySelector("pre code, pre, code");
       if (!pre) return;
-      text = pre.innerText;
+      text = pre.innerText.replace(/\n$/, "");
     }
-    navigator.clipboard.writeText(text.replace(/\n$/, "")).then(function () {
+    navigator.clipboard.writeText(text).then(function () {
       var label = btn.querySelector(".code-copy-label");
       btn.classList.add("is-done");
       if (label) label.textContent = T.copied;

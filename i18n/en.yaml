@@ -4,6 +4,7 @@ ui:
   search_hint: "Type a keyword to start"
   search_empty: "No results found"
   search_running: "Searching…"
+  search_failed: "Could not load search results. Please try again."
   search_missing: "Search index not found. Run npx pagefind --site public after hugo build."
   search_count: "results"
   load_more: "Load more"

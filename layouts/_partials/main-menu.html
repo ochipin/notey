@@ -1,0 +1,13 @@
+{{- $page := .page -}}
+{{- $linkClass := .linkClass -}}
+{{- with $page.Site.Menus.main -}}
+<nav class="{{ $.class }}" aria-label="{{ i18n "ui.site_nav" }}">
+  {{- range . -}}
+    {{- $href := partial "page-url.html" (dict "page" $page "href" .URL) -}}
+    {{- with .Page -}}{{- $href = .RelPermalink -}}{{- end -}}
+    {{- $current := $page.IsMenuCurrent .Menu . -}}
+    {{- $external := or (strings.HasPrefix $href "https://") (strings.HasPrefix $href "http://") (strings.HasPrefix $href "//") -}}
+  <a class="{{ $linkClass }}{{ if $current }} is-current{{ end }}" href="{{ $href }}"{{ if $current }} aria-current="page"{{ end }}{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ or (T .Identifier) .Name }}</a>
+  {{- end }}
+</nav>
+{{- end -}}

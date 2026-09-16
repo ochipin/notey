@@ -1,5 +1,5 @@
 <div class="hdr-in">
-  {{ if and (ne .Kind "404") (not .IsHome) (ne .Kind "term") }}
+  {{ if or site.Menus.main (and (ne .Kind "404") (not .IsHome) (ne .Kind "term")) }}
   <button id="menu-btn" class="icon-btn hdr-menu" aria-expanded="false" aria-controls="sidebar" aria-label="{{ i18n "ui.menu" }}">
     <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
@@ -15,11 +15,7 @@
 
   <div class="hdr-search">{{ partial "search-button.html" . }}</div>
 
-  <nav class="hdr-nav" aria-label="{{ i18n "ui.site_nav" }}">
-    {{ range site.Menus.main }}
-      <a class="hdr-link{{ if $.IsMenuCurrent .Menu . }} is-current{{ end }}" href="{{ .URL }}"{{ if strings.HasPrefix .URL "http" }} target="_blank" rel="noopener"{{ end }}>{{ or (T .Identifier) .Name }}</a>
-    {{ end }}
-  </nav>
+  {{ partial "main-menu.html" (dict "page" . "class" "hdr-nav" "linkClass" "hdr-link") }}
 
   <div class="hdr-tools">
     {{ partial "version-switch.html" . }}

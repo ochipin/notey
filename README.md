@@ -12,7 +12,7 @@
 - **コードブロック** — 言語ラベル、タイトル、コピーボタン、Chroma のライト/ダーク配色
 - **ショートコード** — 注意書き・カード・タブ・手順・動画に加え、ヒーロー・段組み・ボタンなど全22種類
 - **Mermaid** — 図のあるページだけ遅延読み込み
-- **OG 画像** — ページごとに自動生成（フォント同梱時）、または既定画像
+- **OG 画像** — 背景画像とフォントを配置するとページごとに自動生成、または既定画像
 
 ## 必要環境
 
@@ -53,6 +53,27 @@ theme: notey
 ```
 
 設定の実例は `exampleSite/hugo.yaml` を参照してください。
+
+### 日本語だけで使う場合
+
+`exampleSite/hugo.yaml` は日英の多言語サンプルです。日本語だけを `/` 以下に公開する場合は、`languages` の `en` を削除し、次のように設定してください。
+
+```yaml
+defaultContentLanguage: ja
+defaultContentLanguageInSubdir: false
+disableLanguages: [en]  # 同梱の英語コンテンツを公開しない
+languages:
+  ja:
+    label: 日本語
+    locale: ja-JP
+    weight: 1
+```
+
+`exampleSite` の英語ファイルを残す場合は、`disableLanguages: [en]` も指定します。英語ファイルをすべて削除済みなら、この指定は不要です。
+
+日本語だけでも `/ja/` 配下に統一したい場合は、`defaultContentLanguageInSubdir: true` にします。通常は `/` から `/ja/` へ自動転送されますが、各記事の接頭辞なし URL も同時に用意されるわけではありません。
+
+本文の同じ言語へのリンクには、`/ja/` や `/en/` を付けず、`/guides/getting-started/` のように書きます。Markdown のリンクと `button`・`card` は、現在の言語のページを探し、Hugo が決めた公開 URL を使います。同じ記述で、日本語を直下に公開する設定なら `/guides/getting-started/`、言語別のサブディレクトリ設定なら `/ja/guides/getting-started/` になります。`baseURL` に公開先のサブディレクトリがあれば、その配下に解決します。
 
 ## ビルドと検索インデックス
 
@@ -113,8 +134,8 @@ params:
 
 {{< hero >}}
 {{< actions >}}
-{{< button href="/ja/guides/getting-started/" primary=true arrow=true >}}はじめる{{< /button >}}
-{{< button href="/ja/reference/shortcodes/" >}}表示例を見る{{< /button >}}
+{{< button href="/guides/getting-started/" primary=true arrow=true >}}はじめる{{< /button >}}
+{{< button href="/reference/shortcodes/" >}}表示例を見る{{< /button >}}
 {{< /actions >}}
 {{< command >}}hugo server{{< /command >}}
 {{< /hero >}}
@@ -126,10 +147,10 @@ params:
 
 {{< section title="必要な情報を見つける" >}}
 {{< card-grid variant="feature" >}}
-{{< card title="全文検索" icon="search" href="/ja/guides/search/" >}}
+{{< card title="全文検索" icon="search" href="/guides/search/" >}}
 **Pagefind** でドキュメント本文を検索できます。
 {{< /card >}}
-{{< card title="画像" icon="overview" href="/ja/reference/images/" >}}
+{{< card title="画像" icon="overview" href="/reference/images/" >}}
 記事と画像を同じフォルダーで管理できます。
 {{< /card >}}
 {{< /card-grid >}}
@@ -161,7 +182,7 @@ hugo server
 まずはサンプルの記事を開いてみてください。
 
 {{< actions >}}
-{{< button href="/ja/guides/getting-started/" primary=true >}}ガイドを読む{{< /button >}}
+{{< button href="/guides/getting-started/" primary=true >}}ガイドを読む{{< /button >}}
 {{< /actions >}}
 {{< /section >}}
 ````
@@ -170,7 +191,9 @@ hugo server
 
 `columns` の `layout` は `equal`（均等・自動段組み）、`wide-right`（右を広く）、`wide-left`（左を広く）。`wide-right` / `wide-left` は画面幅 900px 以下で1列になります。`align="center"` で列の内容を縦方向に中央揃えできます。各 `column` の本文には通常の Markdown や他のショートコードを書けます。`card` も Markdown と従来の HTML に対応します。
 
-使用例は `{{< ... >}}` 記法です。この記法の内側の見出しは Hugo の自動目次には含まれないため、記事の目次に載せる見出しはショートコードの外に書いてください。`/ja/guides/` や `/favicon.png` のようなサイト内パスは、サブディレクトリ公開時にも `baseURL` の配下へ解決します。
+使用例は `{{< ... >}}` 記法です。この記法の内側の見出しは Hugo の自動目次には含まれないため、記事の目次に載せる見出しはショートコードの外に書いてください。ページへのリンクは `/guides/` のように言語の接頭辞を省略します。`/favicon.png` など静的ファイルのパスにも言語の接頭辞は不要です。どちらもサブディレクトリ公開時には `baseURL` の配下へ解決します。
+
+ショートコード内で同じ見出しを繰り返しても、見出しリンクが別の場所へ飛ばないように重複する ID を調整します。リンク先を明示したい場合は、`## インストール {#install-linux}` のようにページ内で一意の ID を指定できます。
 
 以前のメタデータ中心のトップページから移行する場合、`hero` の `title`・`eyebrow`・`lead`・`image`・`imageAlt` は `params.hero` に移します。`hero.buttons`・`hero.install` は `actions` / `button` / `command`、`specs` は `specs` / `spec`、`features` は `section` / `card-grid` / `card`、`showcase` は `columns` / `column` と Markdown、`cta` は `section variant="cta"` として本文に書き直してください。旧メタデータのブロックは自動描画しません。
 
@@ -188,6 +211,8 @@ hugo server
 | `params.og.font` | `fonts/og.ttf` | OG 自動生成に使う TTF（assets 配下） |
 | `params.fonts.google` | `true` | Google Fonts（Murecho / Source Code Pro）の読み込み |
 | `params.mermaid.url` | jsDelivr | Mermaid の ESM URL |
+
+OG 画像は、ページの `params.image`、ページバンドル内の `cover`・`og`・`thumbnail` 画像、自動生成画像、`params.og.default` の順に選びます。自動生成には `assets/og/base.png` と `assets/fonts/og.ttf`（または `params.og.font` の指定先）の両方が必要です。サンプルの既定画像は同梱の `/favicon.png` を使っています。`/images/share.png` のようなサイト内パスは `baseURL` の配下に解決されます。
 
 ## HuPongo のショートコード補完
 
@@ -207,6 +232,8 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 画像は本文領域だけを撮影した静的な見本です。文字の折り返しやフォントは閲覧環境で変わります。タブの操作や動画の再生は、実ページのプレビューで確認してください。
 
 テンプレートを改修するときは、説明と引数を `layouts/_shortcodes/`、表示部分を `layouts/_partials/shortcodes/blocks/` で編集します。共通の `render.html` / `emit.html` は、入れ子の子要素を再変換せず、親の Markdown だけを描画するための処理です。開始・終了タグを持つショートコードでは、入口の `.InnerDeindent` 参照も残してください。Hugo が終了タグの有無を判定するために使用します。
+
+本文を表示するテンプレートを上書きする場合は、`.Content` の代わりに `{{ partial "render-content.html" . }}` を使ってください。ページ全体でショートコード内の見出し ID を確定し、対応する見出しリンクも調整します。
 
 ## v1（旧 Notey）からの移行
 

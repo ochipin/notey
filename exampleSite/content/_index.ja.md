@@ -11,7 +11,7 @@ params:
 
 {{< hero >}}
 {{< actions >}}
-{{< button href="/ja/guides/getting-started/" primary=true arrow=true >}}はじめる{{< /button >}}
+{{< button href="/guides/getting-started/" primary=true arrow=true >}}はじめる{{< /button >}}
 {{< button href="https://github.com/ochipin/notey" >}}GitHub{{< /button >}}
 {{< /actions >}}
 
@@ -28,11 +28,11 @@ params:
 {{< section title="ドキュメントに必要なものだけ" >}}
 {{< card-grid variant="feature" >}}
 
-{{< card title="Pagefind 全文検索" icon="search" href="/ja/guides/search/" >}}
+{{< card title="Pagefind 全文検索" icon="search" href="/guides/search/" >}}
 Ctrl / ⌘ + K で開く検索ダイアログ。日本語も分割して検索でき、インデックスはビルド後に 1 コマンドで生成します。
 {{< /card >}}
 
-{{< card title="大きな画像もそのまま" icon="overview" href="/ja/reference/images/" >}}
+{{< card title="大きな画像もそのまま" icon="overview" href="/reference/images/" >}}
 段幅に自動リサイズして WebP の srcset を付与。横スクロールは発生せず、クリックで原寸をライトボックス表示します。
 {{< /card >}}
 
@@ -69,7 +69,7 @@ note / tips / warning / card / tab / details など、v1 のショートコー�
 - 見出しから右側の目次を自動生成（h2 / h3 の階層）
 {{< /checklist >}}
 
-[詳しく読む →](/ja/reference/shortcodes/)
+[詳しく読む →](/reference/shortcodes/)
 
 {{< /column >}}
 {{< column >}}
@@ -99,7 +99,7 @@ enableGitInfo: true で更新日時を Git から表示します。
 Hugo Modules でも themes/ 直置きでも動きます。
 
 {{< actions >}}
-{{< button href="/ja/guides/getting-started/" primary=true >}}導入手順を読む{{< /button >}}
-{{< button href="/ja/reference/shortcodes/" >}}ショートコード一覧{{< /button >}}
+{{< button href="/guides/getting-started/" primary=true >}}導入手順を読む{{< /button >}}
+{{< button href="/reference/shortcodes/" >}}ショートコード一覧{{< /button >}}
 {{< /actions >}}
 {{< /section >}}

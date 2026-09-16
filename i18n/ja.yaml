@@ -4,6 +4,7 @@ ui:
   search_hint: "キーワードを入力してください"
   search_empty: "一致する記事が見つかりませんでした"
   search_running: "検索中…"
+  search_failed: "検索結果を取得できませんでした。もう一度お試しください。"
   search_missing: "検索インデックスが見つかりません。hugo のビルド後に npx pagefind --site public を実行してください。"
   search_count: "件"
   load_more: "さらに読み込む"

@@ -8,7 +8,7 @@
   </button>
   <ul class="picker-menu" hidden>
     {{ range . }}
-      <li><a href="{{ .url | partial "site-url.html" }}"{{ if .current }} aria-current="true"{{ end }}>{{ .name }}{{ with .label }} <span class="picker-note">{{ . }}</span>{{ end }}</a></li>
+      <li><a href="{{ partial "page-url.html" (dict "page" $ "href" .url) }}"{{ if .current }} aria-current="true"{{ end }}>{{ .name }}{{ with .label }} <span class="picker-note">{{ . }}</span>{{ end }}</a></li>
     {{ end }}
   </ul>
 </div>

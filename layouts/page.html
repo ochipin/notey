@@ -7,7 +7,7 @@
     {{ partial "page-meta.html" . }}
     {{ partial "toc-inline.html" . }}
     <div class="prose" data-pagefind-body>
-      {{ .Content }}
+      {{ partial "render-content.html" . }}
     </div>
     {{ partial "prev-next.html" . }}
     {{ partial "footer.html" . }}
