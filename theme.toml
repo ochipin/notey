@@ -6,7 +6,7 @@ homepage = 'https://github.com/ochipin/notey'
 demosite = 'https://github.com/ochipin/notey'
 tags = ['documentation', 'docs', 'responsive', 'multilingual', 'dark-mode', 'pagefind']
 features = ['documentation navigation', 'pagefind search', 'i18n', 'versioning', 'dark mode', 'shortcodes', 'mermaid']
-min_version = '0.158.0'
+min_version = '0.166.0'
 
 [author]
   name = 'ochipin'
@@ -15,4 +15,4 @@ min_version = '0.158.0'
 [module]
   [module.hugoVersion]
     extended = false
-    min = '0.158.0'
+    min = '0.166.0'

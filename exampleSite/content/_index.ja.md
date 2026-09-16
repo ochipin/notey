@@ -19,7 +19,7 @@ params:
 {{< /hero >}}
 
 {{< specs >}}
-{{< spec value="v0.158+" >}}Hugo（extended 不要）{{< /spec >}}
+{{< spec value="v0.166+" >}}Hugo（extended 不要）{{< /spec >}}
 {{< spec value="0" >}}npm 依存（ビルド不要）{{< /spec >}}
 {{< spec value="ja / en" >}}同梱の言語ファイル{{< /spec >}}
 {{< spec value="22" >}}ショートコード{{< /spec >}}

@@ -18,9 +18,11 @@
 
 | ツール | バージョン |
 |:--|:--|
-| Hugo | v0.158.0 以上（extended 不要） |
+| Hugo | v0.166.0 以上（extended 不要） |
 | Git | 更新日時の表示（`enableGitInfo`） |
 | Node.js | Pagefind の実行 |
+
+Hugo v0.166.0 で導入された `return` の仕様を使用しているため、v0.162.0 など、それ以前のバージョンではビルドできません。
 
 ## 導入
 
