@@ -105,7 +105,7 @@
 }
 .prose > ol > li, .steps > ol > li {
   counter-increment: step; position: relative;
-  padding-left: 2.6rem; margin-top: 0 !important;
+  min-height: 1.75rem; padding-left: 2.6rem; margin-top: 0 !important;
 }
 .prose > ol > li::before, .steps > ol > li::before {
   content: counter(step);
@@ -116,10 +116,17 @@
   border: 1px solid var(--accent-line);
   font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
 }
+/* Connect each step to the next, leaving a small gap around both markers. */
+.prose > ol > li:where(:not(:last-child))::after, .steps > ol > li:where(:not(:last-child))::after {
+  content: "";
+  position: absolute; left: calc(0.875rem - 0.5px);
+  top: 2.1rem; bottom: -0.8rem; width: 1px;
+  background: var(--border); pointer-events: none;
+}
 .prose > ol > li > :where(ul, ol, p, .code, pre) { margin-top: 0.6rem; }
 .num > ol { list-style: decimal; padding-left: 1.5rem; display: block; counter-reset: none; }
 .num > ol > li { counter-increment: none; padding-left: 0; }
-.num > ol > li::before { content: none; }
+.num > ol > li::before, .num > ol > li::after { content: none; }
 .num > ol > li + li { margin-top: 0.35rem; }
 
 .mermaid-wrap {
