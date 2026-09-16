@@ -1,81 +1,75 @@
 # Third-Party Notices
 
-Notey's own code is licensed under the [MIT License](LICENSE). Third-party
-icons retain their upstream terms; the theme's MIT license does not relicense
-them.
+Notey's own code is licensed under the [MIT License](LICENSE). The icon
+artwork and the font derived from it are licensed under Apache License 2.0;
+the theme's MIT license does not replace those terms.
 
-## Bundled icon font
+## Google Material Symbols Rounded
 
-- File: `static/fonts/icomoon.woff`
-- Generator recorded in the font: IcoMoon
-- Contents: 48 icons in U+E900 through U+E933, excluding U+E916, U+E917,
-  U+E91D, and U+E91E
-- SHA-256: `0263466a6a5f3ecc50677e97d1e6028599faaf501ae5cb44e8bc6ec59d2e17d0`
-- CSS names and codepoints: `assets/css/80.icons.css`
-
-The theme author reports that this font combines Material icons with other
-icon sets. The original IcoMoon project, source SVGs, and upstream versions
-are unavailable. This record combines the author's recollections with
-comparisons of bundled glyphs against upstream SVGs on 2026-09-16. Close
-outline matches are evidence of likely sources, not proof of the original
-download history. Each entry distinguishes its evidence and remaining gaps.
-
-IcoMoon is the font generator; its name alone does not establish an icon
-license. See the [IcoMoon licensing FAQ](https://icomoon.io/faq).
-
-### Google Material Icons / Material Symbols
-
-Attribution: Google, Material Icons / Material Symbols.
+Attribution: Google, Material Symbols.
 
 - Project: https://github.com/google/material-design-icons
-- License: Apache License 2.0
-- Upstream license: https://github.com/google/material-design-icons/blob/master/LICENSE
-- Included text: [LICENSES/Apache-2.0.txt](LICENSES/Apache-2.0.txt)
+- Official guide: https://developers.google.com/fonts/docs/material_symbols
+- Upstream revision: `40a7a292a79d9394157e1ea24f83d52d5e17c556` (2026-09-11)
+- Upstream license: [Apache License 2.0](https://github.com/google/material-design-icons/blob/40a7a292a79d9394157e1ea24f83d52d5e17c556/LICENSE)
+- Included license: [LICENSES/Apache-2.0.txt](LICENSES/Apache-2.0.txt)
+- Unmodified upstream SVGs: [icons/material-symbols/svg/](icons/material-symbols/svg/)
+- Source URLs, SHA-256 checksums, variants, and name/codepoint mappings:
+  [icons/material-symbols/manifest.json](icons/material-symbols/manifest.json)
 
-The following glyphs closely match Material Symbols Rounded SVGs:
+Every one of the 48 bundled icon glyphs is built from an official Google SVG
+at the pinned revision above. These assets replace the former mixed-source
+font in full; no outlines from that font are reused. Historical shape
+comparisons are not the provenance record for the replacement font.
 
-| Theme name | Codepoint | Upstream icon | Outline overlap |
-| --- | --- | --- | --- |
-| `tag` | U+E901 | [loyalty](https://github.com/google/material-design-icons/blob/master/symbols/web/loyalty/materialsymbolsrounded/loyalty_24px.svg) | 99.78% |
-| `tips` | U+E905 | [rocket_launch](https://github.com/google/material-design-icons/blob/master/symbols/web/rocket_launch/materialsymbolsrounded/rocket_launch_24px.svg) | 99.12% |
-| `star` | U+E929 | [star_shine](https://github.com/google/material-design-icons/blob/master/symbols/web/star_shine/materialsymbolsrounded/star_shine_24px.svg) | 98.94% |
-| `save` | U+E92B | [save_as](https://github.com/google/material-design-icons/blob/master/symbols/web/save_as/materialsymbolsrounded/save_as_24px.svg) | 98.66% |
+## Bundled font and modifications
 
-The other interface icons have not been individually mapped to Google sources.
+- File: `static/fonts/icomoon.woff`
+- Font name: Notey Material Symbols
+- Generator: FontTools 4.65.0, using [scripts/build-icons.py](scripts/build-icons.py)
+- Contents: 48 icons in U+E900 through U+E933, excluding U+E916, U+E917,
+  U+E91D, and U+E91E
+- SHA-256: `f6e1d325cb900934a863f272ecdbce89acdd0503347fbe999fcb4f989a367fb8`
+- CSS names and codepoints: `assets/css/80.icons.css`
 
-### Transformations and remaining provenance
+Modified by the Notey contributors on 2026-09-16: selected SVG artwork was
+converted into font outlines, scaled to 1024 units per em, and transformed
+from SVG coordinates to the font's upward Y axis. The font uses an ascent of
+960 and a descent of -64, normalized metrics, and TrueType-compatible curves.
+The glyphs were assigned Notey's existing private-use codepoints and packed
+into a WOFF file. Source SVG files are preserved without modification.
 
-The source artwork was selected, combined, assigned private-use codepoints,
-and exported as a custom WOFF using IcoMoon. The exact original transformation
-history is unavailable.
+The `icomoon.woff` filename and CSS family name `icomoon` are retained for
+compatibility. The replacement font is generated with FontTools, not IcoMoon.
+Existing icon names and aliases are retained. Proxmox (U+E916), Tux/Linux
+(U+E917), Docker (U+E91D), and Windows (U+E91E) remain excluded.
 
-On 2026-09-16, FontTools 4.65.0 was used to subset the font, removing Proxmox
-(U+E916), Tux/Linux (U+E917), Docker (U+E91D), and Windows (U+E91E). The
-remaining 48 icons keep their original codepoints, outlines, and metrics.
-Simple Icons and IcoMoon Free notices and license texts were removed because
-all glyphs matched to those collections have been removed. IcoMoon remains
-the generator of the custom font; this does not identify the remaining
-glyphs as IcoMoon Free artwork.
+## Rebuilding and checking the font
 
-Overlap figures above are intersection-over-union of normalized filled
-outlines rasterized at 300 by 300 pixels, preserving aspect ratio. Curves were
-sampled into 20 segments per curve. They measure shape similarity, not legal
-provenance; small differences can arise from font conversion and rounding.
+From the theme directory, with Python 3 and a virtual environment activated:
 
-`git` (U+E91F, a branching diagram) and the remaining interface glyphs have
-no confirmed per-icon source yet. The name `git` is a CSS alias,
-not proof that the glyph is the Git logo. This notice records
-known information and likely sources; it does not certify the license of
-every glyph or label the whole mixed font as Apache-2.0, CC BY, or MIT.
-Trademark rights are separate from the icon artwork licenses.
+```sh
+python3 -m pip install -r scripts/requirements-icons.txt
+python3 scripts/build-icons.py
+python3 scripts/build-icons.py --check
+```
 
-For future font exports, keep the IcoMoon project/selection file and original
-SVGs with their source URLs, versions, and license notices, then update this
-record and the published [font notice](static/fonts/NOTICE.txt).
+The build uses the bundled SVGs. The check runs offline and verifies the
+recorded source checksums and reproducibility of the bundled font. To write
+a comparison build elsewhere, use `--output /tmp/notey-check.woff`.
 
-## Published notices
+## Distribution
 
-`static/fonts/NOTICE.txt` and `static/fonts/LICENSES/` accompany the font in
-Hugo output as `fonts/NOTICE.txt` and `fonts/LICENSES/`, relative to the site's
-base URL. The license texts there are identical to the copies in `LICENSES/`.
-Keep both sets when distributing the theme or its generated site.
+Apache License 2.0 permits use in commercial applications subject to its
+terms, including preservation of the license and applicable notices. When
+distributing the theme, an application containing it, or generated sites
+containing the font, retain the corresponding license, attribution, and
+modification notices. This does not change the MIT license of Notey's own
+code or grant trademark rights.
+
+Hugo publishes `static/fonts/NOTICE.txt`, `static/fonts/icon-sources.json`,
+and `static/fonts/LICENSES/` alongside the font as `fonts/NOTICE.txt`,
+`fonts/icon-sources.json`, and `fonts/LICENSES/`, relative to the site's base
+URL. The published JSON preserves the per-icon source record. The license
+text there is identical to the copy in `LICENSES/`. Keep these files with
+redistributed copies of the font.

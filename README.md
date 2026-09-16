@@ -146,12 +146,12 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 - 検索は Fuse.js + `search.json` から Pagefind に置き換わりました。`outputs.home` の `JSON` と `outputFormats.JSON` の設定は削除できます。
 - `page.word.html`（Word 出力）と `outputs.page: [HTML, word]` は同梱していません。必要なら v1 の該当ファイルを `layouts/` に戻してください。
 - 見出し ID を使うため `autoHeadingID: false` は外してください。
-- アイコンフォント（icomoon）と名前は v1 のものを引き継いでいます。ただし `proxmox`・`tux`（`linux`）・`docker`・`windows` は配布対象から削除しました。
+- アイコンの名前・コードポイントと `icomoon.woff` のファイル名は互換性のため維持しています。48 個すべての図形を Google 公式の Material Symbols Rounded に置き換えたため、以前と形状が変わるものがあります。`proxmox`・`tux`（`linux`）・`docker`・`windows` は配布対象に含みません。
 
 ## ライセンス
 
-テーマ本体は [MIT](LICENSE) です。アイコンフォントは複数のアイコン集を混ぜたもので、個々の素材には元のライセンスが適用されます。[出典・ライセンスの記録](THIRD_PARTY_NOTICES.md) と [ライセンス原文](LICENSES/) を参照してください。
+テーマ本体は [MIT](LICENSE) です。アイコンの元 SVG と、それらから生成したフォントには [Apache License 2.0](LICENSES/Apache-2.0.txt) が適用されます。48 個すべてを Google 公式の Material Symbols Rounded から取得し直し、出典が未確定だった旧フォントの図形は使用していません。
 
-形の照合から Google Material Symbols の出典候補とクレジットを記録しています。2026-09-16 に Proxmox・Tux/Linux・Docker・Windows をフォントから削除し、残る 48 アイコンのコードポイントは維持しました。一部のアイコンは取得元が未確認で、フォント全体のライセンスが確定したことを示すものではありません。
+取得元のコミット、アイコンごとの URL・SHA-256・名前の対応は [manifest.json](icons/material-symbols/manifest.json)、加工内容と配布時の扱いは [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) に記録しています。`icomoon` という名前は既存の CSS とファイル名の互換性のために残しており、現在のフォント生成には FontTools を使用します。
 
-`static/fonts/NOTICE.txt` と `static/fonts/LICENSES/` は Hugo の出力にもコピーされます。テーマや生成サイトを配布する際は、フォントと一緒に保持してください。
+Apache 2.0 の条件を守ることで、有料アプリへの同梱も可能です。`static/fonts/NOTICE.txt` と `static/fonts/LICENSES/` は Hugo の出力にもコピーされます。テーマ、テーマを同梱するアプリ、フォントを含む生成サイトを配布する際は、対応するライセンス原文・著作権表示・加工の記録を保持してください。

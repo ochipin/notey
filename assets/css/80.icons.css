@@ -1,5 +1,7 @@
-/* Icon attributions: static/fonts/NOTICE.txt (published as fonts/NOTICE.txt).
-   Per-icon source records and license texts: THIRD_PARTY_NOTICES.md. */
+/* Google Material Symbols Rounded, Apache-2.0; converted for Notey.
+   The icomoon family/filename is a compatibility alias, not the source.
+   Sources: icons/material-symbols/manifest.json; license: THIRD_PARTY_NOTICES.md.
+   Published attribution and modification record: fonts/NOTICE.txt. */
 @font-face {
   font-family: "icomoon";
   src: url("{{ "fonts/icomoon.woff" | relURL }}") format("woff");
