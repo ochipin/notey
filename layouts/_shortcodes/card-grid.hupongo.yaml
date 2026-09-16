@@ -1,0 +1,22 @@
+schema_version: 1
+usage: |
+  {{< card-grid >}}
+  {{< card title="使い方を学ぶ" icon="book" >}}
+  <p>はじめて使う方のためのガイドです。</p>
+  {{< /card >}}
+  {{< card title="設定を確認" icon="settings" >}}
+  <p>自分に合った設定を見つけましょう。</p>
+  {{< /card >}}
+  {{< card title="作業のヒント" icon="tips" wide=true >}}
+  <p>wide=true のカードは、グリッドの全列幅で表示できます。</p>
+  {{< /card >}}
+  {{< /card-grid >}}
+snippet: |
+  {{< card-grid >}}
+  {{< card title="1つ目のカード" icon="book" >}}
+  <p>ここに説明を書きます。</p>
+  {{< /card >}}
+  {{< card title="2つ目のカード" icon="tips" >}}
+  <p>ここに説明を書きます。</p>
+  {{< /card >}}
+  {{< /card-grid >}}

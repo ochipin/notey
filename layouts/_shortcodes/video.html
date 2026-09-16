@@ -1,3 +1,10 @@
+{{/*
+動画をブラウザー標準の再生コントロール付きで表示します。YouTube などのページ URL ではなく、MP4 や WebM ファイルの URL を指定します。src の代わりに最初の位置引数も使えます。
+
+@param {string} src 動画ファイルの URL。例: static/media/demo.webm を置いた場合は /media/demo.webm。
+@param {string} [poster] 再生前に表示する画像の URL。
+@param {string} [caption] 動画の下に表示する説明。Markdown の強調などを使えます。
+*/}}
 {{- $src := .Get "src" | default (.Get 0) -}}
 <figure class="fig fig--video">
   <video src="{{ $src | relURL }}" controls preload="metadata"{{ with .Get "poster" }} poster="{{ . | relURL }}"{{ end }} playsinline></video>

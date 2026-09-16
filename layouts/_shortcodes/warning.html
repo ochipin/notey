@@ -1,3 +1,8 @@
+{{/*
+操作前に確認してほしい注意事項を警告枠で表示します。本文には Markdown を使えます。
+
+@param {string} [title] 見出し。省略時はサイト言語の「注意」を表示します。
+*/}}
 {{- $title := .Get "title" | default (i18n "ui.warning") -}}
 <aside class="note note--warn">
   <p class="note-title"><span class="icon icon-warning" aria-hidden="true"></span>{{ $title }}</p>

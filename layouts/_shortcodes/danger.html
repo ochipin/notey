@@ -1,3 +1,8 @@
+{{/*
+データ削除など、重大な影響がある操作の警告を赤系の枠で表示します。本文には Markdown を使えます。
+
+@param {string} [title] 見出し。省略時はサイト言語の「危険」を表示します。
+*/}}
 {{- $title := .Get "title" | default (i18n "ui.danger") -}}
 <aside class="note note--danger">
   <p class="note-title"><span class="icon icon-danger" aria-hidden="true"></span>{{ $title }}</p>

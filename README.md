@@ -123,6 +123,23 @@ front matter に `hero` を書かなければ、サイトタイトルと `params
 | `params.fonts.google` | `true` | Google Fonts（Murecho / Source Code Pro）の読み込み |
 | `params.mermaid.url` | jsDelivr | Mermaid の ESM URL |
 
+## HuPongo のショートコード補完
+
+`layouts/_shortcodes/` の全13種類に、説明・引数の案内、使用例、挿入用ひな形、実際の表示を撮影したプレビュー画像を同梱しています。
+
+- 対象: `badge`、`card`、`card-grid`、`columns`、`danger`、`icon`、`info`、`num`、`steps`、`tab`、`tips`、`video`、`warning`
+- `<名前>.html` の先頭 Hugo コメント: 説明と `@param` による引数の案内。
+- `<名前>.hupongo.yaml`: `schema_version: 1`、詳細に表示する `usage`、選択時に挿入する `snippet`。
+- `<名前>.preview.png`: 同じ使用例を Notey の CSS・JavaScript・アイコンフォントで描画した、ライト配色の見本。
+
+HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認できます。`card-grid` と `tab` のひな形は、子カードや複数タブを含みます。`card` と `columns` の本文は HTML をそのまま出力するため、使用例では `<p>` や `<div>` を使っています。
+
+`video` の `/media/demo.webm` と `/media/demo-poster.png` は置き換え用の見本パスです。動画ファイルは同梱していないので、実際の動画・画像を `static/media/` などに配置してパスを変更してください。プレビュー画像のデモ映像は説明用に作成したものです。
+
+テーマ直下の `hugo.yaml` は、これらの YAML と PNG を Hugo のテンプレート読込から除外します。通常の Hugo でもビルドできるよう、テーマを導入するときはこの設定も含めてください。独自にテーマのマウント設定を上書きする場合も、説明用ファイルの除外を維持してください。設定には [Hugo の module mounts](https://gohugo.io/configuration/module/#mounts) を使用しています。
+
+画像は本文領域だけを撮影した静的な見本です。文字の折り返しやフォントは閲覧環境で変わります。タブの操作や動画の再生は、実ページのプレビューで確認してください。
+
 ## v1（旧 Notey）からの移行
 
 - ショートコード名は互換です（`info` `tips` `warning` `danger` `card` `card-grid` `tab` `num` `icon`）。`tab` の `active` 指定もそのまま使えます。

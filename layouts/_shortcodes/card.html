@@ -1,3 +1,12 @@
+{{/*
+アイコン・見出し・本文を持つカードを表示します。複数並べる場合は card-grid で囲みます。本文は HTML として出力されるため、段落には p 要素を使います。
+
+@param {string} [title] カードの見出し。
+@param {string} [icon=tips] Notey のアイコン名。例: tips、book、settings。
+@param {string} [href] カード全体のリンク先。省略するとリンクのないカードになります。
+@param {string} [link] href の別名。両方指定した場合は href を優先します。
+@param {bool} [wide] card-grid 内で全列幅にする場合だけ true を指定します。通常幅は省略してください（文字列の false も有効扱いになります）。
+*/}}
 {{- $href := .Get "href" | default (.Get "link") -}}
 {{- $class := "card" -}}
 {{- if .Get "wide" }}{{ $class = printf "%s card--wide" $class }}{{ end -}}

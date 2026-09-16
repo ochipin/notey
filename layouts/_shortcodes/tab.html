@@ -1,3 +1,9 @@
+{{/*
+連続する tab をまとめて切り替え式のタブにします。タブ同士の間に見出しや別の要素を挟まないでください。本文は Markdown 対応で、切替にはテーマの JavaScript が必要です。
+
+@param {string} [title] タブの見出し。省略すると Tab 1、Tab 2 のような連番になります。
+@param {bool} [active] 最初に表示するタブにだけ true を指定します。省略時は先頭が選択されます（文字列の false も有効扱いになります）。
+*/}}
 {{- $title := .Get "title" -}}
 <div class="tab-panel" data-tab-title="{{ $title }}"{{ if .Get "active" }} data-tab-active="true"{{ end }} hidden>
   {{ .Inner | markdownify }}

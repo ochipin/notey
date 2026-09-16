@@ -1,0 +1,19 @@
+schema_version: 1
+usage: |
+  {{< tab title="設定例" active=true >}}
+  ```yaml
+  title: "ドキュメントサイト"
+  defaultContentLanguage: ja
+  ```
+  {{< /tab >}}
+  {{< tab title="使い方" >}}
+  `hugo.yaml` に設定を書き、プレビューで表示を確認します。
+  タブをクリックすると、内容を切り替えられます。
+  {{< /tab >}}
+snippet: |
+  {{< tab title="タブ1" active=true >}}
+  1つ目のタブの本文です。
+  {{< /tab >}}
+  {{< tab title="タブ2" >}}
+  2つ目のタブの本文です。
+  {{< /tab >}}

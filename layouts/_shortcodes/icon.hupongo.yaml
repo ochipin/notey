@@ -1,0 +1,8 @@
+schema_version: 1
+usage: |
+  {{< icon name="book" >}} ガイド　
+  {{< icon name="code" >}} コード　
+  {{< icon name="settings" >}} 設定　
+  {{< icon name="tips" >}} ヒント
+snippet: |
+  {{< icon name="book" >}} ガイド

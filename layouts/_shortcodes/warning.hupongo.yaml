@@ -1,0 +1,10 @@
+schema_version: 1
+usage: |
+  {{< warning title="変更する前に確認" >}}
+  公開 URL を変更すると、以前のリンクからアクセスできなくなる場合があります。
+  **リンク先とリダイレクト** を確認してから公開してください。
+  {{< /warning >}}
+snippet: |
+  {{< warning title="注意" >}}
+  ここに注意事項を書きます。
+  {{< /warning >}}

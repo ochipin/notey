@@ -1,1 +1,6 @@
+{{/*
+Notey 同梱フォントのアイコンを本文中に表示します。name の代わりに最初の位置引数でも指定できます。装飾用なので、意味を伝える文字を隣に添えてください。
+
+@param {string} name アイコン名。例: book、code、settings、tips。icon- の接頭辞は不要です。
+*/}}
 <span class="icon icon-{{ .Get "name" | default (.Get 0) }}" aria-hidden="true"></span>

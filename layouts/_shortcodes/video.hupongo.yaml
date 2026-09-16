@@ -1,0 +1,5 @@
+schema_version: 1
+usage: |
+  {{< video src="/media/demo.webm" poster="/media/demo-poster.png" caption="操作デモ — 再生ボタンで動画を確認できます。" >}}
+snippet: |
+  {{< video src="/media/demo.webm" caption="動画の説明" >}}

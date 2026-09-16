@@ -1,0 +1,7 @@
+schema_version: 1
+usage: |
+  標準 {{< badge text="ドキュメント" >}}
+  新着 {{< badge text="NEW" kind="new" >}}
+  試験公開 {{< badge text="BETA" kind="beta" >}}
+snippet: |
+  {{< badge text="NEW" kind="new" >}}

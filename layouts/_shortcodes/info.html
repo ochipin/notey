@@ -1,3 +1,8 @@
+{{/*
+補足情報を青系のノート枠で表示します。本文には Markdown を使えます。
+
+@param {string} [title] 見出し。省略時はサイト言語の「ノート」を表示します。
+*/}}
 {{- $title := .Get "title" | default (i18n "ui.note") -}}
 <aside class="note note--info">
   <p class="note-title"><span class="icon icon-info" aria-hidden="true"></span>{{ $title }}</p>

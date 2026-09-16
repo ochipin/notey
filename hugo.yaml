@@ -1,0 +1,23 @@
+# Editor documentation lives next to the shortcodes, but is not a Hugo template.
+# Declaring module mounts replaces the module defaults, so retain each component.
+module:
+  mounts:
+    - source: layouts
+      target: layouts
+      files:
+        - '! **/*.hupongo.yaml'
+        - '! **/*.preview.png'
+        - '! **/*.preview.jpg'
+        - '! **/*.preview.jpeg'
+    - source: assets
+      target: assets
+    - source: static
+      target: static
+    - source: i18n
+      target: i18n
+    - source: archetypes
+      target: archetypes
+    - source: content
+      target: content
+    - source: data
+      target: data
