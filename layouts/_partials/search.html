@@ -1,0 +1,19 @@
+<dialog id="search-dialog" class="sdlg" aria-label="{{ i18n "ui.search" }}">
+  <div class="sdlg-box">
+    <div class="sdlg-head">
+      <span class="icon icon-search" aria-hidden="true"></span>
+      <input id="search-input" class="sdlg-input" type="search" autocomplete="off" spellcheck="false" placeholder="{{ i18n "ui.search_placeholder" }}">
+      <button class="sdlg-close" data-search-close aria-label="{{ i18n "ui.close" }}"><kbd>Esc</kbd></button>
+    </div>
+    <div class="sdlg-body">
+      <p id="search-status" class="sdlg-status">{{ i18n "ui.search_hint" }}</p>
+      <ol id="search-results" class="sdlg-results"></ol>
+      <button id="search-more" class="sdlg-more" hidden>{{ i18n "ui.load_more" }}</button>
+    </div>
+    <div class="sdlg-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> {{ i18n "ui.kbd_move" }}</span>
+      <span><kbd>Enter</kbd> {{ i18n "ui.kbd_open" }}</span>
+      <span class="sdlg-credit">Pagefind</span>
+    </div>
+  </div>
+</dialog>

@@ -1,1 +1,4 @@
-<p>Copyright {{ now.Year }}. All rights reserved.</p>
+<footer class="foot">
+  <p>{{ with site.Copyright }}{{ . | markdownify }}{{ else }}© {{ now.Year }} {{ site.Title }}{{ end }}</p>
+  <p class="foot-built">{{ i18n "ui.built_with" }}</p>
+</footer>

@@ -1,0 +1,29 @@
+{{- $type := .Type | default "text" -}}
+
+{{- if eq $type "details" -}}
+  <details class="fold">
+    <summary><span class="icon icon-right-arrow fold-caret" aria-hidden="true"></span>{{ .Attributes.title | default (i18n "ui.show_details") }}</summary>
+    <div class="fold-body">{{ .Inner | markdownify }}</div>
+  </details>
+
+{{- else if eq $type "mermaid" -}}
+  <div class="mermaid-wrap"><pre class="mermaid">{{- .Inner -}}</pre></div>
+
+{{- else -}}
+  {{- $title := .Attributes.title -}}
+  {{- $label := $type -}}
+  {{- with site.Params.codeLabels -}}
+    {{- with index . $type }}{{ $label = . }}{{ end -}}
+  {{- end -}}
+  <div class="code" data-lang="{{ $type }}">
+    <div class="code-bar">
+      <span class="code-lang">{{ $label }}</span>
+      {{ with $title }}<span class="code-title">{{ . }}</span>{{ end }}
+      <button type="button" class="code-copy" data-copy aria-label="{{ i18n "ui.copy" }}">
+        <span class="icon icon-copy" aria-hidden="true"></span>
+        <span class="code-copy-label">{{ i18n "ui.copy" }}</span>
+      </button>
+    </div>
+    {{ transform.Highlight .Inner $type .Options }}
+  </div>
+{{- end -}}

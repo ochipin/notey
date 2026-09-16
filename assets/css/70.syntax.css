@@ -1,0 +1,43 @@
+/* Chroma classes — noClasses: false / style: none 前提 */
+.highlight pre.chroma { color: var(--ink); }
+.chroma .lnt, .chroma .ln { color: var(--ink-muted); opacity: 0.55; }
+.chroma .hl { background: var(--accent-wash); display: block; }
+.chroma .lntd { vertical-align: top; padding: 0; border: 0; }
+.chroma .lntable { border: 0; border-spacing: 0; width: auto; display: block; }
+
+:root[data-theme="light"] {
+  --c-key: oklch(0.48 0.16 300);
+  --c-str: oklch(0.47 0.11 150);
+  --c-num: oklch(0.52 0.14 35);
+  --c-com: oklch(0.6 0.02 75);
+  --c-fn: oklch(0.47 0.13 250);
+  --c-typ: oklch(0.47 0.1 205);
+  --c-var: oklch(0.42 0.05 75);
+  --c-op: oklch(0.5 0.03 75);
+}
+:root[data-theme="dark"] {
+  --c-key: oklch(0.8 0.12 305);
+  --c-str: oklch(0.82 0.11 150);
+  --c-num: oklch(0.83 0.11 45);
+  --c-com: oklch(0.62 0.015 75);
+  --c-fn: oklch(0.82 0.1 250);
+  --c-typ: oklch(0.83 0.09 205);
+  --c-var: oklch(0.9 0.01 75);
+  --c-op: oklch(0.78 0.02 75);
+}
+
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr { color: var(--c-key); font-weight: 500; }
+.chroma .kt { color: var(--c-typ); }
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .s1, .chroma .ss { color: var(--c-str); }
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: var(--c-num); }
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs, .chroma .cp, .chroma .cpf { color: var(--c-com); font-style: italic; }
+.chroma .n, .chroma .na, .chroma .nb, .chroma .nx, .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi { color: var(--c-var); }
+.chroma .nf, .chroma .fm { color: var(--c-fn); }
+.chroma .nc, .chroma .nn, .chroma .ne, .chroma .nt { color: var(--c-typ); }
+.chroma .nd, .chroma .ni, .chroma .nl, .chroma .py { color: var(--c-var); }
+.chroma .o, .chroma .ow, .chroma .p { color: var(--c-op); }
+.chroma .gd { color: var(--danger); }
+.chroma .gi { color: var(--ok); }
+.chroma .ge { font-style: italic; }
+.chroma .gs { font-weight: 600; }
+.chroma .err { color: var(--danger); }

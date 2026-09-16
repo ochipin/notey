@@ -1,0 +1,12 @@
+{{- $toc := .TableOfContents -}}
+{{- if strings.Contains $toc "<a " }}
+<details class="toc-inline">
+  <summary>
+    <span>{{ i18n "ui.on_this_page" }}</span>
+    <span class="icon icon-drop-arrow" aria-hidden="true"></span>
+  </summary>
+  <div class="toc">
+    {{ replace $toc `id="TableOfContents"` `id="TableOfContentsInline"` | safeHTML }}
+  </div>
+</details>
+{{- end }}

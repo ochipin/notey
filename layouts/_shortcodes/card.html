@@ -1,0 +1,14 @@
+{{- $href := .Get "href" | default (.Get "link") -}}
+{{- $class := "card" -}}
+{{- if .Get "wide" }}{{ $class = printf "%s card--wide" $class }}{{ end -}}
+{{- if $href -}}
+<a class="{{ $class }} card--link" href="{{ $href | relURL }}">
+{{- else -}}
+<article class="{{ $class }}">
+{{- end }}
+  <span class="card-head">
+    <span class="icon icon-{{ .Get "icon" | default "tips" }}" aria-hidden="true"></span>
+    {{ with .Get "title" }}<span class="card-title">{{ . }}</span>{{ end }}
+  </span>
+  <div class="card-body">{{ .Inner }}</div>
+{{ if $href }}</a>{{ else }}</article>{{ end }}

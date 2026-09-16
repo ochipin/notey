@@ -1,23 +1,8 @@
 {{- $icon := "" -}}
-
-{{- /* 1. 現在ページ */ -}}
-{{- with .Params.icon -}}
-  {{- $icon = . -}}
-{{- end -}}
-
-{{- /* 2. Ancestors を近い順に探索 */ -}}
+{{- with .Params.icon -}}{{- $icon = . -}}{{- end -}}
 {{- if not $icon -}}
   {{- range .Ancestors -}}
-    {{- with .Params.icon -}}
-      {{- $icon = . -}}
-      {{- break -}}
-    {{- end -}}
+    {{- with .Params.icon -}}{{- $icon = . -}}{{- break -}}{{- end -}}
   {{- end -}}
 {{- end -}}
-
-{{- /* 3. 何もアイコンが設定されていない場合 */ -}}
-{{- if not $icon -}}
-  {{- $icon = "icon-circle" -}}
-{{- end -}}
-
-{{- return $icon -}}
+{{- return (or $icon "docs") -}}

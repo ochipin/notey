@@ -1,19 +1,12 @@
 {{ define "main" }}
-  <div class="error-page">
-    <div class="error-box" style="border-bottom: 1px solid #ECEEF2">
-      <div class="error-row">
-        <div class="error-code">
-          <h1>404</h1>
-          <p>{{i18n "error.404_description"}}</p>
-        </div>
-        <a id="back-button" class="back-button"><span class="icon icon-arrow-left"></span></a>
-      </div>
-      <p>{{i18n "error.404_contact"}}</p>
-    </div>
-    <footer>
-      <div class="l-padding right">
-        <p style="text-align: center;">Copyright {{ now.Year }} All rights reserved.</p>
-      </div>
-    </footer>
-  </div>
+  <article class="doc doc--center">
+    <p class="err-code">404</p>
+    <h1 class="doc-title">{{ i18n "error.404_title" }}</h1>
+    <p class="doc-lead">{{ i18n "error.404_description" }}</p>
+    <p class="doc-cta">
+      <a class="btn" href="{{ site.Home.RelPermalink }}">{{ i18n "ui.home" }}</a>
+      <button class="btn btn--ghost" data-search-open>{{ i18n "ui.search" }}</button>
+    </p>
+    {{ partial "footer.html" . }}
+  </article>
 {{ end }}

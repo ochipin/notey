@@ -1,0 +1,78 @@
+:root {
+  --font-sans: "Murecho", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --maxw: 1460px;
+  --sidebar-w: 272px;
+  --toc-w: 236px;
+  --hdr-h: 60px;
+  --prose-w: 768px;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --gutter: 2rem;
+
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.0625rem;
+  --step-2: 1.375rem;
+  --step-3: 1.75rem;
+  --step-4: 2.125rem;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:root[data-theme="light"] {
+  --bg: oklch(0.987 0.004 75);
+  --bg-sunken: oklch(0.963 0.006 75);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.975 0.005 75);
+  --border: oklch(0.905 0.007 75);
+  --border-strong: oklch(0.83 0.008 75);
+  --ink: oklch(0.265 0.012 75);
+  --ink-soft: oklch(0.45 0.012 75);
+  --ink-muted: oklch(0.575 0.012 75);
+  --accent: oklch(0.55 0.132 205);
+  --accent-hover: oklch(0.47 0.132 205);
+  --accent-ink: oklch(0.42 0.11 205);
+  --accent-wash: oklch(0.955 0.028 205);
+  --accent-line: oklch(0.87 0.055 205);
+  --on-accent: oklch(0.99 0.005 205);
+  --warn: oklch(0.6 0.13 70);
+  --warn-wash: oklch(0.96 0.035 70);
+  --danger: oklch(0.55 0.15 22);
+  --danger-wash: oklch(0.96 0.03 22);
+  --ok: oklch(0.55 0.11 155);
+  --ok-wash: oklch(0.955 0.03 155);
+  --shadow-sm: 0 1px 2px oklch(0.26 0.01 75 / 0.06), 0 1px 1px oklch(0.26 0.01 75 / 0.04);
+  --shadow-lg: 0 18px 50px oklch(0.26 0.01 75 / 0.14), 0 2px 8px oklch(0.26 0.01 75 / 0.06);
+  --code-bg: oklch(0.972 0.006 75);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: oklch(0.188 0.008 75);
+  --bg-sunken: oklch(0.163 0.008 75);
+  --surface: oklch(0.222 0.008 75);
+  --surface-2: oklch(0.25 0.008 75);
+  --border: oklch(0.315 0.008 75);
+  --border-strong: oklch(0.4 0.01 75);
+  --ink: oklch(0.935 0.006 75);
+  --ink-soft: oklch(0.8 0.008 75);
+  --ink-muted: oklch(0.7 0.01 75);
+  --accent: oklch(0.78 0.11 205);
+  --accent-hover: oklch(0.86 0.09 205);
+  --accent-ink: oklch(0.82 0.1 205);
+  --accent-wash: oklch(0.29 0.045 205);
+  --accent-line: oklch(0.42 0.07 205);
+  --on-accent: oklch(0.18 0.02 205);
+  --warn: oklch(0.82 0.11 75);
+  --warn-wash: oklch(0.28 0.04 70);
+  --danger: oklch(0.75 0.13 25);
+  --danger-wash: oklch(0.29 0.045 22);
+  --ok: oklch(0.78 0.1 155);
+  --ok-wash: oklch(0.27 0.04 155);
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.4);
+  --shadow-lg: 0 20px 60px oklch(0 0 0 / 0.55);
+  --code-bg: oklch(0.163 0.008 75);
+  color-scheme: dark;
+}

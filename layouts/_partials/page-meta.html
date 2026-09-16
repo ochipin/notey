@@ -1,0 +1,14 @@
+{{- $t := .Date }}
+{{- with .GitInfo }}{{ if not .AuthorDate.IsZero }}{{ $t = .AuthorDate }}{{ end }}{{ end }}
+<div class="page-meta">
+  {{ if not $t.IsZero }}
+    <span class="meta-item">
+      <span class="icon icon-date" aria-hidden="true"></span>
+      <time class="rel-time" datetime="{{ $t.Format "2006-01-02T15:04:05Z07:00" }}" title="{{ $t.Format "2006-01-02 15:04" }}">{{ $t.Format "2006-01-02" }}</time>
+    </span>
+  {{ end }}
+  {{ with .ReadingTime }}<span class="meta-item"><span class="icon icon-history" aria-hidden="true"></span>{{ i18n "ui.reading_time" (dict "min" .) }}</span>{{ end }}
+  {{ $edit := "" }}
+  {{ with site.Params.editURL }}{{ $edit = printf "%s%s" . ($.File.Path | default "") }}{{ end }}
+  {{ with $edit }}<a class="meta-item meta-link" href="{{ . }}" target="_blank" rel="noopener"><span class="icon icon-edit" aria-hidden="true"></span>{{ i18n "ui.edit_page" }}</a>{{ end }}
+</div>

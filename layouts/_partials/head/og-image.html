@@ -1,0 +1,36 @@
+{{- $url := "" -}}
+
+{{- with .Params.image -}}
+  {{- with $.Resources.GetMatch . -}}
+    {{- $url = .Permalink -}}
+  {{- else -}}
+    {{- $url = . | absURL -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $url -}}
+  {{- with .Resources.GetMatch "{cover,og,thumbnail}.{png,jpg,jpeg,webp}" -}}
+    {{- $url = .Permalink -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 自動生成: assets/og/base.png と assets/fonts/og.ttf が揃っているときだけ */ -}}
+{{- if not $url -}}
+  {{- $base := resources.Get "og/base.png" -}}
+  {{- $font := resources.Get (site.Params.og.font | default "fonts/og.ttf") -}}
+  {{- if and $base $font -}}
+    {{- $title := cond .IsHome site.Title .Title -}}
+    {{- $img := $base.Filter (images.Text $title (dict
+        "font" $font "size" 68 "x" 84 "y" 210 "color" (site.Params.og.color | default "#1b1a18")
+        "linespacing" 22 "lineheight" 1.25)) -}}
+    {{- $img = $img.Filter (images.Text (site.Params.og.label | default site.Title) (dict
+        "font" $font "size" 30 "x" 84 "y" 470 "color" (site.Params.og.accent | default "#1f6fa8"))) -}}
+    {{- $url = ($img | resources.Copy (printf "og/%s.png" (.RelPermalink | anchorize | default "home"))).Permalink -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $url -}}
+  {{- with site.Params.og.default -}}{{- $url = . | absURL -}}{{- end -}}
+{{- end -}}
+
+{{- return $url -}}

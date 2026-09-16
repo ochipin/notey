@@ -1,0 +1,19 @@
+{{- $desc := "" -}}
+{{- with .Description }}{{ $desc = . }}{{ else }}{{ with .Summary }}{{ $desc = . | plainify | truncate 160 }}{{ else }}{{ $desc = site.Params.description }}{{ end }}{{ end -}}
+<meta name="description" content="{{ $desc }}">
+{{ if or .Params.draft .Params.private }}<meta name="robots" content="noindex">{{ end }}
+<link rel="canonical" href="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ replace site.Language.Locale "-" "_" }}">
+{{- $og := partial "head/og-image.html" . -}}
+{{ with $og }}<meta property="og:image" content="{{ . }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ . }}">{{ end }}
+<meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $desc }}">

@@ -1,0 +1,59 @@
+{{- $dest := .Destination -}}
+{{- $url := urls.Parse $dest -}}
+
+{{- $caption := or .Title (and (ne .Text "") .Text) -}}
+{{- $cls := "fig" -}}
+{{- if in (slice "inline" "wide") $url.Fragment -}}
+  {{- $cls = printf "fig fig--%s" $url.Fragment -}}
+  {{- $dest = replaceRE "#.*$" "" $dest -}}
+{{- end -}}
+{{- /* 表示指定だけを取り除き、クエリーや SVG などのフラグメントは保持する。 */ -}}
+{{- $suffix := replaceRE "^[^?#]*" "" $dest -}}
+{{- $img := false -}}
+{{- if and $url.Path (not $url.IsAbs) (not $url.Host) -}}
+  {{- $img = .Page.Resources.GetMatch $url.Path -}}
+  {{- if not $img -}}{{- $img = resources.Get $url.Path -}}{{- end -}}
+  {{- if not $img -}}
+    {{- range .Page.AllTranslations -}}
+      {{- with .Resources.GetMatch $url.Path -}}{{- $img = . -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and $img (eq $img.MediaType.MainType "image") (not (in (slice "svg" "gif") $img.MediaType.SubType)) -}}
+  {{- $w := $img.Width -}}
+  {{- $orig := $img -}}
+  {{- /* 大きい画像は段幅に合わせて縮小し、WebP の srcset を用意する */ -}}
+  {{- $max := int (site.Params.images.maxWidth | default 1440) -}}
+  {{- $display := $img -}}
+  {{- if gt $w $max -}}{{- $display = $img.Resize (printf "%dx webp q82" $max) -}}{{- end -}}
+  {{- $set := slice -}}
+  {{- range (slice 480 768 1024 1440) -}}
+    {{- if le . $w -}}
+      {{- $v := $orig.Resize (printf "%dx webp q80" .) -}}
+      {{- $set = $set | append (printf "%s%s %dw" $v.RelPermalink $suffix .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if eq (len $set) 0 -}}{{- $set = $set | append (printf "%s%s %dw" $display.RelPermalink $suffix $display.Width) -}}{{- end -}}
+  <figure class="{{ $cls }}">
+    <button type="button" class="fig-zoom" data-lbx="{{ printf "%s%s" $orig.RelPermalink $suffix }}" data-lbx-cap="{{ $caption }}" aria-label="{{ i18n "ui.zoom_image" }}">
+      <img src="{{ printf "%s%s" $display.RelPermalink $suffix }}"
+           srcset="{{ delimit $set ", " }}"
+           sizes="(min-width: 1200px) 760px, (min-width: 900px) 62vw, 92vw"
+           width="{{ $display.Width }}" height="{{ $display.Height }}"
+           alt="{{ .Text }}" loading="lazy" decoding="async">
+      <span class="fig-hint"><span class="icon icon-search" aria-hidden="true"></span></span>
+    </button>
+    {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  </figure>
+{{- else -}}
+  {{- $src := $dest | safeURL -}}
+  {{- with $img }}{{ $src = printf "%s%s" .RelPermalink $suffix | safeURL }}{{ end -}}
+  <figure class="{{ $cls }}">
+    <button type="button" class="fig-zoom" data-lbx="{{ $src }}" data-lbx-cap="{{ $caption }}" aria-label="{{ i18n "ui.zoom_image" }}">
+      <img src="{{ $src }}" alt="{{ .Text }}" loading="lazy" decoding="async">
+      <span class="fig-hint"><span class="icon icon-search" aria-hidden="true"></span></span>
+    </button>
+    {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  </figure>
+{{- end -}}

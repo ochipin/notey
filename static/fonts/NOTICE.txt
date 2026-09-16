@@ -1,0 +1,37 @@
+Notey icon font — third-party attributions
+
+File: icomoon.woff
+Contents: 48 icons in U+E900 through U+E933, excluding U+E916, U+E917,
+U+E91D, and U+E91E.
+SHA-256: 0263466a6a5f3ecc50677e97d1e6028599faaf501ae5cb44e8bc6ec59d2e17d0
+
+This custom font was generated with IcoMoon from a mixture of icon sets.
+The theme author recalls using Material icons; original project files and
+upstream versions are unavailable. This record combines author recollections
+with close outline matches reviewed on 2026-09-16. Neither establishes the
+complete download history or a license for every glyph.
+
+Google — Material Icons / Material Symbols
+  https://github.com/google/material-design-icons
+  Apache License 2.0: LICENSES/Apache-2.0.txt
+  Rounded symbols matching the font: loyalty (U+E901), rocket_launch
+  (U+E905), star_shine (U+E929), save_as (U+E92B).
+
+Transformations: selected artwork was combined, assigned private-use
+codepoints, and exported as WOFF using IcoMoon. The original transformation
+history is unavailable. On 2026-09-16, FontTools 4.65.0 was used to subset
+the font, removing Proxmox (U+E916), Tux/Linux (U+E917), Docker (U+E91D),
+and Windows (U+E91E). The remaining 48 icons keep their original codepoints,
+outlines, and metrics. Simple Icons and IcoMoon Free notices and license
+texts were removed because all glyphs matched to those collections have
+been removed. IcoMoon remains the font generator, which does not establish
+an icon license: https://icomoon.io/faq
+
+Unmapped: git (U+E91F, a branching diagram) and other interface glyphs
+without an individual source mapping. No single license is asserted for the
+entire font. Trademark rights remain separate.
+
+The theme source contains the detailed reconstruction record in
+THIRD_PARTY_NOTICES.md. Notey's MIT license applies to its own code and
+does not replace third-party icon licenses. Keep this notice and the
+accompanying LICENSES directory with redistributed copies of the font.

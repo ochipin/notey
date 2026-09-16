@@ -1,23 +1,17 @@
-{{- $cssList := slice }}
-
-{{- range resources.Match "css/*.css"}}
-  {{- $css := . | resources.ExecuteAsTemplate (printf "%s" .Name) $ }}
-  {{- $cssList = $cssList | append $css }}
+{{- $list := slice }}
+{{- range sort (resources.Match "css/*.css") "Name" }}
+  {{- $resource := . }}
+  {{- /* Only the icon font URL needs template evaluation. Keep other CSS literal. */}}
+  {{- if eq (path.Base .Name) "80.icons.css" }}
+    {{- $resource = . | resources.ExecuteAsTemplate (path.Join "gen" .Name) $ }}
+  {{- end }}
+  {{- $list = $list | append $resource }}
 {{- end }}
-
-{{- $cssList = sort $cssList "Name" }}
-
 {{- if hugo.IsDevelopment }}
-  {{- range $cssList }}
-    <link rel="stylesheet" href="{{ .RelPermalink }}" />
+  {{- range $list }}<link rel="stylesheet" href="{{ .RelPermalink }}">
   {{- end }}
 {{- else }}
-  {{- with ($cssList | resources.Concat "css/bundle.css" | minify | fingerprint) }}
-    <link
-      rel="stylesheet"
-      href="{{ .RelPermalink }}"
-      integrity="{{ .Data.Integrity }}"
-      crossorigin="anonymous"
-    />
+  {{- with ($list | resources.Concat "css/notey.css" | minify | fingerprint) }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
   {{- end }}
 {{- end }}

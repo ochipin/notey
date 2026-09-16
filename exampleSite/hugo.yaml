@@ -1,0 +1,73 @@
+baseURL: "http://localhost:1313/"
+title: "Notey"
+enableGitInfo: true
+enableRobotsTXT: true
+
+defaultContentLanguage: ja
+defaultContentLanguageInSubdir: true
+
+languages:
+  ja:
+    label: 日本語
+    locale: ja-JP
+    weight: 1
+  en:
+    label: English
+    locale: en-US
+    weight: 2
+
+# テーマ: Hugo Modules でも themes/ 直置きでも動きます
+module:
+  imports:
+    - path: github.com/ochipin/notey
+# theme: notey   # themes/notey に置く場合はこちら
+
+markup:
+  highlight:
+    noClasses: false
+    style: none
+    codeFences: true
+    lineNumbersInTable: true
+    tabWidth: 2
+  goldmark:
+    parser:
+      autoHeadingID: true
+      autoHeadingIDType: github
+    renderer:
+      unsafe: true
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
+
+outputs:
+  home: ["HTML", "RSS"]
+  section: ["HTML", "RSS"]
+  page: ["HTML"]
+
+params:
+  description: "ドキュメント指向の軽量 Hugo テーマ"
+  tagline: "ため込む・整理する・取り出す。ドキュメントのための Hugo テーマ。"
+  logo: "/favicon.png"
+  favicon: "/favicon.png"
+  editURL: "https://github.com/ochipin/notey/edit/main/exampleSite/content/"
+  images:
+    maxWidth: 1440
+  fonts:
+    google: true
+  og:
+    default: "/og-default.png"
+    # assets/fonts/og.ttf を置くと、ページごとの OG 画像を自動生成します
+    font: "fonts/og.ttf"
+  versions:
+    - name: "v2"
+      url: "/"
+      current: true
+      label: "latest"
+    - name: "v1"
+      url: "https://v1.example.com/"
+
+menus:
+  main:
+    - name: GitHub
+      url: https://github.com/ochipin/notey
+      weight: 10

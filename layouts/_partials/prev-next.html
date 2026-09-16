@@ -1,0 +1,28 @@
+{{- $root := .FirstSection }}
+{{- with $root }}
+  {{- $all := partialCached "flatten-pages.html" . .RelPermalink }}
+  {{- $cur := $.RelPermalink }}
+  {{- $prev := false }}{{ $next := false }}
+  {{- range $i, $p := $all }}
+    {{- if eq $p.RelPermalink $cur }}
+      {{- with index $all (sub $i 1) }}{{ $prev = . }}{{ end }}
+      {{- with index $all (add $i 1) }}{{ $next = . }}{{ end }}
+    {{- end }}
+  {{- end }}
+  {{- if or $prev $next }}
+  <nav class="pager" aria-label="{{ i18n "ui.pager" }}">
+    {{ with $prev }}
+      <a class="pager-card" href="{{ .RelPermalink }}" rel="prev">
+        <span class="pager-dir"><span class="icon icon-arrow-left" aria-hidden="true"></span>{{ i18n "ui.prev" }}</span>
+        <span class="pager-title">{{ .LinkTitle }}</span>
+      </a>
+    {{ else }}<span></span>{{ end }}
+    {{ with $next }}
+      <a class="pager-card pager-card--next" href="{{ .RelPermalink }}" rel="next">
+        <span class="pager-dir">{{ i18n "ui.next" }}<span class="icon icon-arrow-right" aria-hidden="true"></span></span>
+        <span class="pager-title">{{ .LinkTitle }}</span>
+      </a>
+    {{ end }}
+  </nav>
+  {{- end }}
+{{- end }}

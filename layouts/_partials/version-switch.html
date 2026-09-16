@@ -1,0 +1,15 @@
+{{- with site.Params.versions }}
+{{- $cur := "" }}{{ range . }}{{ if .current }}{{ $cur = .name }}{{ end }}{{ end }}
+<div class="picker" data-picker>
+  <button class="picker-btn" aria-expanded="false" aria-label="{{ i18n "ui.version" }}">
+    <span class="icon icon-tag" aria-hidden="true"></span>
+    <span>{{ $cur | default (i18n "ui.version") }}</span>
+    <span class="icon icon-drop-arrow" aria-hidden="true"></span>
+  </button>
+  <ul class="picker-menu" hidden>
+    {{ range . }}
+      <li><a href="{{ .url }}"{{ if .current }} aria-current="true"{{ end }}>{{ .name }}{{ with .label }} <span class="picker-note">{{ . }}</span>{{ end }}</a></li>
+    {{ end }}
+  </ul>
+</div>
+{{- end }}

@@ -1,4 +1,15 @@
-{{- $js := resources.Match "js/*.js" -}}
-{{- range $js -}}
-  <script src="{{ .RelPermalink }}"></script>
-{{- end -}}
+{{- $language := .Language.Name }}
+{{- $list := slice }}
+{{- range resources.Match "js/*.js" }}
+  {{- $target := printf "gen/%s/%s" $language (strings.TrimPrefix "/" .Name) }}
+  {{- $list = $list | append (. | resources.ExecuteAsTemplate $target $) }}
+{{- end }}
+{{- $list = sort $list "Name" }}
+{{- if hugo.IsDevelopment }}
+  {{- range $list }}<script src="{{ .RelPermalink }}" defer></script>
+  {{- end }}
+{{- else }}
+  {{- with ($list | resources.Concat (printf "js/%s/notey.js" $language) | minify | fingerprint) }}
+  <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
+  {{- end }}
+{{- end }}

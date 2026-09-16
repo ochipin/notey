@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Murecho:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap">
+<style>
+@font-face { font-family: "icomoon"; src: url("static/fonts/icomoon.woff") format("woff"); font-display: block; }
+:root {
+  --bg: oklch(0.987 0.004 75);
+  --sunken: oklch(0.963 0.006 75);
+  --surface: oklch(1 0 0);
+  --surface2: oklch(0.975 0.005 75);
+  --border: oklch(0.905 0.007 75);
+  --border2: oklch(0.83 0.008 75);
+  --ink: oklch(0.265 0.012 75);
+  --ink-soft: oklch(0.45 0.012 75);
+  --ink-muted: oklch(0.575 0.012 75);
+  --accent: oklch(0.55 0.132 205);
+  --accent-ink: oklch(0.42 0.11 205);
+  --accent-wash: oklch(0.955 0.028 205);
+  --accent-line: oklch(0.87 0.055 205);
+  --on-accent: oklch(0.99 0.005 205);
+  --ok: oklch(0.55 0.11 155);
+  --ok-wash: oklch(0.955 0.03 155);
+  --warn: oklch(0.6 0.13 70);
+  --warn-wash: oklch(0.96 0.035 70);
+  --code-bg: oklch(0.972 0.006 75);
+  --shadow: 0 18px 50px oklch(0.26 0.01 75 / 0.14), 0 2px 8px oklch(0.26 0.01 75 / 0.06);
+  --c-key: oklch(0.48 0.16 300);
+  --c-str: oklch(0.47 0.11 150);
+  --c-com: oklch(0.6 0.02 75);
+  --c-fn: oklch(0.47 0.13 250);
+  color-scheme: light;
+}
+:root[data-nt="dark"] {
+  --bg: oklch(0.188 0.008 75);
+  --sunken: oklch(0.163 0.008 75);
+  --surface: oklch(0.222 0.008 75);
+  --surface2: oklch(0.25 0.008 75);
+  --border: oklch(0.315 0.008 75);
+  --border2: oklch(0.4 0.01 75);
+  --ink: oklch(0.935 0.006 75);
+  --ink-soft: oklch(0.8 0.008 75);
+  --ink-muted: oklch(0.7 0.01 75);
+  --accent: oklch(0.78 0.11 205);
+  --accent-ink: oklch(0.82 0.1 205);
+  --accent-wash: oklch(0.29 0.045 205);
+  --accent-line: oklch(0.42 0.07 205);
+  --on-accent: oklch(0.18 0.02 205);
+  --ok: oklch(0.78 0.1 155);
+  --ok-wash: oklch(0.27 0.04 155);
+  --warn: oklch(0.82 0.11 75);
+  --warn-wash: oklch(0.28 0.04 70);
+  --code-bg: oklch(0.163 0.008 75);
+  --shadow: 0 20px 60px oklch(0 0 0 / 0.55);
+  --c-key: oklch(0.8 0.12 305);
+  --c-str: oklch(0.82 0.11 150);
+  --c-com: oklch(0.62 0.015 75);
+  --c-fn: oklch(0.82 0.1 250);
+  color-scheme: dark;
+}
+body { margin: 0; background: var(--sunken); font-family: "Murecho", "Hiragino Sans", system-ui, sans-serif; color: var(--ink); }
+a { color: var(--accent-ink); text-decoration: none; }
+a:hover { color: var(--accent); text-decoration: underline; }
+</style>
+</helmet>
+
+<div style="display: grid; gap: 28px; padding: 28px; background: var(--sunken); min-height: 100vh; font-size: 15px; line-height: 1.8;">
+
+  <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; max-width: 1460px; margin: 0 auto; width: 100%;">
+    <span style="font-size: 13px; font-family: 'Source Code Pro', monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);">Notey v2 — Hugo docs theme</span>
+    <span style="flex: 1;"></span>
+    <button type="button" onClick="{{ toggleTheme }}" style="display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font: inherit; font-size: 13px; cursor: pointer;">
+      <span style="font-family: icomoon; font-size: 14px;">&#xe913;</span>ライト / ダーク
+    </button>
+    <button type="button" onClick="{{ openSearch }}" style="display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font: inherit; font-size: 13px; cursor: pointer;">
+      <span style="font-family: icomoon; font-size: 14px;">&#xe900;</span>検索ダイアログ
+    </button>
+  </div>
+
+  <!-- ============ トップページ ============ -->
+  <section style="max-width: 1460px; width: 100%; margin: 0 auto; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg);">
+    <header style="display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 20px; border-bottom: 1px solid var(--border); background: var(--bg);">
+      <a href="#" style="display: flex; align-items: center; gap: 9px; color: var(--ink);">
+        <img src="static/favicon.png" alt="" width="28" height="28" style="border-radius: 7px;" />
+        <span style="font-size: 17px; font-weight: 600; letter-spacing: -0.01em;">Notey</span>
+        <span style="font-family: 'Source Code Pro', monospace; font-size: 11px; padding: 1px 7px; border: 1px solid var(--accent-line); border-radius: 999px; color: var(--accent-ink); background: var(--accent-wash);">v2</span>
+      </a>
+      <div style="flex: 1;"></div>
+      <a href="#" style="padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13px; font-weight: 500;">ドキュメント</a>
+      <a href="#" style="padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13px; font-weight: 500;">GitHub</a>
+      <button type="button" onClick="{{ openSearch }}" style="display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;"><span style="font-family: icomoon; font-size: 15px;">&#xe900;</span></button>
+      <button type="button" onClick="{{ toggleTheme }}" style="display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;"><span style="font-family: icomoon; font-size: 15px;">&#xe913;</span></button>
+    </header>
+
+    <div style="padding: 0 24px 72px;">
+      <!-- hero -->
+      <div style="position: relative; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; gap: 40px; padding: 68px 0 56px;">
+        <div aria-hidden="true" style="position: absolute; inset: -32px -240px 0; overflow: hidden; pointer-events: none;">
+          <div style="position: absolute; inset: 0; background-image: linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px); background-size: 72px 72px; opacity: 0.5; mask-image: radial-gradient(120% 90% at 50% 20%, black 0%, transparent 72%); -webkit-mask-image: radial-gradient(120% 90% at 50% 20%, black 0%, transparent 72%);"></div>
+          <div style="position: absolute; left: 50%; top: -220px; transform: translateX(-30%); width: 700px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, var(--accent-wash), transparent 78%);"></div>
+        </div>
+
+        <div style="position: relative;">
+          <p style="display: inline-flex; align-items: center; gap: 6px; margin: 0 0 18px; padding: 4px 12px; border: 1px solid var(--accent-line); border-radius: 999px; background: color-mix(in oklab, var(--accent-wash) 70%, var(--surface)); color: var(--accent-ink); font-size: 13px; font-weight: 600;">
+            <span style="font-family: icomoon; font-size: 11px;">&#xe929;</span>Hugo theme v2
+          </p>
+          <h1 style="margin: 0; font-size: 56px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.18;">ドキュメントを、<span style="color: var(--accent-ink);">ため込む・整理する・取り出す</span></h1>
+          <p style="margin: 18px 0 0; font-size: 17px; color: var(--ink-soft); max-width: 40ch;">Hugo のためのドキュメント専用テーマ。Pagefind の全文検索、多言語、バージョン切替、ダークモードを最初から備えています。</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 11px; margin-top: 30px;">
+            <a href="#" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border: 1px solid transparent; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 600;">はじめる<span style="font-family: icomoon; font-size: 12px;">&#xe90c;</span></a>
+            <a href="#" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border: 1px solid var(--border); border-radius: 999px; background: transparent; color: var(--ink-soft); font-weight: 600;">GitHub</a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; width: fit-content; max-width: 100%; margin-top: 24px; padding: 7px 8px 7px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); box-shadow: 0 1px 2px oklch(0.26 0.01 75 / 0.06);">
+            <code style="font-family: 'Source Code Pro', monospace; font-size: 13px; color: var(--ink-soft); white-space: nowrap;"><span style="color: var(--accent);">$ </span>hugo mod get github.com/ochipin/notey</code>
+            <button type="button" onClick="{{ copy }}" style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border: 1px solid transparent; border-radius: 999px; background: transparent; color: var(--ink-muted); font: inherit; font-size: 12px; cursor: pointer;" style-hover="background: var(--surface2); border-color: var(--border); color: var(--ink);">
+              <span style="font-family: icomoon; font-size: 12px;">&#xe90f;</span>{{ copyLabel }}
+            </button>
+          </div>
+        </div>
+
+        <div style="position: relative; display: grid; place-items: center;">
+          <img src="static/favicon.png" alt="本を読むリスのキャラクター" style="width: min(100%, 380px); height: auto; filter: drop-shadow(0 22px 34px oklch(0.35 0.06 60 / 0.22));" />
+        </div>
+      </div>
+
+      <!-- specs -->
+      <ul style="position: relative; max-width: 1180px; margin: 0 auto; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--border); border-radius: 10px; background: var(--border); overflow: hidden;">
+        <li style="display: grid; gap: 2px; padding: 16px 20px; background: var(--surface);"><span style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">v0.146+</span><span style="font-size: 13px; color: var(--ink-muted);">Hugo（extended 不要）</span></li>
+        <li style="display: grid; gap: 2px; padding: 16px 20px; background: var(--surface);"><span style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">0</span><span style="font-size: 13px; color: var(--ink-muted);">npm 依存（ビルド不要）</span></li>
+        <li style="display: grid; gap: 2px; padding: 16px 20px; background: var(--surface);"><span style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">ja / en</span><span style="font-size: 13px; color: var(--ink-muted);">同梱の言語ファイル</span></li>
+        <li style="display: grid; gap: 2px; padding: 16px 20px; background: var(--surface);"><span style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">13</span><span style="font-size: 13px; color: var(--ink-muted);">ショートコード</span></li>
+      </ul>
+
+      <!-- features -->
+      <div style="max-width: 1180px; margin: 76px auto 0;">
+        <h2 style="margin: 0 0 24px; font-size: 30px; font-weight: 700; letter-spacing: -0.02em;">ドキュメントに必要なものだけ</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;">
+          <sc-for list="{{ features }}" as="ft" hint-placeholder-count="6">
+            <div style="display: grid; gap: 7px; align-content: start; padding: 22px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface);">
+              <span style="display: grid; place-items: center; width: 36px; height: 36px; margin-bottom: 4px; border-radius: 9px; background: var(--accent-wash); color: var(--accent); font-family: icomoon; font-size: 17px;">{{ ft.glyph }}</span>
+              <h3 style="margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em;">{{ ft.title }}</h3>
+              <p style="margin: 0; font-size: 13.5px; color: var(--ink-soft);">{{ ft.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- showcase -->
+      <div style="max-width: 1180px; margin: 76px auto 0; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 40px; align-items: center;">
+        <div>
+          <h2 style="margin: 0 0 10px; font-size: 30px; font-weight: 700; letter-spacing: -0.02em;">Markdown だけで、読みやすいページに</h2>
+          <p style="margin: 0; font-size: 17px; color: var(--ink-soft);">ショートコードと数字付きリストは、書いたまま整った見た目になります。</p>
+          <ul style="list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 9px;">
+            <li style="display: flex; align-items: flex-start; gap: 9px; color: var(--ink-soft);"><span style="font-family: icomoon; font-size: 14px; color: var(--ok); margin-top: 5px;">&#xe903;</span>数字付きリストは自動でステップ表示</li>
+            <li style="display: flex; align-items: flex-start; gap: 9px; color: var(--ink-soft);"><span style="font-family: icomoon; font-size: 14px; color: var(--ok); margin-top: 5px;">&#xe903;</span>コードブロックに言語ラベルとコピーボタン</li>
+            <li style="display: flex; align-items: flex-start; gap: 9px; color: var(--ink-soft);"><span style="font-family: icomoon; font-size: 14px; color: var(--ok); margin-top: 5px;">&#xe903;</span>見出しから右側の目次を自動生成（h2 / h3 の階層）</li>
+          </ul>
+          <a href="#" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 22px; font-weight: 600;">詳しく見る<span style="font-family: icomoon; font-size: 11px;">&#xe90c;</span></a>
+        </div>
+        <div style="border: 1px solid var(--border); border-radius: 10px; background: var(--code-bg); overflow: hidden;">
+          <pre style="margin: 0; padding: 22px; overflow-x: auto; white-space: pre-wrap; font-family: 'Source Code Pro', monospace; font-size: 13px; line-height: 1.8; color: var(--ink-soft);">{{ showcaseCode }}</pre>
+        </div>
+      </div>
+
+      <!-- cta -->
+      <div style="max-width: 1180px; margin: 76px auto 0; padding: 48px 32px; text-align: center; border: 1px solid var(--accent-line); border-radius: 16px; background: color-mix(in oklab, var(--accent-wash) 60%, var(--surface));">
+        <h2 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em;">5 分でドキュメントサイトを公開する</h2>
+        <p style="margin: 10px auto 0; color: var(--ink-soft); max-width: 46ch;">Hugo Modules でも themes/ 直置きでも動きます。</p>
+        <div style="display: flex; gap: 11px; justify-content: center; margin-top: 26px; flex-wrap: wrap;">
+          <a href="#" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 600;">導入手順を読む</a>
+          <a href="#" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-soft); font-weight: 600;">ショートコード一覧</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ デスクトップ ============ -->
+  <section style="max-width: 1460px; width: 100%; margin: 0 auto; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg); box-shadow: 0 1px 2px oklch(0.26 0.01 75 / 0.05);">
+
+    <!-- header -->
+    <header style="position: relative; z-index: 3; display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 20px; border-bottom: 1px solid var(--border); background: var(--bg);">
+      <a href="#" style="display: flex; align-items: center; gap: 9px; color: var(--ink);">
+        <span style="display: grid; place-items: center; width: 28px; height: 28px; border-radius: 7px; background: var(--accent); color: var(--on-accent); font-family: icomoon; font-size: 15px;">&#xe92a;</span>
+        <span style="font-size: 17px; font-weight: 600; letter-spacing: -0.01em;">Notey</span>
+        <span style="font-family: 'Source Code Pro', monospace; font-size: 11px; padding: 1px 7px; border: 1px solid var(--accent-line); border-radius: 999px; color: var(--accent-ink); background: var(--accent-wash);">v2</span>
+      </a>
+      <div style="flex: 1;"></div>
+      <button type="button" onClick="{{ openSearch }}" style="display: flex; align-items: center; gap: 8px; width: 260px; height: 34px; padding: 0 8px 0 11px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-muted); font: inherit; font-size: 13px; text-align: left; cursor: pointer;">
+        <span style="font-family: icomoon; font-size: 13px;">&#xe900;</span>
+        <span style="flex: 1;">ドキュメントを検索</span>
+        <span style="font-family: 'Source Code Pro', monospace; font-size: 11px; padding: 2px 6px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; background: var(--surface2);">Ctrl K</span>
+      </button>
+      <a href="#" style="padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13px; font-weight: 500;">GitHub</a>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <button type="button" style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 9px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font: inherit; font-size: 13px; cursor: pointer;">
+          <span style="font-family: icomoon; font-size: 12px;">&#xe901;</span>v2
+          <span style="font-family: icomoon; font-size: 8px;">&#xe915;</span>
+        </button>
+        <button type="button" style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 9px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font: inherit; font-size: 13px; cursor: pointer;">
+          <span style="font-family: icomoon; font-size: 12px;">&#xe911;</span>日本語
+          <span style="font-family: icomoon; font-size: 8px;">&#xe915;</span>
+        </button>
+        <button type="button" onClick="{{ toggleTheme }}" style="display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;" style-hover="background: var(--surface2); border-color: var(--border); color: var(--ink);">
+          <span style="font-family: icomoon; font-size: 15px;">&#xe913;</span>
+        </button>
+      </div>
+    </header>
+
+    <div style="display: grid; grid-template-columns: 272px minmax(0, 1fr) 236px; align-items: start;">
+
+      <!-- sidebar -->
+      <aside style="border-right: 1px solid var(--border); padding: 24px 16px 48px 20px; display: grid; gap: 20px; align-content: start;">
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; gap: 2px;">
+          <li><a href="#" style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; background: var(--accent-wash); color: var(--accent-ink); font-weight: 500;"><span style="font-family: icomoon; font-size: 15px; color: var(--accent);">&#xe922;</span>ガイド</a></li>
+          <li><a href="#" style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; color: var(--ink-soft); font-weight: 500;" style-hover="background: var(--surface2); color: var(--ink); text-decoration: none;"><span style="font-family: icomoon; font-size: 15px; color: var(--ink-muted);">&#xe90e;</span>リファレンス</a></li>
+          <li><a href="#" style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; color: var(--ink-soft); font-weight: 500;" style-hover="background: var(--surface2); color: var(--ink); text-decoration: none;"><span style="font-family: icomoon; font-size: 15px; color: var(--ink-muted);">&#xe930;</span>設定</a></li>
+        </ul>
+
+        <ul style="list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid var(--border); display: grid; gap: 1px;">
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 8px; background: var(--accent-wash); color: var(--accent-ink); font-size: 13.5px; font-weight: 600; box-shadow: inset 2px 0 0 var(--accent);">はじめる</a></li>
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13.5px;" style-hover="background: var(--surface2); color: var(--ink); text-decoration: none;">検索（Pagefind）<span style="font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; background: var(--ok-wash); color: var(--ok);">new</span></a></li>
+          <li><a href="#" style="display: block; padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13.5px;" style-hover="background: var(--surface2); color: var(--ink); text-decoration: none;">多言語サイトにする</a></li>
+          <li>
+            <div style="display: flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 8px; color: var(--ink); font-size: 13.5px; font-weight: 600; cursor: pointer;">
+              <span style="font-family: icomoon; font-size: 9px; color: var(--ink-muted); transform: rotate(90deg);">&#xe909;</span>デプロイ
+            </div>
+            <ul style="list-style: none; margin: 2px 0 0 8px; padding-left: 11px; border-left: 1px solid var(--border); display: grid; gap: 1px;">
+              <li><a href="#" style="display: block; padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13.5px;" style-hover="background: var(--surface2); color: var(--ink); text-decoration: none;">GitHub Pages</a></li>
+              <li><a href="#" style="display: block; padding: 6px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13.5px;" style-hover="background: var(--surface2); color: var(--ink); text-decoration: none;">Cloudflare Pages</a></li>
+            </ul>
+          </li>
+          <li>
+            <div style="display: flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 8px; color: var(--ink); font-size: 13.5px; font-weight: 600; cursor: pointer;">
+              <span style="font-family: icomoon; font-size: 9px; color: var(--ink-muted);">&#xe909;</span>運用
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- main -->
+      <main style="min-width: 0; padding: 36px 32px 56px;">
+        <article style="max-width: 768px;">
+          <nav style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink-muted); margin-bottom: 12px;">
+            <a href="#" style="color: var(--ink-muted); font-family: icomoon; font-size: 13px;">&#xe928;</a>
+            <span style="color: var(--border2);">/</span>
+            <a href="#" style="color: var(--ink-muted);">ガイド</a>
+            <span style="color: var(--border2);">/</span>
+            <span style="color: var(--ink-soft);">はじめる</span>
+          </nav>
+
+          <h1 style="display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3;">
+            <span style="font-family: icomoon; font-size: 24px; color: var(--accent);">&#xe919;</span>はじめる
+          </h1>
+          <p style="margin: 0; font-size: 17px; color: var(--ink-soft); max-width: 62ch;">Notey を Hugo サイトに導入し、最初のページを公開するまでの手順。</p>
+
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin: 20px 0 0; padding-bottom: 24px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--ink-muted);">
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="font-family: icomoon; font-size: 13px;">&#xe91a;</span>2026-09-12 · 4日前</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="font-family: icomoon; font-size: 13px;">&#xe933;</span>約 4 分</span>
+            <a href="#" style="display: inline-flex; align-items: center; gap: 6px; color: var(--ink-muted);"><span style="font-family: icomoon; font-size: 13px;">&#xe910;</span>このページを編集</a>
+          </div>
+
+          <div style="display: grid; gap: 18px; margin-top: 32px;">
+            <p style="margin: 0;">Hugo v0.146.0 以上（extended 不要）と Git があれば動きます。検索インデックスの生成にだけ Node.js を使います。</p>
+
+            <h2 id="install" style="margin: 28px 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.015em;">インストール</h2>
+            <h3 id="install-modules" style="margin: 18px 0 0; font-size: 22px; font-weight: 600;">Hugo Modules</h3>
+            <p style="margin: 0;">Hugo Modules で導入する場合は、サイトをモジュールとして初期化してから <code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">hugo.yaml</code> に 1 行足すだけです。</p>
+
+            <div style="border: 1px solid var(--border); border-radius: 10px; background: var(--code-bg); overflow: hidden;">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 6px 13px; border-bottom: 1px solid var(--border); background: var(--surface2); font-size: 11.5px; color: var(--ink-muted);">
+                <span style="font-family: 'Source Code Pro', monospace; letter-spacing: 0.05em; text-transform: uppercase;">bash</span>
+                <span style="font-family: 'Source Code Pro', monospace; color: var(--ink-soft);">terminal</span>
+                <span style="flex: 1;"></span>
+                <button type="button" onClick="{{ copy }}" style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: var(--ink-muted); font: inherit; font-size: 11.5px; cursor: pointer;" style-hover="background: var(--surface); border-color: var(--border); color: var(--ink);">
+                  <span style="font-family: icomoon; font-size: 12px;">&#xe90f;</span>{{ copyLabel }}
+                </button>
+              </div>
+              <pre style="margin: 0; padding: 15px 16px; overflow-x: auto; font-family: 'Source Code Pro', monospace; font-size: 13px; line-height: 1.75;"><span style="color: var(--c-com);"># サイトを作ってモジュール化する</span>
+hugo new site mydocs <span style="color: var(--c-key);">&amp;&amp;</span> <span style="color: var(--c-fn);">cd</span> mydocs
+git init <span style="color: var(--c-key);">&amp;&amp;</span> hugo mod init <span style="color: var(--c-str);">github.com/you/mydocs</span>
+hugo mod tidy</pre>
+            </div>
+
+            <h3 id="install-themes" style="margin: 18px 0 0; font-size: 22px; font-weight: 600;">themes/ 直置き</h3>
+            <p style="margin: 0;">サブモジュールとして <code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">themes/notey</code> に置き、<code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">theme: notey</code> を指定しても同じように動きます。</p>
+
+            <aside style="padding: 14px 18px; border: 1px solid var(--accent-line); border-left-width: 3px; border-radius: 10px; background: var(--accent-wash);">
+              <p style="display: flex; align-items: center; gap: 7px; margin: 0; font-weight: 700; color: var(--accent-ink);"><span style="font-family: icomoon; font-size: 15px;">&#xe904;</span>ノート</p>
+              <p style="margin: 4px 0 0;"><code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">enableGitInfo: true</code> を設定すると、記事の更新日時を Git のコミットから自動で表示します。</p>
+            </aside>
+
+            <h2 id="tabs" style="margin: 28px 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.015em;">環境ごとの手順</h2>
+
+            <div style="border: 1px solid var(--border); border-radius: 10px; background: var(--surface); overflow: hidden;">
+              <div style="display: flex; gap: 2px; padding: 5px 5px 0; background: var(--surface2); border-bottom: 1px solid var(--border);">
+                <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+                </sc-for>
+              </div>
+              <div style="padding: 14px 18px 18px;">
+                <div style="border: 1px solid var(--border); border-radius: 8px; background: var(--code-bg); overflow: hidden;">
+                  <pre style="margin: 0; padding: 14px 16px; overflow-x: auto; font-family: 'Source Code Pro', monospace; font-size: 13px; line-height: 1.75;">{{ tabCode }}</pre>
+                </div>
+              </div>
+            </div>
+
+            <h2 id="images" style="margin: 28px 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.015em;">大きな画像の扱い</h2>
+            <p style="margin: 0;">本文の画像は段幅に合わせて自動で縮小し、WebP の <code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">srcset</code> を付けて配信します。横スクロールは発生せず、クリックで原寸をライトボックス表示します。</p>
+
+            <h3 id="images-width" style="margin: 18px 0 0; font-size: 22px; font-weight: 600;">幅の指定</h3>
+            <p style="margin: 0;"><code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">![](img.png#inline)</code> で小さめ、<code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">#wide</code> で段幅より広く表示します。</p>
+
+            <figure style="margin: 12px 0 0;">
+              <button type="button" onClick="{{ openLightbox }}" style="display: block; width: 100%; padding: 0; border: 1px solid var(--border); border-radius: 10px; background: var(--surface2); overflow: hidden; cursor: zoom-in; position: relative;">
+                <div style="height: 300px; display: grid; place-items: center; background: repeating-linear-gradient(135deg, var(--surface2) 0 12px, var(--surface) 12px 24px);">
+                  <span style="font-family: 'Source Code Pro', monospace; font-size: 12px; letter-spacing: 0.06em; color: var(--ink-muted); background: var(--bg); padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px;">screenshot 2400×1400</span>
+                </div>
+                <span style="position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--surface); color: var(--ink-soft); font-family: icomoon; font-size: 13px; box-shadow: 0 1px 3px oklch(0.26 0.01 75 / 0.2);">&#xe900;</span>
+              </button>
+              <figcaption style="margin-top: 9px; font-size: 13px; color: var(--ink-muted);">管理画面のスクリーンショット。クリックで拡大します。</figcaption>
+            </figure>
+
+            <h2 id="steps" style="margin: 28px 0 0; font-size: 28px; font-weight: 600; letter-spacing: -0.015em;">公開までの流れ</h2>
+            <ol style="list-style: none; margin: 0; padding: 0; display: grid; gap: 18px;">
+              <li style="position: relative; padding-left: 42px;">
+                <span style="position: absolute; left: 0; top: 1px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-wash); color: var(--accent-ink); border: 1px solid var(--accent-line); font-family: 'Source Code Pro', monospace; font-size: 12.5px; font-weight: 600;">1</span>
+                本文を書く。画像はページと同じディレクトリに置きます。
+              </li>
+              <li style="position: relative; padding-left: 42px;">
+                <span style="position: absolute; left: 0; top: 1px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-wash); color: var(--accent-ink); border: 1px solid var(--accent-line); font-family: 'Source Code Pro', monospace; font-size: 12.5px; font-weight: 600;">2</span>
+                ビルドして検索インデックスを生成する。
+                <div style="margin-top: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--code-bg); overflow: hidden;">
+                  <pre style="margin: 0; padding: 13px 16px; overflow-x: auto; font-family: 'Source Code Pro', monospace; font-size: 13px; line-height: 1.75;">hugo --minify
+npx -y pagefind --site public</pre>
+                </div>
+              </li>
+              <li style="position: relative; padding-left: 42px;">
+                <span style="position: absolute; left: 0; top: 1px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-wash); color: var(--accent-ink); border: 1px solid var(--accent-line); font-family: 'Source Code Pro', monospace; font-size: 12.5px; font-weight: 600;">3</span>
+                <code style="font-family: 'Source Code Pro', monospace; font-size: 0.86em; padding: 1px 5px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface2); color: var(--accent-ink);">public/</code> を配信する。
+              </li>
+            </ol>
+
+            <aside style="padding: 14px 18px; border: 1px solid color-mix(in oklab, var(--warn) 35%, transparent); border-left-width: 3px; border-radius: 10px; background: var(--warn-wash);">
+              <p style="display: flex; align-items: center; gap: 7px; margin: 0; font-weight: 700; color: var(--warn);"><span style="font-family: icomoon; font-size: 15px;">&#xe908;</span>注意</p>
+              <p style="margin: 4px 0 0;">Pagefind を実行しないと検索ダイアログにインデックス未生成のメッセージが出ます。他の機能は通常どおり動きます。</p>
+            </aside>
+
+            <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 6px;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13.5px;">
+                <thead>
+                  <tr>
+                    <th style="padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface2); text-align: left; font-weight: 600; white-space: nowrap;">キー</th>
+                    <th style="padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface2); text-align: left; font-weight: 600;">動作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">Ctrl / ⌘ + K</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink-soft);">検索を開く</td></tr>
+                  <tr><td style="padding: 10px 14px; border-bottom: 1px solid var(--border);">/</td><td style="padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink-soft);">検索を開く</td></tr>
+                  <tr><td style="padding: 10px 14px;">↑ ↓ / Enter</td><td style="padding: 10px 14px; color: var(--ink-soft);">候補を移動して開く</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <nav style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 56px;">
+            <a href="#" style="display: grid; gap: 3px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--ink);" style-hover="border-color: var(--accent-line); background: var(--accent-wash); text-decoration: none;">
+              <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-muted);"><span style="font-family: icomoon; font-size: 11px;">&#xe90b;</span>前のページ</span>
+              <span style="font-weight: 600; color: var(--accent-ink);">インストール</span>
+            </a>
+            <a href="#" style="display: grid; gap: 3px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--ink); text-align: right;" style-hover="border-color: var(--accent-line); background: var(--accent-wash); text-decoration: none;">
+              <span style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-size: 13px; color: var(--ink-muted);">次のページ<span style="font-family: icomoon; font-size: 11px;">&#xe90c;</span></span>
+              <span style="font-weight: 600; color: var(--accent-ink);">検索（Pagefind）</span>
+            </a>
+          </nav>
+
+          <footer style="display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; color: var(--ink-muted);">
+            <p style="margin: 0;">© 2026 Notey</p>
+            <p style="margin: 0;">Built with Hugo + Notey</p>
+          </footer>
+        </article>
+      </main>
+
+      <!-- toc -->
+      <aside style="position: sticky; top: 16px; padding: 36px 20px 48px 0; max-height: calc(100vh - 32px); overflow-y: auto;">
+        <p style="margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-muted);">このページの内容</p>
+        <nav>
+          <ul style="list-style: none; margin: 0; padding: 0;">
+            <li>
+              <a href="#install" style="display: block; padding: 4px 10px; border-left: 2px solid var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 600;">インストール</a>
+              <ul style="list-style: none; margin: 0 0 0 11px; padding: 0;">
+                <li><a href="#install-modules" style="display: block; padding: 3px 10px; border-left: 2px solid var(--border); color: var(--ink-muted); font-size: 12.5px;" style-hover="color: var(--ink); text-decoration: none;">Hugo Modules</a></li>
+                <li><a href="#install-themes" style="display: block; padding: 3px 10px; border-left: 2px solid var(--border); color: var(--ink-muted); font-size: 12.5px;" style-hover="color: var(--ink); text-decoration: none;">themes/ 直置き</a></li>
+              </ul>
+            </li>
+            <li><a href="#tabs" style="display: block; padding: 4px 10px; border-left: 2px solid var(--border); color: var(--ink-muted); font-size: 13px;" style-hover="color: var(--ink); text-decoration: none;">環境ごとの手順</a></li>
+            <li>
+              <a href="#images" style="display: block; padding: 4px 10px; border-left: 2px solid var(--border); color: var(--ink-muted); font-size: 13px;" style-hover="color: var(--ink); text-decoration: none;">大きな画像の扱い</a>
+              <ul style="list-style: none; margin: 0 0 0 11px; padding: 0;">
+                <li><a href="#images-width" style="display: block; padding: 3px 10px; border-left: 2px solid var(--border); color: var(--ink-muted); font-size: 12.5px;" style-hover="color: var(--ink); text-decoration: none;">幅の指定</a></li>
+              </ul>
+            </li>
+            <li><a href="#steps" style="display: block; padding: 4px 10px; border-left: 2px solid var(--border); color: var(--ink-muted); font-size: 13px;" style-hover="color: var(--ink); text-decoration: none;">公開までの流れ</a></li>
+          </ul>
+        </nav>
+        <a href="#" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 13px; color: var(--ink-muted);"><span style="font-family: icomoon; font-size: 11px;">&#xe932;</span>先頭に戻る</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ モバイル ============ -->
+  <section style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; max-width: 1460px; width: 100%; margin: 0 auto;">
+    <div style="display: grid; gap: 10px;">
+      <span style="font-size: 12px; font-family: 'Source Code Pro', monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);">mobile — top page</span>
+      <div style="position: relative; width: 390px; height: 720px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg);">
+        <div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.5; mask-image: radial-gradient(120% 80% at 50% 10%, black 0%, transparent 70%); -webkit-mask-image: radial-gradient(120% 80% at 50% 10%, black 0%, transparent 70%);"></div>
+        <header style="position: relative; display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 12px; border-bottom: 1px solid var(--border);">
+          <img src="static/favicon.png" alt="" width="26" height="26" style="border-radius: 7px;" />
+          <span style="font-size: 16px; font-weight: 600;">Notey</span>
+          <span style="flex: 1;"></span>
+          <button type="button" onClick="{{ openSearch }}" style="display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;"><span style="font-family: icomoon; font-size: 15px;">&#xe900;</span></button>
+          <button type="button" onClick="{{ toggleTheme }}" style="display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;"><span style="font-family: icomoon; font-size: 15px;">&#xe913;</span></button>
+        </header>
+        <div style="position: relative; padding: 26px 18px; display: grid; gap: 14px; justify-items: start;">
+          <div style="justify-self: center;">
+            <img src="static/favicon.png" alt="本を読むリスのキャラクター" style="width: 216px; height: auto; filter: drop-shadow(0 16px 26px oklch(0.35 0.06 60 / 0.22));" />
+          </div>
+          <p style="display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 3px 11px; border: 1px solid var(--accent-line); border-radius: 999px; background: color-mix(in oklab, var(--accent-wash) 70%, var(--surface)); color: var(--accent-ink); font-size: 12px; font-weight: 600;">
+            <span style="font-family: icomoon; font-size: 10px;">&#xe929;</span>Hugo theme v2
+          </p>
+          <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.32;">ドキュメントを、<span style="color: var(--accent-ink);">ため込む・整理する・取り出す</span></h1>
+          <p style="margin: 0; font-size: 14.5px; color: var(--ink-soft);">Hugo のためのドキュメント専用テーマ。Pagefind の全文検索、多言語、バージョン切替、ダークモードを最初から備えています。</p>
+          <div style="display: flex; gap: 10px; width: 100%; margin-top: 4px;">
+            <a href="#" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 44px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 600;">はじめる<span style="font-family: icomoon; font-size: 12px;">&#xe90c;</span></a>
+            <a href="#" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; height: 44px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-soft); font-weight: 600;">GitHub</a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 6px 6px 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface);">
+            <code style="flex: 1; min-width: 0; font-family: 'Source Code Pro', monospace; font-size: 11px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><span style="color: var(--accent);">$ </span>hugo mod get github.com/ochipin/notey</code>
+            <span style="display: grid; place-items: center; width: 32px; height: 32px; border-radius: 999px; background: var(--surface2); color: var(--ink-muted); font-family: icomoon; font-size: 12px;">&#xe90f;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; gap: 10px;">
+      <span style="font-size: 12px; font-family: 'Source Code Pro', monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);">mobile — drawer open</span>
+      <div style="position: relative; width: 390px; height: 720px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg);">
+        <header style="display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 12px; border-bottom: 1px solid var(--border); background: var(--bg);">
+          <button type="button" style="display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink); cursor: pointer;"><span style="font-family: icomoon; font-size: 16px;">&#xe914;</span></button>
+          <span style="display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--accent); color: var(--on-accent); font-family: icomoon; font-size: 14px;">&#xe92a;</span>
+          <span style="font-size: 16px; font-weight: 600;">Notey</span>
+          <span style="flex: 1;"></span>
+          <button type="button" style="display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;"><span style="font-family: icomoon; font-size: 15px;">&#xe913;</span></button>
+        </header>
+        <div style="position: absolute; inset: 56px 0 0; background: oklch(0.2 0.01 75 / 0.45);"></div>
+        <div style="position: absolute; inset: 56px auto 0 0; width: 320px; background: var(--bg); box-shadow: var(--shadow); padding: 16px 14px; display: grid; gap: 16px; align-content: start; overflow: hidden;">
+          <button type="button" onClick="{{ openSearch }}" style="display: flex; align-items: center; gap: 8px; width: 100%; height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-muted); font: inherit; font-size: 14px; text-align: left; cursor: pointer;">
+            <span style="font-family: icomoon; font-size: 14px;">&#xe900;</span>ドキュメントを検索
+          </button>
+          <ul style="list-style: none; margin: 0; padding: 0; display: grid; gap: 2px;">
+            <li><a href="#" style="display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-radius: 8px; background: var(--accent-wash); color: var(--accent-ink); font-weight: 500;"><span style="font-family: icomoon; font-size: 15px; color: var(--accent);">&#xe922;</span>ガイド</a></li>
+            <li><a href="#" style="display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-radius: 8px; color: var(--ink-soft); font-weight: 500;"><span style="font-family: icomoon; font-size: 15px; color: var(--ink-muted);">&#xe90e;</span>リファレンス</a></li>
+          </ul>
+          <ul style="list-style: none; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--border); display: grid; gap: 2px;">
+            <li><a href="#" style="display: block; padding: 11px 10px; border-radius: 8px; background: var(--accent-wash); color: var(--accent-ink); font-size: 14px; font-weight: 600; box-shadow: inset 2px 0 0 var(--accent);">はじめる</a></li>
+            <li><a href="#" style="display: block; padding: 11px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 14px;">検索（Pagefind）</a></li>
+            <li><a href="#" style="display: block; padding: 11px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 14px;">多言語サイトにする</a></li>
+            <li><div style="display: flex; align-items: center; gap: 8px; padding: 11px 10px; color: var(--ink); font-size: 14px; font-weight: 600;"><span style="font-family: icomoon; font-size: 10px; color: var(--ink-muted);">&#xe909;</span>デプロイ</div></li>
+          </ul>
+          <div style="display: flex; gap: 8px; padding-top: 14px; border-top: 1px solid var(--border);">
+            <button type="button" style="display: flex; align-items: center; gap: 6px; height: 40px; padding: 0 11px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font: inherit; font-size: 13px;"><span style="font-family: icomoon; font-size: 12px;">&#xe901;</span>v2</button>
+            <button type="button" style="display: flex; align-items: center; gap: 6px; height: 40px; padding: 0 11px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font: inherit; font-size: 13px;"><span style="font-family: icomoon; font-size: 12px;">&#xe911;</span>日本語</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; gap: 10px;">
+      <span style="font-size: 12px; font-family: 'Source Code Pro', monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);">mobile — article</span>
+      <div style="width: 390px; height: 720px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg);">
+        <header style="display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 12px; border-bottom: 1px solid var(--border);">
+          <button type="button" style="display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink); cursor: pointer;"><span style="font-family: icomoon; font-size: 16px;">&#xe914;</span></button>
+          <span style="display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--accent); color: var(--on-accent); font-family: icomoon; font-size: 14px;">&#xe92a;</span>
+          <span style="font-size: 16px; font-weight: 600;">Notey</span>
+          <span style="flex: 1;"></span>
+          <button type="button" onClick="{{ openSearch }}" style="display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-soft); cursor: pointer;"><span style="font-family: icomoon; font-size: 15px;">&#xe900;</span></button>
+        </header>
+        <div style="padding: 20px 18px; display: grid; gap: 14px; align-content: start;">
+          <nav style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-muted);">
+            <span style="font-family: icomoon;">&#xe928;</span><span style="color: var(--border2);">/</span>ガイド<span style="color: var(--border2);">/</span><span style="color: var(--ink-soft);">はじめる</span>
+          </nav>
+          <h1 style="display: flex; align-items: center; gap: 9px; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.35;">
+            <span style="font-family: icomoon; font-size: 19px; color: var(--accent);">&#xe919;</span>はじめる
+          </h1>
+          <p style="margin: 0; font-size: 15px; color: var(--ink-soft);">Notey を Hugo サイトに導入し、最初のページを公開するまでの手順。</p>
+          <div style="display: flex; gap: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--ink-muted);">
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="font-family: icomoon; font-size: 12px;">&#xe91a;</span>4日前</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="font-family: icomoon; font-size: 12px;">&#xe933;</span>約 4 分</span>
+          </div>
+          <div style="border: 1px solid var(--border); border-radius: 10px; background: var(--code-bg); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 12px; border-bottom: 1px solid var(--border); background: var(--surface2); font-size: 11px; color: var(--ink-muted);">
+              <span style="font-family: 'Source Code Pro', monospace; text-transform: uppercase; letter-spacing: 0.05em;">bash</span>
+              <span style="flex: 1;"></span>
+              <span style="font-family: icomoon; font-size: 12px;">&#xe90f;</span>
+            </div>
+            <pre style="margin: 0; padding: 13px 14px; overflow-x: auto; font-family: 'Source Code Pro', monospace; font-size: 12.5px; line-height: 1.7;">hugo mod tidy
+hugo server</pre>
+          </div>
+          <figure style="margin: 0;">
+            <div style="height: 150px; border: 1px solid var(--border); border-radius: 10px; display: grid; place-items: center; background: repeating-linear-gradient(135deg, var(--surface2) 0 12px, var(--surface) 12px 24px);">
+              <span style="font-family: 'Source Code Pro', monospace; font-size: 11px; color: var(--ink-muted); background: var(--bg); padding: 5px 10px; border: 1px solid var(--border); border-radius: 999px;">screenshot 2400×1400</span>
+            </div>
+            <figcaption style="margin-top: 8px; font-size: 12px; color: var(--ink-muted);">幅に収まるので横スクロールしません。</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 検索ダイアログ ============ -->
+  <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSearch }}" style="position: fixed; inset: 0; z-index: 90; background: oklch(0.2 0.01 75 / 0.5); backdrop-filter: blur(3px); display: grid; align-items: start; justify-items: center; padding: 8vh 16px 16px;">
+      <div onClick="{{ stop }}" style="width: min(42rem, 92vw); display: flex; flex-direction: column; max-height: 70vh; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden;">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border);">
+          <span style="font-family: icomoon; font-size: 15px; color: var(--ink-muted);">&#xe900;</span>
+          <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="ドキュメントを検索" style="flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 17px; outline: none;" />
+          <span style="font-family: 'Source Code Pro', monospace; font-size: 11px; padding: 3px 7px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; background: var(--surface2); color: var(--ink-muted);">Esc</span>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 8px;">
+          <ol style="list-style: none; margin: 0; padding: 0; display: grid; gap: 2px;">
+            <sc-for list="{{ hits }}" as="h" hint-placeholder-count="3">
+              <li>
+                <a href="#" style="{{ h.style }}">
+                  <span style="display: block; font-size: 11px; color: var(--ink-muted);">{{ h.crumb }}</span>
+                  <span style="display: block; font-weight: 600; color: var(--accent-ink);">{{ h.title }}</span>
+                  <span style="display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.6;">{{ h.excerpt }}</span>
+                </a>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; padding: 8px 14px; border-top: 1px solid var(--border); background: var(--surface2); font-size: 11.5px; color: var(--ink-muted);">
+          <span>↑ ↓ 移動</span><span>Enter 開く</span>
+          <span style="margin-left: auto; font-family: 'Source Code Pro', monospace; letter-spacing: 0.03em;">Pagefind</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ ライトボックス ============ -->
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeLightbox }}" style="position: fixed; inset: 0; z-index: 95; background: oklch(0.15 0.01 75 / 0.88); display: grid; place-items: center; padding: 56px 24px 32px; cursor: zoom-out;">
+      <div style="display: grid; gap: 12px; max-width: 1100px; width: 100%;">
+        <div style="height: min(70vh, 620px); border-radius: 8px; display: grid; place-items: center; background: repeating-linear-gradient(135deg, oklch(0.88 0.006 75) 0 16px, oklch(0.95 0.006 75) 16px 32px);">
+          <span style="font-family: 'Source Code Pro', monospace; font-size: 13px; color: oklch(0.4 0.01 75);">screenshot 2400×1400 — 原寸表示</span>
+        </div>
+        <p style="margin: 0; text-align: center; font-size: 13px; color: oklch(0.9 0.01 75);">管理画面のスクリーンショット。クリックで閉じます。</p>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;表示&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;oklch(0.55 0.132 205)&quot;,&quot;oklch(0.52 0.15 250)&quot;,&quot;oklch(0.5 0.13 155)&quot;,&quot;oklch(0.55 0.15 25)&quot;],&quot;default&quot;:&quot;oklch(0.55 0.132 205)&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;表示&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: null,
+    tab: 0,
+    copied: false,
+    searchOpen: false,
+    lightboxOpen: false,
+    query: "pagefind"
+  };
+
+  applyTheme() {
+    const root = document.documentElement;
+    root.dataset.nt = this.state.theme ?? this.props.theme ?? "light";
+    if (this.props.accent) root.style.setProperty("--accent", this.props.accent);
+  }
+
+  componentDidMount() {
+    this.applyTheme();
+    this._key = (e) => {
+      const k = (e.key || "").toLowerCase();
+      if ((e.metaKey || e.ctrlKey) && k === "k") { e.preventDefault(); this.setState({ searchOpen: true }); }
+      if (k === "escape") this.setState({ searchOpen: false, lightboxOpen: false });
+    };
+    addEventListener("keydown", this._key);
+  }
+  componentDidUpdate() { this.applyTheme(); }
+  componentWillUnmount() { removeEventListener("keydown", this._key); }
+
+  renderVals() {
+    const tabs = ["macOS", "Linux", "Windows"].map((label, i) => ({
+      label,
+      onClick: () => this.setState({ tab: i }),
+      style: [
+        "padding: 9px 16px; border: 0; border-radius: 8px 8px 0 0; font: inherit; font-size: 13.5px; white-space: nowrap; cursor: pointer;",
+        i === this.state.tab
+          ? "background: var(--surface); color: var(--accent-ink); font-weight: 600; box-shadow: inset 0 -2px 0 var(--accent);"
+          : "background: transparent; color: var(--ink-muted); font-weight: 500;"
+      ].join(" ")
+    }));
+
+    const code = [
+      "brew install hugo\nhugo mod tidy",
+      "sudo dnf install hugo\nhugo mod tidy",
+      "winget install Hugo.Hugo.Extended\nhugo mod tidy"
+    ][this.state.tab];
+
+    const hitRows = [
+      { crumb: "ガイド", title: "検索（Pagefind）", excerpt: "Notey は検索 UI だけをテーマに持ち、インデックスは Pagefind が生成します。日本語も分割して検索できます。", on: true },
+      { crumb: "リファレンス", title: "ショートコード", excerpt: "ノート・タブ・カード・折り畳み。Pagefind の対象は data-pagefind-body の内側だけです。", on: false },
+      { crumb: "ガイド / デプロイ", title: "GitHub Actions", excerpt: "hugo の後に npx -y pagefind --site public を実行するステップを追加します。", on: false }
+    ];
+
+    const hits = hitRows.map((h) => ({
+      crumb: h.crumb,
+      title: h.title,
+      excerpt: h.excerpt,
+      style:
+        "display: block; padding: 10px 12px; border-radius: 8px; color: var(--ink); text-decoration: none;" +
+        (h.on ? " background: var(--accent-wash);" : "")
+    }));
+
+    const features = [
+      ["\ue900", "Pagefind 全文検索", "Ctrl / ⌘ + K で開く検索ダイアログ。日本語も分割して検索でき、インデックスはビルド後に 1 コマンドで生成します。"],
+      ["\ue924", "大きな画像もそのまま", "段幅に自動リサイズして WebP の srcset を付与。横スクロールは発生せず、クリックで原寸をライトボックス表示します。"],
+      ["\ue914", "モバイルは左ドロワー", "ヘッダ・サイドバー・目次をすべて再設計。狭い画面ではドロワーに集約し、リンクを選ぶと自動で閉じます。"],
+      ["\ue911", "多言語とバージョン", "/ja/ /en/ のサブディレクトリ構成と、ヘッダからのバージョン切替に対応します。"],
+      ["\ue913", "ライト / ダーク", "初回は OS 設定に追従し、以降は選択を記憶。コードハイライトと Mermaid の配色も同時に切り替わります。"],
+      ["\ue91b", "書き味はそのまま", "note / tips / warning / card / tab / details など、v1 のショートコードをそのまま使えます。"]
+    ].map(([glyph, title, text]) => ({ glyph, title, text }));
+
+    const showcaseCode = [
+      "## インストール",
+      "",
+      "1. モジュールを取得する",
+      "   ```bash",
+      "   hugo mod tidy",
+      "   ```",
+      "2. サーバを起動する",
+      "",
+      "{{< tips >}}",
+      "enableGitInfo: true で更新日時を Git から表示します。",
+      "{{< /tips >}}",
+      "",
+      "![スクリーンショット](screenshot.png)"
+    ].join("\n");
+
+    return {
+      showcaseCode,
+      features,
+      tabs,
+      tabCode: code,
+      copyLabel: this.state.copied ? "コピーしました" : "コピー",
+      copy: () => {
+        navigator.clipboard && navigator.clipboard.writeText("hugo new site mydocs");
+        this.setState({ copied: true });
+        setTimeout(() => this.setState({ copied: false }), 1600);
+      },
+      toggleTheme: () => {
+        const cur = this.state.theme ?? this.props.theme ?? "light";
+        this.setState({ theme: cur === "dark" ? "light" : "dark" });
+      },
+      searchOpen: this.state.searchOpen,
+      openSearch: () => this.setState({ searchOpen: true }),
+      closeSearch: () => this.setState({ searchOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      query: this.state.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      hits,
+      lightboxOpen: this.state.lightboxOpen,
+      openLightbox: () => this.setState({ lightboxOpen: true }),
+      closeLightbox: () => this.setState({ lightboxOpen: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

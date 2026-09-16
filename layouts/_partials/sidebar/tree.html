@@ -1,0 +1,24 @@
+<ul class="tree tree--d{{ .Depth }}">
+  {{- $cur := .Current }}
+  {{- range .Node.Pages.ByWeight }}
+    {{- if .IsSection }}
+      {{- $open := or (.IsAncestor $cur) (eq .RelPermalink $cur.RelPermalink) (.Params.open | default false) }}
+      <li class="tree-group">
+        <details{{ if $open }} open{{ end }}>
+          <summary>
+            <span class="icon icon-right-arrow tree-caret" aria-hidden="true"></span>
+            <span class="tree-name">{{ .Title }}</span>
+          </summary>
+          {{ partial "sidebar/tree.html" (dict "Node" . "Current" $cur "Depth" (add $.Depth 1)) }}
+        </details>
+      </li>
+    {{- else }}
+      <li>
+        <a class="tree-link" href="{{ .RelPermalink }}"{{ if eq .RelPermalink $cur.RelPermalink }} aria-current="page"{{ end }}>
+          <span>{{ .LinkTitle }}</span>
+          {{ with .Params.badge }}<span class="badge">{{ . }}</span>{{ end }}
+        </a>
+      </li>
+    {{- end }}
+  {{- end }}
+</ul>

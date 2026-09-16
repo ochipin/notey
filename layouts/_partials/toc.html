@@ -1,0 +1,10 @@
+{{- $toc := .TableOfContents -}}
+{{- if strings.Contains $toc "<a " }}
+<aside class="toc-col" aria-label="{{ i18n "ui.on_this_page" }}">
+  <div class="toc" id="toc">
+    <p class="toc-title">{{ i18n "ui.on_this_page" }}</p>
+    {{ $toc }}
+    <a class="toc-top" href="#main"><span class="icon icon-arrow-up" aria-hidden="true"></span>{{ i18n "ui.back_to_top" }}</a>
+  </div>
+</aside>
+{{- end }}

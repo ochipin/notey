@@ -1,6 +1,10 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ with site.Params.tagline }} | {{ . }}{{ end }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+{{ partial "head/theme-init.html" . }}
+{{ partial "head/meta.html" . }}
+{{ partialCached "head/fonts.html" . }}
 {{ partialCached "head/css.html" . }}
-{{ partialCached "head/js.html" . }}
+{{ with .OutputFormats.Get "rss" }}<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">{{ end }}
+{{ range .AllTranslations }}<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
+{{ end }}

@@ -1,280 +1,140 @@
-# Notey
-Noteyは、Hugo向けに設計された軽量なドキュメント指向テーマです。基本的な `CSS` / `JavaScript` のみで構成されており、複雑なビルド設定なしで、すぐにドキュメントサイトを構築できます。
+# Notey v2
 
-Tauri のドキュメントサイトで採用されている Starlight を参考に、コンテンツの可読性とナビゲーションの分かりやすさを重視したデザインを採用しています。
+ドキュメント専用サイトのための Hugo テーマ。Starlight 系のレイアウト（左サイドバー + 本文 + 右目次）を、素の CSS / JavaScript だけで構成しています。
+
+- **トップページ** — キャラクター入りのヒーロー、スペック帯、機能カード、Markdown ショーケース、CTA を front matter から組み立て
+- **Pagefind 全文検索** — Ctrl/⌘ + K、`/`、キーボード操作、日本語対応
+- **多言語（i18n）** — `/ja/` `/en/` のサブディレクトリ構成、言語切替
+- **バージョン切替** — `params.versions` からヘッダのドロップダウンを生成
+- **ライト / ダーク** — 初回は OS 設定、以降は localStorage、切替時に Mermaid も再描画
+- **モバイル** — 左からのドロワー、スクリム、リンク選択で自動クローズ
+- **画像** — 段幅に自動リサイズ + WebP srcset + 遅延読み込み + クリックで拡大ライトボックス
+- **コードブロック** — 言語ラベル、タイトル、コピーボタン、Chroma のライト/ダーク配色
+- **ショートコード** — note / tips / warning / danger / card / card-grid / tab / details / num / icon / steps / video / badge
+- **Mermaid** — 図のあるページだけ遅延読み込み
+- **OG 画像** — ページごとに自動生成（フォント同梱時）、または既定画像
+
+## 必要環境
+
+| ツール | バージョン |
+|:--|:--|
+| Hugo | v0.158.0 以上（extended 不要） |
+| Git | 更新日時の表示（`enableGitInfo`） |
+| Node.js | Pagefind の実行 |
+
+## 導入
+
+### Hugo Modules
+
+```bash
+hugo new site mydocs && cd mydocs
+git init && hugo mod init github.com/you/mydocs
+```
+
+```yaml
+module:
+  imports:
+    - path: github.com/ochipin/notey
+```
+
+```bash
+hugo mod tidy
+hugo server --bind 0.0.0.0
+```
+
+### themes/ 直置き
+
+```bash
+git submodule add https://github.com/ochipin/notey themes/notey
+```
+
+```yaml
+theme: notey
+```
+
+設定の実例は `exampleSite/hugo.yaml` を参照してください。
+
+## ビルドと検索インデックス
+
+```bash
+hugo --minify
+npx -y pagefind --site public
+```
+
+Pagefind を実行しないと検索ダイアログにインデックス未生成のメッセージが表示されます（他の機能は動作します）。
+
+## コンテンツ構成
+
+```
+content/
+  _index.md                 # トップ（ドキュメント直行レイアウト）
+  guides/
+    _index.md               # セクション（title / icon / weight / description）
+    getting-started.md
+    installation/
+      index.md              # ページバンドル
+      screenshot.png        # 画像はページと同じ場所に置く
+  reference/
+    _index.md
+```
+
+### Front Matter
+
+```yaml
+title: "ページタイトル"
+weight: 10            # サイドバー・前後ナビの並び順
+icon: "terminal"      # 見出しとサイドバーのアイコン（未指定なら親から継承）
+description: ""       # 一覧カード・OG・meta description
+badge: "new"          # サイドバーに付くラベル（任意）
+draft: true
+```
+
+## トップページ
+
+`content/_index.md` の front matter でランディングを構成します（`hero` / `specs` / `features` / `showcase` / `cta`）。本文に書いた Markdown は `showcase` と `cta` の間に挿入されます。実例は `exampleSite/content/_index.ja.md` を参照してください。
+
+```yaml
+hero:
+  eyebrow: "Hugo theme v2"
+  title: "ドキュメントを、<em>ため込む・整理する・取り出す</em>"   # <em> は accent 色
+  lead: "…"
+  image: "/favicon.png"        # キャラクター画像
+  install: "hugo mod get github.com/ochipin/notey"
+  buttons:
+    - { text: "はじめる", url: "/ja/guides/getting-started/", primary: true }
+features:
+  - { icon: "search", title: "…", text: "…", url: "/ja/guides/search/" }
+```
+
+front matter に `hero` を書かなければ、サイトタイトルと `params.tagline` から最小構成のヒーローを表示します。
+
+## 主な params
+
+| キー | 既定 | 説明 |
+|:--|:--|:--|
+| `params.tagline` | – | トップの説明文（hero.lead 未指定時に使用） |
+| `params.character` | `/favicon.png` | ヒーローのキャラクター画像 |
+| `params.logo` | `favicon` | ヘッダのロゴ画像 |
+| `params.editURL` | – | 「このページを編集」のベース URL |
+| `params.images.maxWidth` | `1440` | 本文画像のリサイズ上限 |
+| `params.versions` | – | `[{name, url, current, label}]` |
+| `params.og.default` | – | 既定の OG 画像 |
+| `params.og.font` | `fonts/og.ttf` | OG 自動生成に使う TTF（assets 配下） |
+| `params.fonts.google` | `true` | Google Fonts（Murecho / Source Code Pro）の読み込み |
+| `params.mermaid.url` | jsDelivr | Mermaid の ESM URL |
+
+## v1（旧 Notey）からの移行
+
+- ショートコード名は互換です（`info` `tips` `warning` `danger` `card` `card-grid` `tab` `num` `icon`）。`tab` の `active` 指定もそのまま使えます。
+- 検索は Fuse.js + `search.json` から Pagefind に置き換わりました。`outputs.home` の `JSON` と `outputFormats.JSON` の設定は削除できます。
+- `page.word.html`（Word 出力）と `outputs.page: [HTML, word]` は同梱していません。必要なら v1 の該当ファイルを `layouts/` に戻してください。
+- 見出し ID を使うため `autoHeadingID: false` は外してください。
+- アイコンフォント（icomoon）と名前は v1 のものを引き継いでいます。ただし `proxmox`・`tux`（`linux`）・`docker`・`windows` は配布対象から削除しました。
 
 ## ライセンス
 
-Notey本体は [MIT License](LICENSE) で公開しています。
+テーマ本体は [MIT](LICENSE) です。アイコンフォントは複数のアイコン集を混ぜたもので、個々の素材には元のライセンスが適用されます。[出典・ライセンスの記録](THIRD_PARTY_NOTICES.md) と [ライセンス原文](LICENSES/) を参照してください。
 
-同梱するFuse.js等の第三者コンポーネントには、それぞれのライセンスが適用されます。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と `LICENSES/` を参照してください。フォントについては出典と再配布条件を確認中であり、第三者製品への同梱前に通知内の注意事項を確認してください。
+形の照合から Google Material Symbols の出典候補とクレジットを記録しています。2026-09-16 に Proxmox・Tux/Linux・Docker・Windows をフォントから削除し、残る 48 アイコンのコードポイントは維持しました。一部のアイコンは取得元が未確認で、フォント全体のライセンスが確定したことを示すものではありません。
 
-## Notey導入準備
-
-### 必要なコマンドのインストール
-本テーマはHugo Modules前提に設計されているため、下記のツールをインストールし、PATHを通しておいてください。
-
- * [Go](https://go.dev/doc/install)
- * [Hugo](https://gohugo.io/installation/)
- * Git
-
-### Hugoサイトの作成
-Noteyを導入するためのHugoサイトを作成してください。
-
-```bash
-hugo new site "<site name>"
-```
-
-上記コマンドで作成したディレクトリ配下に移動して作業を行うようにしてください。
-
-```sh
-cd "<site name>"
-```
-
-
-### リポジトリの作成
-Noteyは記事の更新日時などはGitで管理しているため、初期リポジトリは作成しておいてください。
-
-```
-git init
-git add .
-git commit
-```
-
-## Notey本体の導入
-
-### Hugo Modulesを利用する準備
-Hugo Modulesの利用を前提として設計されているため、このサイトをモジュールとして初期化します。
-
-```bash
-### 名前は何でもいい
-hugo mod init "<your module name>"
-```
-
-### Hugoの設定ファイルを修正
-`hugo new site ...` で作成すると、デフォルトの設定ファイルである `hugo.toml` が作成されます。そちらの設定ファイルを修正することで、設定を変更できますが、今回はyaml形式でのサンプルを例として説明します。
-
-```yaml
-baseURL: http://localhost:1313/
-languageCode: en-US
-title: Notey
-
-# Gitを有効化. git init を済ませておくこと!
-enableGitInfo: true
-
-# コードハイライト設定
-markup:
-  highlight:
-    noClasses: false
-    style: none
-    codeFences: true
-  goldmark:
-    parser:
-      autoHeadingID: false
-
-# テーマ
-module:
-  imports:
-    # NoteyのURLをここに記載する
-    - path: github.com/ochipin/notey
-  # 必要であれば、 themes/ ディレクトリ配下にNoteyをインストールして利用する
-  #replacements:
-    #- github.com/ochipin/notey -> notey
-
-# publicファイル出力設定
-outputs:
-  home: ["HTML", "JSON"]
-  page: ["HTML", "word"]
-outputFormats:
-  # 検索用のJSONファイル出力設定
-  JSON:
-    mediaType: application/json
-    baseName: search
-    isPlainText: true
-  # Word
-  word:
-    mediaType: text/html
-    baseName: word
-    isHTML: true
-
-# デフォルト言語の設定
-defaultContentLanguage: ja
-defaultContentLanguageInSubdir: true
-# 多言語設定
-languages:
-  ja:
-    languageName: 日本語
-    languageCode: ja-JP
-    weight: 1
-  # 必要なら英語ページも設定可
-  #en:
-    #languageName: English
-    #languageCode: en-US
-    #weight: 2
-```
-
-### Hugo Modulesのインストール
-下記コマンドを実行すると、設定ファイルの `module` に記載したテーマをインストールします。
-
-```
-hugo mod tidy
-```
-
-### Hugoサーバの起動
-下記コマンドでサーバを起動後、 http://localhost:1313 で確認できます。
-
-```
-hugo server --cleanDestinationDir --bind 0.0.0.0
-```
-
-※ `--bind 0.0.0.0` は、他の端末やコンテナ環境からアクセスするために指定しています。
-
-## 記事を編集する
-記事の構成は以下の通りです。
-
-```bash
-content/
-  +-- _index.md ### HOME画面
-  +-- category1/
-  |     +-- _index.md ### カテゴリアイコンの設定等を行う
-  |     +-- page/     ### 記事の本文置き場
-  |     |     +-- index.md  ### 本文
-  |     |     `-- image.png ### 記事に貼る画像など
-  |     `-- nested/
-  |           `-- _index.md ### 階層構造
-  `-- category2/
-        `-- ...
-```
-
-### HOME画面の変更方法
-content/_index.md (多言語の場合は index.ja.md, index.en.md など) を編集することで、ホーム画面を編集できます。
-編集方法は、テーマ内のcontent/_index.mdを参考にしてください。
-
-### _index.mdの編集
-各ディレクトリ配下の_index.mdは、アイコンやタイトルだけを設定します。
-
-```yaml
-title: "Guides"
-icon: "book"
-```
-
-直接記事の内容を持たない設定ファイルとなっている点にご注意ください。
-
-### <page>.mdの編集
-Front Matterには以下を記載できます。
-
-```yaml
-title: ''    # 記事のタイトル
-weight: 0    # 並び順
-draft: true  # 記事執筆中か否か
-#slug: ""    # URLを変更する場合は、ここに記載する
-#date: ""    # Gitの日時を使用しない場合は、ここに記載する
-```
-
-`archetypes/default.md` は次のような構成にすることで `hugo new content/*.md` コマンドで自動的にFront Matterを設定してくれます。
-
-```
----
-title: '{{ replace .File.ContentBaseName "-" " " | title }}'
-weight: 0
-draft: true
-#slug: ""
-#date: "{{.Date}}"
----
-```
-
-## Shortcodes
-
-### 折り畳み
-
-~~~details {title="詳細を表示する"}
-折り畳み内容をここに記載する。。。
-~~~
-
-### タブ
-`{{<tab>}}` を使用することで記事内にタブ型の文書を記載できます。
-
-#### 記載例
-~~~html
-{{<tab title="Tab-a">}}
-```bash
-echo tab-a
-```
-{{</tab>}}
-
-
-{{<tab title="Tab-b" active="true">}}
-```bash
-echo tab-b
-```
-{{</tab>}}
-
-
-{{<tab title="Tab-c">}}
-```bash
-echo tab-c
-```
-{{</tab>}}
-~~~
-
-#### 表示例
-![](images/tabs.png)
-
-### ノート
-~~~html
-{{<info>}}
-メッセージ
-{{</info>}}
-~~~
-![](images/info.png)
-
-### Tips
-~~~html
-{{<tips>}}
-メッセージを記載
-{{</tips>}}
-~~~
-![](images/tips.png)
-
-### 警告メッセージ
-~~~html
-{{<warning>}}
-メッセージを記載
-{{</warning>}}
-~~~
-![](images/warning.png)
-
-
-### 危険
-~~~html
-{{<danger>}}
-メッセージを記載
-{{</danger>}}
-~~~
-![](images/danger.png)
-
-
-### 通常の数字付きリスト
-基本的に数字付きのリストはデフォルトでステップとして表示するようにデザインされています。
-
-![](images/step.png)
-
-ステップ用のデザインを解除したい場合は、次のように`{{num}}`で囲うことで解除できます。
-
-#### 記載例
-~~~html
-{{<num>}}
-1. step1
-   ```text
-   dnf update
-   ```
-2. step2
-   ```sh
-   shutdown -h now
-   ```
-3. step3
-{{</num>}}
-~~~
-
-#### 表示例
-![](images/numlist.png)
+`static/fonts/NOTICE.txt` と `static/fonts/LICENSES/` は Hugo の出力にもコピーされます。テーマや生成サイトを配布する際は、フォントと一緒に保持してください。

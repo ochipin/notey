@@ -1,31 +1,32 @@
-<div class="l-left">
-  <a class="top-link" href="{{ .Site.Home.RelPermalink }}">
-    <img class="favicon" src="/favicon.png" width="40px" height="40px" />
-    <h1>{{ site.Title }}</h1>
-  </a>
-</div>
-<div class="l-left full-width">
-  <button id="search-button" class="search-button">
-    <span class="icon icon-search"></span>
-    <span>Search</span>
+<div class="hdr-in">
+  {{ if and (ne .Kind "404") (not .IsHome) (ne .Kind "term") }}
+  <button id="menu-btn" class="icon-btn hdr-menu" aria-expanded="false" aria-controls="sidebar" aria-label="{{ i18n "ui.menu" }}">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
-  {{ if and (gt (len .Site.Languages) 1) .IsTranslated }}
-    <label class="translate-language">
-      <span class="icon icon-translate"></span>
-      <select id="select-language" class="select-language">
-        <option value="{{ .Permalink }}" selected>
-          {{ .Site.Language.LanguageName }}
-        </option>
-        {{ range .Translations }}
-          <option value="{{ .Permalink }}">
-            {{ .Language.LanguageName }}
-          </option>
-        {{ end }}
-      </select>
-      <span class="icon icon-drop-arrow"></span>
-    </label>
   {{ end }}
-</div>
-<div class="l-right menu">
-  <button id="menu-button" class="menu-button"><span class="icon-menu"></span></button>
+
+  <a class="brand" href="{{ site.Home.RelPermalink }}">
+    {{ with site.Params.logo | default site.Params.favicon }}<img class="brand-mark" src="{{ . | relURL }}" width="28" height="28" alt="">{{ end }}
+    <span class="brand-name">{{ site.Title }}</span>
+    {{ with site.Params.versions }}
+      {{ range . }}{{ if .current }}<span class="brand-ver">{{ .name }}</span>{{ end }}{{ end }}
+    {{ end }}
+  </a>
+
+  <div class="hdr-search">{{ partial "search-button.html" . }}</div>
+
+  <nav class="hdr-nav" aria-label="{{ i18n "ui.site_nav" }}">
+    {{ range site.Menus.main }}
+      <a class="hdr-link{{ if $.IsMenuCurrent .Menu . }} is-current{{ end }}" href="{{ .URL }}"{{ if strings.HasPrefix .URL "http" }} target="_blank" rel="noopener"{{ end }}>{{ or (T .Identifier) .Name }}</a>
+    {{ end }}
+  </nav>
+
+  <div class="hdr-tools">
+    {{ partial "version-switch.html" . }}
+    {{ partial "lang-switch.html" . }}
+    <button id="theme-btn" class="icon-btn" aria-label="{{ i18n "ui.toggle_theme" }}" title="{{ i18n "ui.toggle_theme" }}">
+      <span class="icon icon-brightness only-light" aria-hidden="true"></span>
+      <span class="icon icon-light only-dark" aria-hidden="true"></span>
+    </button>
+  </div>
 </div>

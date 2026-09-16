@@ -1,17 +1,29 @@
 {{ define "main" }}
-
-  {{/* 子ページを持つ Section は最初の子へ送る */}}
-  {{ if gt (len .Pages) 0 }}
-    {{ $target := index .Pages 0 }}
-    <!doctype html>
-    <meta http-equiv="refresh" content="0; url={{ $target.RelPermalink }}">
-    <link rel="canonical" href="{{ $target.RelPermalink }}">
-    <p>
-      Redirecting to
-      <a href="{{ $target.RelPermalink }}">{{ $target.Title }}</a>
-    </p>
-  {{ else }}
-    {{/* 子が無い Section は無効 */}}
-    {{ errorf "section %q has no pages" .Title }}
-  {{ end }}
+  <article class="doc">
+    {{ partial "breadcrumbs.html" . }}
+    {{- $icon := partial "resolve-icon.html" . }}
+    <h1 class="doc-title"><span class="icon icon-{{ $icon }} doc-title-icon" aria-hidden="true"></span>{{ .Title }}</h1>
+    {{ with .Params.lead | default .Description }}<p class="doc-lead">{{ . | markdownify }}</p>{{ end }}
+    {{ partial "toc-inline.html" . }}
+    <div class="prose" data-pagefind-body>
+      {{ .Content }}
+      {{ with .Pages.ByWeight }}
+        <div class="cards">
+          {{ range . }}
+            <a class="card card--link" href="{{ .RelPermalink }}">
+              <span class="card-head">
+                <span class="icon icon-{{ .Params.icon | default (cond .IsSection "book" "docs") }}" aria-hidden="true"></span>
+                <span class="card-title">{{ .LinkTitle }}</span>
+              </span>
+              {{ with .Description | default (.Summary | plainify | truncate 90) }}<span class="card-body">{{ . }}</span>{{ end }}
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+    {{ partial "prev-next.html" . }}
+    {{ partial "footer.html" . }}
+  </article>
 {{ end }}
+
+{{ define "aside" }}{{ partial "toc.html" . }}{{ end }}

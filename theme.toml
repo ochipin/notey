@@ -1,32 +1,18 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-US'
-title = 'Notey'
 name = 'Notey'
 license = 'MIT'
 licenselink = 'https://github.com/ochipin/notey/blob/main/LICENSE'
-description = 'A lightweight, documentation-oriented Hugo theme.'
+description = 'ドキュメント指向の軽量 Hugo テーマ。Pagefind 全文検索、多言語、バージョン切替、ダークモード対応。'
 homepage = 'https://github.com/ochipin/notey'
-tags = ['documentation', 'responsive', 'multilingual']
-features = ['documentation navigation', 'search', 'shortcodes']
-min_version = '0.146.0'
+demosite = 'https://github.com/ochipin/notey'
+tags = ['documentation', 'docs', 'responsive', 'multilingual', 'dark-mode', 'pagefind']
+features = ['documentation navigation', 'pagefind search', 'i18n', 'versioning', 'dark mode', 'shortcodes', 'mermaid']
+min_version = '0.158.0'
 
-[menus]
-  [[menus.main]]
-    name = 'Home'
-    pageRef = '/'
-    weight = 10
-
-  [[menus.main]]
-    name = 'Posts'
-    pageRef = '/posts'
-    weight = 20
-
-  [[menus.main]]
-    name = 'Tags'
-    pageRef = '/tags'
-    weight = 30
+[author]
+  name = 'ochipin'
+  homepage = 'https://github.com/ochipin'
 
 [module]
   [module.hugoVersion]
     extended = false
-    min = '0.146.0'
+    min = '0.158.0'

@@ -1,7 +1,11 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-  {{ end }}
+  <article class="doc">
+    <h1 class="doc-title"><span class="icon icon-tag doc-title-icon" aria-hidden="true"></span>{{ .Title }}</h1>
+    <div class="prose">
+      <ul class="terms">
+        {{ range .Pages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}
+      </ul>
+    </div>
+    {{ partial "footer.html" . }}
+  </article>
 {{ end }}

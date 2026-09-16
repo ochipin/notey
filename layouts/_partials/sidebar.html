@@ -1,19 +1,28 @@
-<ul class="sidebar-lists">
-  {{ range .Topic.Pages }}
-    {{ if .IsSection }}
-      {{ partial "sidebar/node.html" (dict
-        "Node" .
-        "Current" $.Page
-      ) }}
-    {{ else }}
-      <li>
-        <a
-          href="{{ .RelPermalink }}"
-          aria-current="{{ if eq .RelPermalink $.Page.RelPermalink }}page{{ else }}false{{ end }}"
-        >
-          {{ .Title }}
-        </a>
-      </li>
-    {{ end }}
+<div class="sidebar-in">
+  <div class="sidebar-mobile">
+    {{ partial "search-button.html" . }}
+  </div>
+
+  {{ with site.Sections }}
+    <ul class="topics" aria-label="{{ i18n "ui.sections" }}">
+      {{ $top := $.Page.FirstSection }}
+      {{ range .ByWeight }}
+        <li>
+          <a class="topic{{ if and $top (eq .RelPermalink $top.RelPermalink) }} is-current{{ end }}" href="{{ .RelPermalink }}">
+            <span class="icon icon-{{ .Params.icon | default "book" }}" aria-hidden="true"></span>
+            <span>{{ .Title }}</span>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
   {{ end }}
-</ul>
+
+  {{ with .Page.FirstSection }}
+    {{ partial "sidebar/tree.html" (dict "Node" . "Current" $.Page "Depth" 0) }}
+  {{ end }}
+
+  <div class="sidebar-mobile sidebar-foot">
+    {{ partial "version-switch.html" . }}
+    {{ partial "lang-switch.html" . }}
+  </div>
+</div>
