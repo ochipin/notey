@@ -1,8 +1,9 @@
 ---
 title: "画像の扱い"
 weight: 20
-icon: "overview"
 description: "自動リサイズ・WebP・ライトボックス"
+params:
+  icon: "overview"
 ---
 
 ## 標準の挙動

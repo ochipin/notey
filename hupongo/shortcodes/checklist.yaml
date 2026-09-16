@@ -1,0 +1,13 @@
+schema_version: 1
+usage: |
+  {{< checklist >}}
+  - Markdown で記事を書く
+  - プレビューで表示を確認する
+  - 変更を保存して公開する
+  {{< /checklist >}}
+snippet: |
+  {{< checklist >}}
+  - 1つ目の項目
+  - 2つ目の項目
+  - 3つ目の項目
+  {{< /checklist >}}

@@ -3,8 +3,6 @@
 
 @param {string} [title] 見出し。省略時はサイト言語の「危険」を表示します。
 */}}
-{{- $title := .Get "title" | default (i18n "ui.danger") -}}
-<aside class="note note--danger">
-  <p class="note-title"><span class="icon icon-danger" aria-hidden="true"></span>{{ $title }}</p>
-  <div class="note-body">{{ .InnerDeindent | markdownify }}</div>
-</aside>
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/danger.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

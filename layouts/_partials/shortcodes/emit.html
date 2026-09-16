@@ -1,0 +1,15 @@
+{{- /* Clean descendant boundaries even for wrappers that pass .Inner through.
+     Mark only nested output, so literal HTML in code is never mistaken for a
+     rendered child. These boundaries are removed before publishing. */ -}}
+{{- $html := printf "%s" .html -}}
+{{- range .shortcode.Store.Get "notey-child-html" | default dict -}}
+  {{- $html = replace $html .source .html -}}
+{{- end -}}
+{{- with .shortcode.Parent -}}
+  {{- $inline := in (slice "icon" "badge" "button") $.shortcode.Name -}}
+  {{- $id := crypto.SHA256 $html -}}
+  {{- $source := printf "<!--notey-child-start-%s-->%s<!--notey-child-end-%s-->" $id $html $id -}}
+  {{- .Store.SetInMap "notey-child-html" $id (dict "source" $source "html" $html "inline" $inline) -}}
+  {{- $html = $source -}}
+{{- end -}}
+{{- return ($html | safeHTML) -}}

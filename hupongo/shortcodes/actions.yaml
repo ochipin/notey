@@ -1,0 +1,11 @@
+schema_version: 1
+usage: |
+  {{< actions >}}
+  {{< button href="/" primary=true arrow=true >}}ドキュメントを読む{{< /button >}}
+  {{< button href="/" >}}表示例を見る{{< /button >}}
+  {{< /actions >}}
+snippet: |
+  {{< actions >}}
+  {{< button href="/" primary=true >}}はじめる{{< /button >}}
+  {{< button href="/" >}}詳しく見る{{< /button >}}
+  {{< /actions >}}

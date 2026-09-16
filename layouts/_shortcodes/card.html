@@ -1,23 +1,13 @@
 {{/*
-アイコン・見出し・本文を持つカードを表示します。複数並べる場合は card-grid で囲みます。本文は HTML として出力されるため、段落には p 要素を使います。
+アイコン・見出し・本文を持つカードを表示します。複数並べる場合は card-grid で囲みます。本文には Markdown または従来の HTML を書けます。カード全体をリンクにする場合、本文中にはリンクや操作ボタンを置かないでください。
 
 @param {string} [title] カードの見出し。
 @param {string} [icon=tips] Notey のアイコン名。例: tips、book、settings。
 @param {string} [href] カード全体のリンク先。省略するとリンクのないカードになります。
 @param {string} [link] href の別名。両方指定した場合は href を優先します。
-@param {bool} [wide] card-grid 内で全列幅にする場合だけ true を指定します。通常幅は省略してください（文字列の false も有効扱いになります）。
+@param {bool} [wide=false] card-grid 内で全列幅にする場合は true を指定します。文字列の "true" / "false" も利用できます。
+@param {string} [variant=default] default は通常のカード、feature はトップページ向けのカードです。省略時は親 card-grid の variant を引き継ぎます。
 */}}
-{{- $href := .Get "href" | default (.Get "link") -}}
-{{- $class := "card" -}}
-{{- if .Get "wide" }}{{ $class = printf "%s card--wide" $class }}{{ end -}}
-{{- if $href -}}
-<a class="{{ $class }} card--link" href="{{ $href | relURL }}">
-{{- else -}}
-<article class="{{ $class }}">
-{{- end }}
-  <span class="card-head">
-    <span class="icon icon-{{ .Get "icon" | default "tips" }}" aria-hidden="true"></span>
-    {{ with .Get "title" }}<span class="card-title">{{ . }}</span>{{ end }}
-  </span>
-  <div class="card-body">{{ .Inner }}</div>
-{{ if $href }}</a>{{ else }}</article>{{ end }}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/card.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

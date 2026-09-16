@@ -1,0 +1,5 @@
+schema_version: 1
+usage: |
+  {{< command >}}hugo server{{< /command >}}
+snippet: |
+  {{< command >}}hugo server{{< /command >}}

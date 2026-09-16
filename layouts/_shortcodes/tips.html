@@ -3,8 +3,6 @@
 
 @param {string} [title] 見出し。省略時はサイト言語の「ヒント」を表示します。
 */}}
-{{- $title := .Get "title" | default (i18n "ui.tip") -}}
-<aside class="note note--tips">
-  <p class="note-title"><span class="icon icon-tips" aria-hidden="true"></span>{{ $title }}</p>
-  <div class="note-body">{{ .InnerDeindent | markdownify }}</div>
-</aside>
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/tips.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

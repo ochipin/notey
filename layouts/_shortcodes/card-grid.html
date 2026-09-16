@@ -1,4 +1,8 @@
 {{/*
-複数の card を画面幅に応じて並べるグリッドです。子要素に card を置き、wide=true のカードは全列幅で表示します。引数はありません。
+複数の card を画面幅に応じて並べるグリッドです。子要素に card を置き、wide=true のカードは全列幅で表示します。
+
+@param {string} [variant=default] default は通常のカード一覧、feature はトップページ向けのカード一覧です。子 card の見た目にも引き継がれます。
 */}}
-<div class="cards">{{ .Inner }}</div>
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/card-grid.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

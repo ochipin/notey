@@ -1,0 +1,23 @@
+schema_version: 1
+usage: |
+  {{< columns >}}
+  {{< column >}}
+  ### Markdown で1列を書く
+
+  **見出しやリスト**のほか、画像・表・コードも置けます。
+
+  - 本文を編集する
+  - 表示を確認する
+  {{< /column >}}
+  {{< column >}}
+  ### もう1つの列
+
+  狭い画面では、列が縦に並びます。
+  {{< /column >}}
+  {{< /columns >}}
+snippet: |
+  {{< column >}}
+  ### 列の見出し
+
+  ここに Markdown の本文を書きます。
+  {{< /column >}}

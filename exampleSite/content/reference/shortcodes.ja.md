@@ -1,8 +1,9 @@
 ---
 title: "ショートコード"
 weight: 10
-icon: "code"
 description: "ノート・タブ・カード・折り畳み"
+params:
+  icon: "code"
 ---
 
 ## ノート

@@ -5,8 +5,5 @@
 @param {string} [poster] 再生前に表示する画像の URL。
 @param {string} [caption] 動画の下に表示する説明。Markdown の強調などを使えます。
 */}}
-{{- $src := .Get "src" | default (.Get 0) -}}
-<figure class="fig fig--video">
-  <video src="{{ $src | relURL }}" controls preload="metadata"{{ with .Get "poster" }} poster="{{ . | relURL }}"{{ end }} playsinline></video>
-  {{ with .Get "caption" }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
-</figure>
+{{- $html := partial "shortcodes/blocks/video.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

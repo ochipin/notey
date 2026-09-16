@@ -1,0 +1,95 @@
+{{- /* Protect child output before deindenting: rendered HTML has its own
+     indentation, which must not change the author's Markdown indentation.
+     Text placeholders work with Goldmark's default unsafe=false as well. */ -}}
+{{- $source := .shortcode.Inner -}}
+{{- $children := slice -}}
+{{- range $id, $child := .shortcode.Store.Get "notey-child-html" | default dict -}}
+  {{- $children = $children | append (dict "token" (printf "NOTEYCHILD%sEND" $id) "source" $child.source "html" $child.html "inline" $child.inline "length" (len $child.source)) -}}
+{{- end -}}
+{{- range sort $children "length" "desc" -}}
+  {{- $source = replace $source .source .token -}}
+{{- end -}}
+
+{{- /* Remove only the common whitespace prefix of nonempty source lines.
+     Doing this after protection preserves all child code and raw HTML bytes. */ -}}
+{{- $indent := "" -}}
+{{- $first := true -}}
+{{- range findRE `(?m)^[\t ]*\S` $source -}}
+  {{- $prefix := replaceRE `\S$` "" . -}}
+  {{- if $first -}}
+    {{- $indent = $prefix -}}
+    {{- $first = false -}}
+  {{- else if $indent -}}
+    {{- range seq (len $indent) -}}
+      {{- if not (strings.HasPrefix $prefix $indent) -}}
+        {{- $indent = substr $indent 0 (sub (len $indent) 1) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $indent -}}
+  {{- $source = replaceRE (printf "(?m)^%s" .) "" $source -}}
+{{- end -}}
+
+{{- /* Block children on their own line need their own paragraph, even when
+     the author omits surrounding blank lines. Retain list indentation. */ -}}
+{{- range $children -}}
+  {{- if not .inline -}}
+    {{- $source = replaceRE (printf `(?m)^([\t ]*)(%s)[\t ]*$` .token) "\n${1}${2}\n" $source -}}
+  {{- end -}}
+{{- end -}}
+{{- $rendered := .shortcode.Page.RenderString (dict "display" (.display | default "block")) $source -}}
+{{- range $children -}}
+  {{- if not .inline -}}
+    {{- $rendered = replace $rendered (printf "<p>%s</p>" .token) .html -}}
+  {{- end -}}
+  {{- $rendered = replace $rendered .token .html -}}
+{{- end -}}
+
+{{- /* Heading IDs are generated before inline children are restored. Replace
+     only their known tokens, retaining explicit IDs and Hugo's suffixes.
+     Reserve existing IDs so different icons cannot produce duplicate IDs. */ -}}
+{{- $ids := findRE `\bid="[^"]+"` $rendered -}}
+{{- $used := newScratch -}}
+{{- $anchors := newScratch -}}
+{{- range $ids -}}
+  {{- $used.Set (strings.TrimSuffix `"` (strings.TrimPrefix `id="` .)) true -}}
+{{- end -}}
+{{- range $ids -}}
+  {{- $original := strings.TrimSuffix `"` (strings.TrimPrefix `id="` .) -}}
+  {{- $anchor := $original -}}
+  {{- range $children -}}
+    {{- if .inline -}}
+      {{- $token := lower .token -}}
+      {{- $label := .html | plainify | htmlUnescape | strings.TrimSpace | anchorize -}}
+      {{- if $label -}}
+        {{- $anchor = replace $anchor $token $label -}}
+      {{- else if strings.Contains $anchor $token -}}
+        {{- $anchor = replaceRE (printf `^%s(-[0-9]+)?$` $token) `heading${1}` $anchor -}}
+        {{- $anchor = replaceRE (printf `^%s-` $token) "" $anchor -}}
+        {{- $anchor = replaceRE (printf `-%s$` $token) "" $anchor -}}
+        {{- $anchor = replace $anchor (printf "-%s-" $token) "-" -}}
+        {{- $anchor = replace $anchor $token "" -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if ne $anchor $original -}}
+    {{- $base := $anchor -}}
+    {{- if $used.Get $anchor -}}
+      {{- range seq (add (len $ids) 1) -}}
+        {{- $anchor = printf "%s-%d" $base . -}}
+        {{- if not ($used.Get $anchor) }}{{ break }}{{ end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $used.Set $anchor true -}}
+    {{- $anchors.Set $original $anchor -}}
+    {{- $rendered = replace $rendered (printf `id="%s"` $original) (printf `id="%s"` $anchor) -}}
+  {{- end -}}
+{{- end -}}
+{{- range findRE `\bhref="#[^"]*"` $rendered -}}
+  {{- $href := strings.TrimSuffix `"` (strings.TrimPrefix `href="` .) -}}
+  {{- with $anchors.Get (urls.Parse $href).Fragment -}}
+    {{- $rendered = replace $rendered (printf `href="%s"` $href) (printf `href="#%s"` .) -}}
+  {{- end -}}
+{{- end -}}
+{{- return ($rendered | safeHTML) -}}

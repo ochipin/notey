@@ -1,0 +1,9 @@
+{{- $layout := .Get "layout" | default "equal" -}}
+{{- $align := .Get "align" | default "start" -}}
+{{- if not (in (slice "equal" "wide-right" "wide-left") $layout) -}}
+  {{- errorf "columns: layout must be equal, wide-right or wide-left (%s)" .Position -}}
+{{- end -}}
+{{- if not (in (slice "start" "center") $align) -}}
+  {{- errorf "columns: align must be start or center (%s)" .Position -}}
+{{- end -}}
+<div class="columns columns--{{ $layout }} columns--{{ $align }}">{{ .Inner }}</div>

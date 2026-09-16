@@ -1,0 +1,6 @@
+{{/*
+Markdown の箇条書きの先頭にチェックアイコンを付けます。引数はありません。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/checklist.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

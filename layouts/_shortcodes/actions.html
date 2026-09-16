@@ -1,0 +1,6 @@
+{{/*
+button を横に並べる領域です。画面が狭い場合は折り返します。引数はありません。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/actions.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

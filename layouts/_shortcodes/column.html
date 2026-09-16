@@ -1,0 +1,6 @@
+{{/*
+columns 内の1列です。本文には見出し・リスト・表・コード・画像などの Markdown と、他のショートコードを書けます。引数はありません。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/column.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

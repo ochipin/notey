@@ -1,0 +1,13 @@
+{{- /* Authored /paths refer to the site's baseURL, including a deployment prefix. */ -}}
+{{- $dest := printf "%s" . -}}
+{{- if or (strings.HasPrefix $dest "#") (strings.HasPrefix $dest "?") (strings.HasPrefix $dest "//") -}}
+  {{- return $dest -}}
+{{- end -}}
+{{- if strings.HasPrefix $dest "/" -}}
+  {{- $base := (urls.Parse site.BaseURL).Path | default "/" -}}
+  {{- if and (ne $base "/") (or (strings.HasPrefix $dest $base) (eq $dest (strings.TrimSuffix "/" $base))) -}}
+    {{- return $dest -}}
+  {{- end -}}
+  {{- $dest = strings.TrimPrefix "/" $dest -}}
+{{- end -}}
+{{- return ($dest | relURL) -}}

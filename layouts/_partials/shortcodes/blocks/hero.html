@@ -1,0 +1,18 @@
+{{- $h := .Page.Params.hero | default dict -}}
+{{- $title := .Get "title" | default $h.title | default .Page.Title -}}
+{{- $eyebrow := .Get "eyebrow" | default $h.eyebrow -}}
+{{- $lead := .Get "lead" | default $h.lead -}}
+{{- $image := .Get "image" | default $h.image | default site.Params.character | default "/favicon.png" -}}
+{{- $alt := .Get "imageAlt" | default $h.imageAlt | default "" -}}
+<section class="lp-hero">
+  <div class="lp-hero-bg" aria-hidden="true"><span class="lp-glow"></span></div>
+  <div class="lp-hero-text">
+    {{ with $eyebrow }}<p class="lp-eyebrow"><span class="icon icon-star" aria-hidden="true"></span>{{ . }}</p>{{ end }}
+    <h1 class="lp-title">{{ $title | $.Page.RenderString }}</h1>
+    {{ with $lead }}<p class="lp-lead">{{ . | $.Page.RenderString }}</p>{{ end }}
+    {{ partial "shortcodes/render.html" (dict "shortcode" . "inner" .InnerDeindent) }}
+  </div>
+  <div class="lp-hero-art">
+    <img class="lp-char" src="{{ $image | partial "site-url.html" }}" alt="{{ $alt }}" width="520" height="520" fetchpriority="high">
+  </div>
+</section>

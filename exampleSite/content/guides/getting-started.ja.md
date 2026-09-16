@@ -1,8 +1,9 @@
 ---
 title: "はじめる"
 weight: 10
-icon: "terminal"
 description: "Notey を Hugo サイトに導入する手順"
+params:
+  icon: "terminal"
 ---
 
 ## 必要なもの

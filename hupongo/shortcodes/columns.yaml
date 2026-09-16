@@ -1,19 +1,33 @@
 schema_version: 1
 usage: |
-  {{< columns >}}
-  <div>
-    <h3>準備する</h3>
-    <p>必要なファイルと設定を確認します。</p>
-    <ul><li>作業フォルダーを開く</li><li>内容を整理する</li></ul>
-  </div>
-  <div>
-    <h3>公開する</h3>
-    <p>プレビューで仕上がりを確認します。</p>
-    <ul><li>リンクを確認する</li><li>変更を公開する</li></ul>
-  </div>
+  {{< columns layout="wide-right" align="center" >}}
+  {{< column >}}
+  ### 準備する
+
+  必要なファイルと設定を確認します。
+
+  - 作業フォルダーを開く
+  - 内容を整理する
+  {{< /column >}}
+  {{< column >}}
+  ### 公開する
+
+  プレビューで仕上がりを確認します。
+
+  - リンクを確認する
+  - 変更を公開する
+  {{< /column >}}
   {{< /columns >}}
 snippet: |
-  {{< columns >}}
-  <div><h3>左の列</h3><p>ここに本文を書きます。</p></div>
-  <div><h3>右の列</h3><p>ここに本文を書きます。</p></div>
+  {{< columns layout="equal" align="start" >}}
+  {{< column >}}
+  ### 左の列
+
+  ここに Markdown の本文を書きます。
+  {{< /column >}}
+  {{< column >}}
+  ### 右の列
+
+  ここに Markdown の本文を書きます。
+  {{< /column >}}
   {{< /columns >}}

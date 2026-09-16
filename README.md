@@ -2,7 +2,7 @@
 
 ドキュメント専用サイトのための Hugo テーマ。Starlight 系のレイアウト（左サイドバー + 本文 + 右目次）を、素の CSS / JavaScript だけで構成しています。
 
-- **トップページ** — キャラクター入りのヒーロー、スペック帯、機能カード、Markdown ショーケース、CTA を front matter から組み立て
+- **トップページ** — ヒーロー、スペック帯、カード、段組み、CTA を Markdown とショートコードで自由に組み立て
 - **Pagefind 全文検索** — Ctrl/⌘ + K、`/`、キーボード操作、日本語対応
 - **多言語（i18n）** — `/ja/` `/en/` のサブディレクトリ構成、言語切替
 - **バージョン切替** — `params.versions` からヘッダのドロップダウンを生成
@@ -10,7 +10,7 @@
 - **モバイル** — 左からのドロワー、スクリム、リンク選択で自動クローズ
 - **画像** — 段幅に自動リサイズ + WebP srcset + 遅延読み込み + クリックで拡大ライトボックス
 - **コードブロック** — 言語ラベル、タイトル、コピーボタン、Chroma のライト/ダーク配色
-- **ショートコード** — note / tips / warning / danger / card / card-grid / tab / details / num / icon / steps / video / badge
+- **ショートコード** — 注意書き・カード・タブ・手順・動画に加え、ヒーロー・段組み・ボタンなど全22種類
 - **Mermaid** — 図のあるページだけ遅延読み込み
 - **OG 画像** — ページごとに自動生成（フォント同梱時）、または既定画像
 
@@ -67,9 +67,9 @@ Pagefind を実行しないと検索ダイアログにインデックス未生�
 
 ```
 content/
-  _index.md                 # トップ（ドキュメント直行レイアウト）
+  _index.md                 # トップ（本文の Markdown とショートコードで構成）
   guides/
-    _index.md               # セクション（title / icon / weight / description）
+    _index.md               # セクション（title / params.icon / weight / description）
     getting-started.md
     installation/
       index.md              # ページバンドル
@@ -83,37 +83,103 @@ content/
 ```yaml
 title: "ページタイトル"
 weight: 10            # サイドバー・前後ナビの並び順
-icon: "terminal"      # 見出しとサイドバーのアイコン（未指定なら親から継承）
 description: ""       # 一覧カード・OG・meta description
-badge: "new"          # サイドバーに付くラベル（任意）
 draft: true
+params:
+  icon: "terminal"    # 見出しとサイドバーのアイコン（未指定なら親から継承）
+  badge: "new"        # サイドバーに付くラベル（任意）
 ```
+
+`title`・`weight`・`description`・`draft` など Hugo の標準項目は直下に置きます。`icon`・`badge`・`lead`・`image`・`private`・`open` など Notey 独自のページ設定は、すべて `params` の中に置いてください。
 
 ## トップページ
 
-`content/_index.md` の front matter でランディングを構成します（`hero` / `specs` / `features` / `showcase` / `cta`）。本文に書いた Markdown は `showcase` と `cta` の間に挿入されます。実例は `exampleSite/content/_index.ja.md` を参照してください。
+`content/_index.md` の**本文**に、表示したい順番で Markdown とショートコードを書きます。カード・表・コード・画像も本文で編集でき、ブロックを移動・追加・削除すると、そのままページ構成に反映されます。実例は [exampleSite/content/_index.ja.md](exampleSite/content/_index.ja.md) を参照してください。
 
-```yaml
-hero:
-  eyebrow: "Hugo theme v2"
-  title: "ドキュメントを、<em>ため込む・整理する・取り出す</em>"   # <em> は accent 色
-  lead: "…"
-  image: "/favicon.png"        # キャラクター画像
-  install: "hugo mod get github.com/ochipin/notey"
-  buttons:
-    - { text: "はじめる", url: "/ja/guides/getting-started/", primary: true }
-features:
-  - { icon: "search", title: "…", text: "…", url: "/ja/guides/search/" }
+キャッチコピーなど、まとめて管理したい情報だけを `params.hero` に残せます。`hero` ショートコードは、省略した引数を `params.hero` から読みます。
+
+````markdown
+---
+title: "Notey"
+description: "技術文書をまとめるドキュメントサイト"
+params:
+  hero:
+    eyebrow: "Notey · Documentation theme"
+    title: "技術を記録し、*知識を育てる。*"
+    lead: "導入から運用まで、必要な情報をひとつに。"
+    image: "/favicon.png"
+    imageAlt: "本を読むキャラクター"
+---
+
+{{< hero >}}
+{{< actions >}}
+{{< button href="/ja/guides/getting-started/" primary=true arrow=true >}}はじめる{{< /button >}}
+{{< button href="/ja/reference/shortcodes/" >}}表示例を見る{{< /button >}}
+{{< /actions >}}
+{{< command >}}hugo server{{< /command >}}
+{{< /hero >}}
+
+{{< specs >}}
+{{< spec value="ja / en" >}}多言語に対応{{< /spec >}}
+{{< spec value="Light / Dark" >}}配色を切り替えて比較{{< /spec >}}
+{{< /specs >}}
+
+{{< section title="必要な情報を見つける" >}}
+{{< card-grid variant="feature" >}}
+{{< card title="全文検索" icon="search" href="/ja/guides/search/" >}}
+**Pagefind** でドキュメント本文を検索できます。
+{{< /card >}}
+{{< card title="画像" icon="overview" href="/ja/reference/images/" >}}
+記事と画像を同じフォルダーで管理できます。
+{{< /card >}}
+{{< /card-grid >}}
+{{< /section >}}
+
+{{< section title="左右に内容を並べる" >}}
+{{< columns layout="wide-right" align="center" >}}
+{{< column >}}
+### 編集してプレビュー
+
+{{< checklist >}}
+- 本文は Markdown で記述
+- カードや図もショートコードで追加
+{{< /checklist >}}
+
+| ファイル | 用途 |
+| --- | --- |
+| `_index.md` | トップページ |
+{{< /column >}}
+{{< column >}}
+```bash
+hugo server
 ```
+{{< /column >}}
+{{< /columns >}}
+{{< /section >}}
 
-front matter に `hero` を書かなければ、サイトタイトルと `params.tagline` から最小構成のヒーローを表示します。
+{{< section title="ドキュメントを書き始めよう" variant="cta" >}}
+まずはサンプルの記事を開いてみてください。
+
+{{< actions >}}
+{{< button href="/ja/guides/getting-started/" primary=true >}}ガイドを読む{{< /button >}}
+{{< /actions >}}
+{{< /section >}}
+````
+
+`params.hero` は任意です。`{{< hero title="見出し" lead="説明" image="/favicon.png" >}}…{{< /hero >}}` のように本文側だけで指定することもできます。見出しを省略した `hero` はページタイトルを使います。本文に `hero` を置かなければ、ヒーローを自動追加しません。
+
+`columns` の `layout` は `equal`（均等・自動段組み）、`wide-right`（右を広く）、`wide-left`（左を広く）。`wide-right` / `wide-left` は画面幅 900px 以下で1列になります。`align="center"` で列の内容を縦方向に中央揃えできます。各 `column` の本文には通常の Markdown や他のショートコードを書けます。`card` も Markdown と従来の HTML に対応します。
+
+使用例は `{{< ... >}}` 記法です。この記法の内側の見出しは Hugo の自動目次には含まれないため、記事の目次に載せる見出しはショートコードの外に書いてください。`/ja/guides/` や `/favicon.png` のようなサイト内パスは、サブディレクトリ公開時にも `baseURL` の配下へ解決します。
+
+以前のメタデータ中心のトップページから移行する場合、`hero` の `title`・`eyebrow`・`lead`・`image`・`imageAlt` は `params.hero` に移します。`hero.buttons`・`hero.install` は `actions` / `button` / `command`、`specs` は `specs` / `spec`、`features` は `section` / `card-grid` / `card`、`showcase` は `columns` / `column` と Markdown、`cta` は `section variant="cta"` として本文に書き直してください。旧メタデータのブロックは自動描画しません。
 
 ## 主な params
 
 | キー | 既定 | 説明 |
 |:--|:--|:--|
-| `params.tagline` | – | トップの説明文（hero.lead 未指定時に使用） |
-| `params.character` | `/favicon.png` | ヒーローのキャラクター画像 |
+| `params.tagline` | – | ホームの HTML タイトルに添える短い説明 |
+| `params.character` | `/favicon.png` | hero の image とページの params.hero.image を省略したときの画像 |
 | `params.logo` | `favicon` | ヘッダのロゴ画像 |
 | `params.editURL` | – | 「このページを編集」のベース URL |
 | `params.images.maxWidth` | `1440` | 本文画像のリサイズ上限 |
@@ -125,20 +191,22 @@ front matter に `hero` を書かなければ、サイトタイトルと `params
 
 ## HuPongo のショートコード補完
 
-`layouts/_shortcodes/` の全13種類に、説明・引数の案内、使用例、挿入用ひな形、実際の表示を撮影したプレビュー画像を同梱しています。
+`layouts/_shortcodes/` の全22種類に、説明・引数の案内、使用例、挿入用ひな形、実際の表示を撮影したプレビュー画像を同梱しています。
 
-- 対象: `badge`、`card`、`card-grid`、`columns`、`danger`、`icon`、`info`、`num`、`steps`、`tab`、`tips`、`video`、`warning`
+- 対象: `actions`、`badge`、`button`、`card`、`card-grid`、`checklist`、`column`、`columns`、`command`、`danger`、`hero`、`icon`、`info`、`num`、`section`、`spec`、`specs`、`steps`、`tab`、`tips`、`video`、`warning`
 - `<名前>.html` の先頭 Hugo コメント: 説明と `@param` による引数の案内。
 - `hupongo/shortcodes/<名前>.yaml`: `schema_version: 1`、詳細に表示する `usage`、選択時に挿入する `snippet`。
 - `hupongo/shortcodes/<名前>.preview.png`: 同じ使用例を Notey の CSS・JavaScript・Material Symbols アイコンフォントで描画した、ライト配色の見本。
 
-HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認できます。`card-grid` と `tab` のひな形は、子カードや複数タブを含みます。`card` と `columns` の本文は HTML をそのまま出力するため、使用例では `<p>` や `<div>` を使っています。
+HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認できます。`card-grid`・`columns`・`specs`・`tab` のひな形は、子要素を含みます。`spec` の候補には親の `specs` も含めています。`column` は `columns` の内側に挿入してください。`card` と `column` の本文には Markdown を使えます。既存の `card` や `columns` に書いた `<p>`・`<div>` などの HTML も引き続き利用できます。
 
 `video` の `/media/demo.webm` と `/media/demo-poster.png` は置き換え用の見本パスです。動画ファイルは同梱していないので、実際の動画・画像を `static/media/` などに配置してパスを変更してください。プレビュー画像のデモ映像は説明用に作成したものです。
 
 説明用ファイルは Hugo のテンプレート領域の外にまとめており、除外用の `module.mounts` 設定は不要です。専用フォルダーに対応した HuPongo を利用してください。旧版の HuPongo では使用例・画像が出ない場合がありますが、通常の Hugo ビルドに影響はありません。
 
 画像は本文領域だけを撮影した静的な見本です。文字の折り返しやフォントは閲覧環境で変わります。タブの操作や動画の再生は、実ページのプレビューで確認してください。
+
+テンプレートを改修するときは、説明と引数を `layouts/_shortcodes/`、表示部分を `layouts/_partials/shortcodes/blocks/` で編集します。共通の `render.html` / `emit.html` は、入れ子の子要素を再変換せず、親の Markdown だけを描画するための処理です。開始・終了タグを持つショートコードでは、入口の `.InnerDeindent` 参照も残してください。Hugo が終了タグの有無を判定するために使用します。
 
 ## v1（旧 Notey）からの移行
 

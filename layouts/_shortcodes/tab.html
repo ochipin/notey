@@ -4,7 +4,6 @@
 @param {string} [title] タブの見出し。省略すると Tab 1、Tab 2 のような連番になります。
 @param {bool} [active] 最初に表示するタブにだけ true を指定します。省略時は先頭が選択されます（文字列の false も有効扱いになります）。
 */}}
-{{- $title := .Get "title" -}}
-<div class="tab-panel" data-tab-title="{{ $title }}"{{ if .Get "active" }} data-tab-active="true"{{ end }} hidden>
-  {{ .Inner | markdownify }}
-</div>
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/tab.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

@@ -1,0 +1,10 @@
+{{/*
+リンクをボタンとして表示します。囲んだ本文がラベルになります。
+
+@param {string} href リンク先。
+@param {bool} [primary=false] true にすると強調色を使います。
+@param {bool} [arrow=false] true にすると右矢印を添えます。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/button.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

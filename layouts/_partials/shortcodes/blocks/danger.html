@@ -1,0 +1,5 @@
+{{- $title := .Get "title" | default (i18n "ui.danger") -}}
+<aside class="note note--danger">
+  <p class="note-title"><span class="icon icon-danger" aria-hidden="true"></span>{{ $title }}</p>
+  <div class="note-body">{{ partial "shortcodes/render.html" (dict "shortcode" . "inner" .InnerDeindent) }}</div>
+</aside>

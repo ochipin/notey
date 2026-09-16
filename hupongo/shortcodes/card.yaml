@@ -1,10 +1,11 @@
 schema_version: 1
 usage: |
   {{< card title="はじめてのガイド" icon="book" href="/" >}}
-  <p>基本的な使い方を、手順に沿って確認できます。</p>
-  <p>カード全体をクリックして、ガイドを開きます。</p>
+  基本的な使い方を、**手順に沿って**確認できます。
+
+  カード全体をクリックして、ガイドを開きます。
   {{< /card >}}
 snippet: |
-  {{< card title="カードのタイトル" icon="book" >}}
-  <p>ここにカードの説明を書きます。</p>
+  {{< card title="カードのタイトル" icon="book" variant="default" >}}
+  ここにカードの説明を Markdown で書きます。
   {{< /card >}}

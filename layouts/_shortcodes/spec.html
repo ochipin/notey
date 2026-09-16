@@ -1,0 +1,8 @@
+{{/*
+specs 内の1項目です。囲んだ本文が説明になります。
+
+@param {string} value 目立たせる数値や短い文字列。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/spec.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

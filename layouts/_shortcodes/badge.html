@@ -4,4 +4,5 @@
 @param {string} text バッジに表示する文字。位置引数を使う場合は省略します。
 @param {string} [kind=default] 配色。default は標準、new は緑系、beta はアクセント色です。
 */}}
-<span class="badge badge--{{ .Get "kind" | default "default" }}">{{ .Get "text" | default (.Get 0) }}</span>
+{{- $html := partial "shortcodes/blocks/badge.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

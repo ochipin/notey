@@ -1,0 +1,5 @@
+{{- $variant := .Get "variant" | default "default" -}}
+{{- if not (in (slice "default" "feature") $variant) -}}
+  {{- errorf "card-grid: variant must be default or feature (%s)" .Position -}}
+{{- end -}}
+<div class="{{ if eq $variant "feature" }}lp-features{{ else }}cards{{ end }}">{{ .Inner }}</div>

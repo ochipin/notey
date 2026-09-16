@@ -1,7 +1,10 @@
 {{- $dest := .Destination -}}
 {{- $url := urls.Parse $dest -}}
 
-{{- $caption := or .Title (and (ne .Text "") .Text) -}}
+{{- /* .Text is already rendered, including when called from a shortcode. */ -}}
+{{- $caption := .Text -}}
+{{- with .Title }}{{ $caption = . | $.Page.RenderString }}{{ end -}}
+{{- $captionText := $caption | plainify -}}
 {{- $cls := "fig" -}}
 {{- if in (slice "inline" "wide") $url.Fragment -}}
   {{- $cls = printf "fig fig--%s" $url.Fragment -}}
@@ -36,24 +39,27 @@
   {{- end -}}
   {{- if eq (len $set) 0 -}}{{- $set = $set | append (printf "%s%s %dw" $display.RelPermalink $suffix $display.Width) -}}{{- end -}}
   <figure class="{{ $cls }}">
-    <button type="button" class="fig-zoom" data-lbx="{{ printf "%s%s" $orig.RelPermalink $suffix }}" data-lbx-cap="{{ $caption }}" aria-label="{{ i18n "ui.zoom_image" }}">
+    <button type="button" class="fig-zoom" data-lbx="{{ printf "%s%s" $orig.RelPermalink $suffix }}" data-lbx-cap="{{ $captionText }}" aria-label="{{ i18n "ui.zoom_image" }}">
       <img src="{{ printf "%s%s" $display.RelPermalink $suffix }}"
            srcset="{{ delimit $set ", " }}"
            sizes="(min-width: 1200px) 760px, (min-width: 900px) 62vw, 92vw"
            width="{{ $display.Width }}" height="{{ $display.Height }}"
-           alt="{{ .Text }}" loading="lazy" decoding="async">
+           alt="{{ .PlainText }}" loading="lazy" decoding="async">
       <span class="fig-hint"><span class="icon icon-search" aria-hidden="true"></span></span>
     </button>
-    {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+    {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
   </figure>
 {{- else -}}
   {{- $src := $dest | safeURL -}}
+  {{- if and (strings.HasPrefix $dest "/") (not (strings.HasPrefix $dest "//")) -}}
+    {{- $src = partial "site-url.html" $dest | safeURL -}}
+  {{- end -}}
   {{- with $img }}{{ $src = printf "%s%s" .RelPermalink $suffix | safeURL }}{{ end -}}
   <figure class="{{ $cls }}">
-    <button type="button" class="fig-zoom" data-lbx="{{ $src }}" data-lbx-cap="{{ $caption }}" aria-label="{{ i18n "ui.zoom_image" }}">
-      <img src="{{ $src }}" alt="{{ .Text }}" loading="lazy" decoding="async">
+    <button type="button" class="fig-zoom" data-lbx="{{ $src }}" data-lbx-cap="{{ $captionText }}" aria-label="{{ i18n "ui.zoom_image" }}">
+      <img src="{{ $src }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
       <span class="fig-hint"><span class="icon icon-search" aria-hidden="true"></span></span>
     </button>
-    {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+    {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
   </figure>
 {{- end -}}

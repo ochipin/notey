@@ -1,0 +1,4 @@
+{{- $title := .Get "title" -}}
+<div class="tab-panel" data-tab-title="{{ $title }}"{{ if .Get "active" }} data-tab-active="true"{{ end }} hidden>
+  {{ partial "shortcodes/render.html" (dict "shortcode" . "inner" .InnerDeindent) }}
+</div>

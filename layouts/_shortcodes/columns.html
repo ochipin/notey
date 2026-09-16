@@ -1,4 +1,9 @@
 {{/*
-直下の要素を画面幅に応じて段組みにします。各列を div などの HTML 要素で囲み、その中に見出しや本文を入れます。引数はありません。
+直下の column を画面幅に応じて段組みにします。column 内には Markdown を書けます。従来の div などの HTML 要素も利用できます。
+
+@param {string} [layout=equal] equal は均等な自動段組み。wide-right / wide-left は右 / 左を広くした2列で、画面幅900px以下では1列になります。
+@param {string} [align=start] start は上揃え、center は各列を縦方向に中央揃えします。
 */}}
-<div class="columns">{{ .Inner }}</div>
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/columns.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

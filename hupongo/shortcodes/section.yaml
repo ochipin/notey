@@ -1,0 +1,16 @@
+schema_version: 1
+usage: |
+  {{< section title="ドキュメントを書き始めよう" variant="cta" >}}
+  導入から公開までの手順を、ガイドで確認できます。
+
+  {{< actions >}}
+  {{< button href="/" primary=true arrow=true >}}ガイドを読む{{< /button >}}
+  {{< /actions >}}
+  {{< /section >}}
+snippet: |
+  {{< section title="セクションの見出し" >}}
+  ここに Markdown の本文を書きます。
+
+  - 1つ目の項目
+  - 2つ目の項目
+  {{< /section >}}

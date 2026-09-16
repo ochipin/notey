@@ -1,0 +1,6 @@
+{{/*
+数値や短い特徴を帯状に並べます。子要素に spec を置きます。引数はありません。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/specs.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

@@ -1,0 +1,22 @@
+/* Markdown columns and card bodies remain within their own content width. */
+.columns--start { align-items: start; }
+.columns--center { align-items: center; }
+.columns--wide-right { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 2.5rem; }
+.columns--wide-left { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 2.5rem; }
+.column.prose, .card-body.prose, .lp-feature-body.prose {
+  min-width: 0; margin: 0; container-type: inline-size;
+}
+.column.prose > :first-child,
+.card-body.prose > :first-child,
+.lp-feature-body.prose > :first-child { margin-top: 0; }
+.column.prose > :last-child,
+.card-body.prose > :last-child,
+.lp-feature-body.prose > :last-child { margin-bottom: 0; }
+.lp-feature-body { color: var(--ink-soft); font-size: var(--step--1); }
+.lp-feature-body > * + * { margin-top: 0.6rem; }
+.lp-feature-body.prose :where(pre, .code) { margin: 0.6rem 0; }
+.columns .fig, .card-body .fig, .lp-feature-body .fig { max-width: 100%; }
+
+@media (max-width: 900px) {
+  .columns--wide-right, .columns--wide-left { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+}

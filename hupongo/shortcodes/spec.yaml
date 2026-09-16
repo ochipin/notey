@@ -1,0 +1,10 @@
+schema_version: 1
+usage: |
+  {{< specs >}}
+  {{< spec value="ja / en" >}}多言語に対応{{< /spec >}}
+  {{< spec value="Light / Dark" >}}配色を切り替えて比較{{< /spec >}}
+  {{< /specs >}}
+snippet: |
+  {{< specs >}}
+  {{< spec value="特徴や数値" >}}ここに短い説明を書きます。{{< /spec >}}
+  {{< /specs >}}

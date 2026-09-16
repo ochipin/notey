@@ -1,0 +1,12 @@
+{{/*
+トップのキャッチコピーと画像を表示します。省略した引数はページの params.hero から読みます。本文には説明や actions / command を置けます。本文中の配置順で表示します。
+
+@param {string} [title] キャッチコピー。省略時は params.hero.title、ページタイトルの順で使用。
+@param {string} [eyebrow] 見出しの上の短いラベル。
+@param {string} [lead] 説明文。
+@param {string} [image] 画像URL。省略時は params.hero.image、params.character、favicon.png の順で使用。
+@param {string} [imageAlt] 画像の代替テキスト。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/hero.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

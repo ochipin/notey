@@ -1,0 +1,34 @@
+{{- $href := .Get "href" | default (.Get "link") -}}
+{{- $variant := .Get "variant" -}}
+{{- if not $variant -}}
+  {{- with .Parent -}}
+    {{- if eq .Name "card-grid" -}}
+      {{- $variant = .Get "variant" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $variant = $variant | default "default" -}}
+{{- if not (in (slice "default" "feature") $variant) -}}
+  {{- errorf "card: variant must be default or feature (%s)" .Position -}}
+{{- end -}}
+{{- $feature := eq $variant "feature" -}}
+{{- $class := "card" -}}
+{{- if $feature }}{{ $class = "lp-feature" }}{{ end -}}
+{{- if eq (lower (printf "%v" (.Get "wide"))) "true" }}{{ $class = printf "%s card--wide" $class }}{{ end -}}
+{{- if $href -}}
+<a class="{{ $class }}{{ if not $feature }} card--link{{ end }}" href="{{ $href | partial "site-url.html" }}">
+{{- else -}}
+<article class="{{ $class }}">
+{{- end }}
+{{- if $feature }}
+  <span class="lp-feature-icon icon icon-{{ .Get "icon" | default "tips" }}" aria-hidden="true"></span>
+  {{ with .Get "title" }}<h3>{{ . }}</h3>{{ end }}
+  <div class="lp-feature-body prose">{{ partial "shortcodes/render.html" (dict "shortcode" . "inner" .InnerDeindent) }}</div>
+{{- else }}
+  <span class="card-head">
+    <span class="icon icon-{{ .Get "icon" | default "tips" }}" aria-hidden="true"></span>
+    {{ with .Get "title" }}<span class="card-title">{{ . }}</span>{{ end }}
+  </span>
+  <div class="card-body prose">{{ partial "shortcodes/render.html" (dict "shortcode" . "inner" .InnerDeindent) }}</div>
+{{- end }}
+{{ if $href }}</a>{{ else }}</article>{{ end }}

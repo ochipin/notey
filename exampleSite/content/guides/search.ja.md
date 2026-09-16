@@ -1,8 +1,9 @@
 ---
 title: "検索（Pagefind）"
 weight: 20
-icon: "search"
 description: "ビルド後に検索インデックスを生成する"
+params:
+  icon: "search"
 ---
 
 ## 仕組み

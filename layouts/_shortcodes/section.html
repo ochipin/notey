@@ -1,0 +1,9 @@
+{{/*
+本文をひとまとまりの節にします。Markdown と入れ子のショートコードを使えます。
+
+@param {string} [title] 節の見出し。
+@param {string} [variant] cta にすると背景付きの中央揃えの案内になります。
+*/}}
+{{- $inner := .InnerDeindent -}}
+{{- $html := partial "shortcodes/blocks/section.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}

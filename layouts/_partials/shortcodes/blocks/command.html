@@ -1,0 +1,8 @@
+{{- $command := .Inner | strings.TrimSpace -}}
+<div class="lp-install">
+  <code>{{ $command }}</code>
+  <button type="button" class="code-copy" data-copy-text="{{ $command }}" aria-label="{{ i18n "ui.copy" }}">
+    <span class="icon icon-copy" aria-hidden="true"></span>
+    <span class="code-copy-label">{{ i18n "ui.copy" }}</span>
+  </button>
+</div>

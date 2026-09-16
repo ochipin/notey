@@ -1,0 +1,5 @@
+{{- $cta := eq (.Get "variant") "cta" -}}
+<section class="{{ if $cta }}lp-cta{{ else }}lp-section{{ end }}">
+  {{ with .Get "title" }}<h2 class="lp-h2">{{ . | $.Page.RenderString }}</h2>{{ end }}
+  {{ partial "shortcodes/render.html" (dict "shortcode" . "inner" .InnerDeindent) }}
+</section>

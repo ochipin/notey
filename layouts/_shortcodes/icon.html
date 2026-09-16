@@ -3,4 +3,5 @@ Notey 同梱フォントのアイコンを本文中に表示します。name の
 
 @param {string} name アイコン名。例: book、code、settings、tips。icon- の接頭辞は不要です。
 */}}
-<span class="icon icon-{{ .Get "name" | default (.Get 0) }}" aria-hidden="true"></span>
+{{- $html := partial "shortcodes/blocks/icon.html" . -}}
+{{- partial "shortcodes/emit.html" (dict "shortcode" . "html" $html) -}}
