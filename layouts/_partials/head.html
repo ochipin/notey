@@ -5,6 +5,7 @@
 {{ partial "head/meta.html" . }}
 {{ partialCached "head/fonts.html" . }}
 {{ partialCached "head/css.html" . }}
+{{ partial "head/math.html" . }}
 {{ with .OutputFormats.Get "rss" }}<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">{{ end }}
 {{ range .AllTranslations }}<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
 {{ end }}

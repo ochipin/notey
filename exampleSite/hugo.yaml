@@ -30,6 +30,15 @@ markup:
     lineNumbersInTable: true
     tabWidth: 2
   goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - ['\[', '\]']
+            - ['$$', '$$']
+          inline:
+            - ['\(', '\)']
     parser:
       autoHeadingID: true
       autoHeadingIDType: github

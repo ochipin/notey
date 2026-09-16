@@ -130,11 +130,14 @@
 .num > ol > li + li { margin-top: 0.35rem; }
 
 .mermaid-wrap {
+  min-width: 0; max-width: 100%;
   margin: 1.75rem 0; padding: 1rem; overflow-x: auto;
   border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
   text-align: center;
 }
 .mermaid-wrap pre.mermaid { margin: 0; background: transparent; border: 0; }
+.mermaid-wrap pre.mermaid[data-render-state="error"] { text-align: left; }
+.mermaid-wrap .mermaid-error { margin: 0.75rem 0 0; font-size: 0.875rem; color: var(--ink-muted); }
 
 .terms { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
 

@@ -2,7 +2,8 @@
 
 Notey's own code is licensed under the [MIT License](LICENSE). The icon
 artwork and the font derived from it are licensed under Apache License 2.0;
-the theme's MIT license does not replace those terms.
+the theme's MIT license does not replace those terms. Bundled diagram and
+mathematics assets retain the licenses described below.
 
 ## Google Material Symbols Rounded
 
@@ -73,3 +74,53 @@ and `static/fonts/LICENSES/` alongside the font as `fonts/NOTICE.txt`,
 URL. The published JSON preserves the per-icon source record. The license
 text there is identical to the copy in `LICENSES/`. Keep these files with
 redistributed copies of the font.
+
+
+## Mermaid 12.0.0 and bundled dependencies
+
+- Unmodified official ESM distribution: [static/vendor/mermaid/12.0.0/](static/vendor/mermaid/12.0.0/)
+- Mermaid license: [MIT](LICENSES/Mermaid-MIT.txt)
+- Complete notices and source availability: [NOTICE.txt](static/vendor/mermaid/12.0.0/NOTICE.txt)
+- Exact dependency versions, source URLs, and archive checksums: [PROVENANCE.json](static/vendor/mermaid/12.0.0/PROVENANCE.json)
+- Original dependency licenses and notices: [LICENSES/](static/vendor/mermaid/12.0.0/LICENSES/)
+
+The included libraries use MIT, ISC, BSD-3-Clause, Apache-2.0, EPL-1.0,
+and EPL-2.0 licenses. DOMPurify's Apache-2.0 option is used. Mermaid itself
+is MIT-licensed, but that does not relicense the embedded dependencies.
+ELK/elkjs and Eclipse runtime components retain their Eclipse licenses;
+the notice identifies their corresponding source repositories, release
+archives, additional upstream patch, and Maven source JARs. The original
+upstream notices are preserved. Notey does not modify the vendor code.
+
+## KaTeX 0.18.4 stylesheet and fonts
+
+- Unmodified official distribution assets: [static/vendor/katex/0.18.4/](static/vendor/katex/0.18.4/)
+- CSS/code: [MIT License](LICENSES/KaTeX-MIT.txt), Khan Academy and contributors
+- Fonts: [SIL Open Font License 1.1](LICENSES/OFL-1.1.txt)
+- Font copyright and Reserved Font Names: [FONT-NOTICES.txt](static/vendor/katex/0.18.4/FONT-NOTICES.txt)
+- Scope and distribution notice: [NOTICE.txt](static/vendor/katex/0.18.4/NOTICE.txt)
+- Source and checksums: [PROVENANCE.json](static/vendor/katex/0.18.4/PROVENANCE.json)
+
+The font notices are read from the original font files rather than inferred
+from the npm package's MIT license field. The fonts are unchanged. This
+stylesheet matches the KaTeX version embedded in Hugo 0.166.0. Mermaid's
+own bundled KaTeX JavaScript version is recorded separately in its manifest.
+
+Hugo publishes both versioned vendor directories, including their notices,
+licenses, provenance, and file manifests. Retain those files when packaging
+the theme, an application using it, or a generated site. The licenses of
+Notey's own source code and of each bundled component remain distinct.
+
+## Checking and updating the bundled assets
+
+Run `python3 scripts/check-vendor-assets.py` from the theme directory. The
+check is offline and verifies every recorded file, all Mermaid ESM imports,
+all CSS font URLs, dependency license records, and the KaTeX font notices.
+
+Updates are deliberate: obtain the exact official npm release, verify its
+archive integrity, copy its ESM import closure or CSS/font assets without
+modification, audit its released source maps and any prebundled components,
+and refresh all notices and manifests. Do not replace only Mermaid's entry
+file or assume that a new release has the same dependencies. Match KaTeX CSS
+to Hugo's embedded renderer (`hugo env`), then verify diagrams, formulae,
+light/dark mode, and operation with external network requests blocked.

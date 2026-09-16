@@ -1,0 +1,19 @@
+{{- /* Hugo embeds KaTeX and caches ToMath output; no client-side math script is
+     needed. Keep throwOnError enabled so invalid input produces a build warning
+     as well as readable source in the page, without aborting the whole build. */ -}}
+{{- .page.Store.Set "notey-has-math" true -}}
+{{- $block := .block -}}
+{{- $options := dict "output" "htmlAndMathml" "displayMode" $block -}}
+{{- $result := try (transform.ToMath .source $options) -}}
+{{- if $result.Err -}}
+  {{- warnf "Notey: unable to render formula at %s: %s" .position $result.Err -}}
+  {{- if $block -}}
+    <div class="math math--block math--error" role="note"><strong>{{ i18n "ui.math_error" }}</strong><pre><code>{{ .source }}</code></pre></div>
+  {{- else -}}
+    <span class="math math--inline math--error" role="note" title="{{ i18n "ui.math_error" }}"><code>{{ .source }}</code></span>
+  {{- end -}}
+{{- else if $block -}}
+  <div class="math math--block" tabindex="0">{{ $result.Value }}</div>
+{{- else -}}
+  <span class="math math--inline">{{ $result.Value }}</span>
+{{- end -}}

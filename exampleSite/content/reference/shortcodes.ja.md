@@ -53,6 +53,8 @@ winget install Hugo.Hugo.Extended
 
 ## 図（Mermaid）
 
+Mermaid 12.0.0 をテーマに同梱しています。図があるページだけローカルから読み込み、オフラインでも表示できます。
+
 ```mermaid
 flowchart LR
   A[content/*.md] --> B(hugo)

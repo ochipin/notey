@@ -1,0 +1,22 @@
+/* Long formulas scroll within their content column, including nested columns.
+   KaTeX supplies the fonts and layout; the theme only controls the outer box. */
+.math { min-width: 0; max-width: 100%; }
+.math--inline {
+  display: inline-block;
+  padding-block: 0.15em;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+.math--block { overflow-x: auto; margin-block: 1.25rem; }
+.math--block .katex-display { margin: 0; padding-block: 0.5rem; }
+.math--block .katex-display > .katex { width: max-content; min-width: 100%; }
+.math--block:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.math--error { color: var(--danger); }
+.math--block.math--error {
+  padding: 0.85rem 1rem;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  background: var(--danger-wash);
+}
+.math--error pre { margin: 0.5rem 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.math--error code { color: inherit; }

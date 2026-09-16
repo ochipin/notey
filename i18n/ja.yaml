@@ -1,4 +1,7 @@
 ui:
+  diagram_error: "図を表示できませんでした。Mermaid の記法を確認してください。"
+  diagram_load_error: "図の表示に必要なファイルを読み込めませんでした。"
+  math_error: "数式を表示できません"
   search: "検索"
   search_placeholder: "ドキュメントを検索"
   search_hint: "キーワードを入力してください"

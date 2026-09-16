@@ -1,0 +1,1102 @@
+{
+  "auditDate": "2026-09-17",
+  "method": "Exact package versions traced through official Mermaid and parser distribution source maps; prebundled Rough.js dependencies traced through Mermaid release pnpm-lock.yaml; ELK compiled libraries traced through elkjs 0.9.3 build.gradle. No development-only npm dependency tree is redistributed.",
+  "release": "https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4012.0.0",
+  "lockfile": "https://github.com/mermaid-js/mermaid/blob/mermaid%4012.0.0/pnpm-lock.yaml",
+  "npmPackages": [
+    {
+      "name": "@braintree/sanitize-url",
+      "version": "7.1.2",
+      "url": "https://registry.npmjs.org/@braintree/sanitize-url/-/sanitize-url-7.1.2.tgz",
+      "sha256": "fd9a220c24c5cdd406433cce1c3db7f09222d8f7977f0fe087aec914e1a63dc0",
+      "integrity": "sha512-jigsZK+sMF/cuiB7sERuo9V7N9jx+dhmHHnQyDSVdpZwVutaBu7WvNYqMDLSgFgfB30n452TP3vjDAvFC973mA==",
+      "repository": {
+        "url": "git+https://github.com/braintree/sanitize-url.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/@braintree+sanitize-url@7.1.2/LICENSE"
+      ]
+    },
+    {
+      "name": "@chevrotain/gast",
+      "version": "11.1.2",
+      "url": "https://registry.npmjs.org/@chevrotain/gast/-/gast-11.1.2.tgz",
+      "sha256": "10d6ea7e6884108dd7167c0aed54c300b525683574e9336ff1507a472414df1e",
+      "integrity": "sha512-Z9zfXR5jNZb1Hlsd/p+4XWeUFugrHirq36bKzPWDSIacV+GPSVXdk+ahVWZTwjhNwofAWg/sZg58fyucKSQx5g==",
+      "repository": {
+        "url": "git://github.com/Chevrotain/chevrotain.git",
+        "type": "git"
+      },
+      "license": "Apache-2.0",
+      "licenseFiles": [
+        "LICENSES/@chevrotain+gast@11.1.2/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "@chevrotain/regexp-to-ast",
+      "version": "11.1.2",
+      "url": "https://registry.npmjs.org/@chevrotain/regexp-to-ast/-/regexp-to-ast-11.1.2.tgz",
+      "sha256": "bda3be7ab6ad851d5bc723af365c547e630ddb3f065c2b0513c1a9ac69757294",
+      "integrity": "sha512-nMU3Uj8naWer7xpZTYJdxbAs6RIv/dxYzkYU8GSwgUtcAAlzjcPfX1w+RKRcYG8POlzMeayOQ/znfwxEGo5ulw==",
+      "repository": {
+        "url": "git://github.com/Chevrotain/chevrotain.git",
+        "type": "git"
+      },
+      "license": "Apache-2.0",
+      "licenseFiles": [
+        "LICENSES/@chevrotain+regexp-to-ast@11.1.2/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "@chevrotain/utils",
+      "version": "11.1.2",
+      "url": "https://registry.npmjs.org/@chevrotain/utils/-/utils-11.1.2.tgz",
+      "sha256": "be2de827ae6eaa5cbd1fa1e912302139992da39e483970cf20556de5cba0194a",
+      "integrity": "sha512-4mudFAQ6H+MqBTfqLmU7G1ZwRzCLfJEooL/fsF6rCX5eePMbGhoy5n4g+G4vlh2muDcsCTJtL+uKbOzWxs5LHA==",
+      "repository": {
+        "url": "git://github.com/Chevrotain/chevrotain.git",
+        "type": "git"
+      },
+      "license": "Apache-2.0",
+      "licenseFiles": [
+        "LICENSES/@chevrotain+utils@11.1.2/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "@iconify/utils",
+      "version": "3.0.2",
+      "url": "https://registry.npmjs.org/@iconify/utils/-/utils-3.0.2.tgz",
+      "sha256": "7f1b0f8bd152444d962bbcb258f57583bea55bb05e437eedf4cc950b9b56f969",
+      "integrity": "sha512-EfJS0rLfVuRuJRn4psJHtK2A9TqVnkxPpHY6lYHiB9+8eSuudsxbwMiavocG45ujOo6FJ+CIRlRnlOGinzkaGQ==",
+      "repository": {
+        "url": "git+https://github.com/iconify/iconify.git",
+        "type": "git",
+        "directory": "packages/utils"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/@iconify+utils@3.0.2/license.txt"
+      ]
+    },
+    {
+      "name": "@mermaid-js/parser",
+      "version": "2.0.0",
+      "url": "https://registry.npmjs.org/@mermaid-js/parser/-/parser-2.0.0.tgz",
+      "sha256": "7031d52ae94fa0b78693969a3871907d5a852cd38587350987a32f9215a40b33",
+      "integrity": "sha512-K8BeapFUfrfxbRAUQAG5oBOCwo1+bNWzaVnPxTCutkfrTBn6T/j91FIhqxWJ32SUeQ9T3iy1zcmPZ5ROZEvDrg==",
+      "repository": {
+        "url": "git+https://github.com/mermaid-js/mermaid.git",
+        "type": "git",
+        "directory": "packages/parser"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/@mermaid-js+parser@2.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "@upsetjs/venn.js",
+      "version": "2.0.0",
+      "url": "https://registry.npmjs.org/@upsetjs/venn.js/-/venn.js-2.0.0.tgz",
+      "sha256": "23c5da5de5c23351c6c6ed891d6416284c05c618e2774bd55484a4c4bef321e4",
+      "integrity": "sha512-WbBhLrooyePuQ1VZxrJjtLvTc4NVfpOyKx0sKqioq9bX1C1m7Jgykkn8gLrtwumBioXIqam8DLxp88Adbue6Hw==",
+      "repository": {
+        "url": "https://github.com/upsetjs/venn.js.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/@upsetjs+venn.js@2.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "chevrotain-allstar",
+      "version": "0.3.1",
+      "url": "https://registry.npmjs.org/chevrotain-allstar/-/chevrotain-allstar-0.3.1.tgz",
+      "sha256": "51027c5355c69e6404bb6415e2cd27594569616f97daf613535b662cc5cf0763",
+      "integrity": "sha512-b7g+y9A0v4mxCW1qUhf3BSVPg+/NvGErk/dOkrDaHA0nQIQGAtrOjlX//9OQtRlSCy+x9rfB5N8yC71lH1nvMw==",
+      "repository": {
+        "url": "git+https://github.com/langium/chevrotain-allstar.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/chevrotain-allstar@0.3.1/LICENSE"
+      ]
+    },
+    {
+      "name": "chevrotain",
+      "version": "11.1.2",
+      "url": "https://registry.npmjs.org/chevrotain/-/chevrotain-11.1.2.tgz",
+      "sha256": "bf2d28019e3a6b2d5f0980440c8467721e6e0a12cdce8b778a32034f3c516297",
+      "integrity": "sha512-opLQzEVriiH1uUQ4Kctsd49bRoFDXGGSC4GUqj7pGyxM3RehRhvTlZJc1FL/Flew2p5uwxa1tUDWKzI4wNM8pg==",
+      "repository": {
+        "url": "git://github.com/Chevrotain/chevrotain.git",
+        "type": "git"
+      },
+      "license": "Apache-2.0",
+      "licenseFiles": [
+        "LICENSES/chevrotain@11.1.2/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "cose-base",
+      "version": "1.0.3",
+      "url": "https://registry.npmjs.org/cose-base/-/cose-base-1.0.3.tgz",
+      "sha256": "a20640fb8c1a2cf226eb9195785e9f714ba1cce1e80cb8f48d131d1bc0909d18",
+      "integrity": "sha512-s9whTXInMSgAp/NVXVNuVxVKzGH2qck3aQlVHxDCdAEPgtMKwc4Wq6/QKhgdEdgbLSi9rBTAcPoRa6JpiG4ksg==",
+      "repository": {
+        "url": "git+https://github.com/iVis-at-Bilkent/cose-base.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/cose-base@1.0.3/LICENSE"
+      ]
+    },
+    {
+      "name": "cose-base",
+      "version": "2.2.0",
+      "url": "https://registry.npmjs.org/cose-base/-/cose-base-2.2.0.tgz",
+      "sha256": "612ec91a30b7f2dc158cca4846eeea1b7f89a97fc672951da3c1932107de6da8",
+      "integrity": "sha512-AzlgcsCbUMymkADOJtQm3wO9S3ltPfYOFD5033keQn9NJzIbtnZj+UdBJe7DYml/8TdbtHJW3j58SOnKhWY/5g==",
+      "repository": {
+        "url": "git+https://github.com/iVis-at-Bilkent/cose-base.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/cose-base@2.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "cytoscape-cose-bilkent",
+      "version": "4.1.0",
+      "url": "https://registry.npmjs.org/cytoscape-cose-bilkent/-/cytoscape-cose-bilkent-4.1.0.tgz",
+      "sha256": "9df46b10952452b1d2a5d4cd942f70709a037bc6b7ef25cf1d9fb70be73bb950",
+      "integrity": "sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==",
+      "repository": {
+        "url": "git+https://github.com/cytoscape/cytoscape.js-cose-bilkent.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/cytoscape-cose-bilkent@4.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "cytoscape-fcose",
+      "version": "2.2.0",
+      "url": "https://registry.npmjs.org/cytoscape-fcose/-/cytoscape-fcose-2.2.0.tgz",
+      "sha256": "4e1f30e1821fdd4b66f21043c8ea40a8e2ad0ba75e4ccdd2c24d289cf5595432",
+      "integrity": "sha512-ki1/VuRIHFCzxWNrsshHYPs6L7TvLu3DL+TyIGEsRcvVERmxokbf5Gdk7mFxZnTdiGtnA4cfSmjZJMviqSuZrQ==",
+      "repository": {
+        "url": "git+https://github.com/iVis-at-Bilkent/cytoscape.js-fcose.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/cytoscape-fcose@2.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "cytoscape",
+      "version": "3.34.0",
+      "url": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.34.0.tgz",
+      "sha256": "4155f863f4408d18bb637afb5808dff7840ca7361437067faf45bbe8c970e768",
+      "integrity": "sha512-62rNSrioXw93uliKFBwjukeQyeWwH2PqDrTac31r2P6464u3AUvTk0xS4LVvT251g7IgkFunrI48ZEZGjywSOg==",
+      "repository": {
+        "url": "git+https://github.com/cytoscape/cytoscape.js.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/cytoscape@3.34.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-array",
+      "version": "2.12.1",
+      "url": "https://registry.npmjs.org/d3-array/-/d3-array-2.12.1.tgz",
+      "sha256": "3795da9bd345fc440b82be032400c538298e021b559ca48342fe9647e44bb86b",
+      "integrity": "sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-array.git",
+        "type": "git"
+      },
+      "license": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSES/d3-array@2.12.1/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-array",
+      "version": "3.2.4",
+      "url": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-array.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-array@3.2.4/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-axis",
+      "version": "3.0.0",
+      "url": "https://registry.npmjs.org/d3-axis/-/d3-axis-3.0.0.tgz",
+      "sha256": "b5ca6e00b9a2503d6b473485684670564a370733cdc8565a45b63f9fb4d944f6",
+      "integrity": "sha512-IH5tgjV4jE/GhHkRV0HiVYPDtvfjHQlQfJHs0usq7M30XcSBvOotpmH1IgkcXsO/5gEQZD43B//fc7SRT5S+xw==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-axis.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-axis@3.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-brush",
+      "version": "3.0.0",
+      "url": "https://registry.npmjs.org/d3-brush/-/d3-brush-3.0.0.tgz",
+      "sha256": "fde88a49b16f92d067401df00abf88bf07eec3e091343eb902caf9cab02bdf2a",
+      "integrity": "sha512-ALnjWlVYkXsVIGlOsuWH1+3udkYFI48Ljihfnh8FZPF2QS9o+PzGLBslO0PjzVoHLZ2KCVgAM8NVkXPJB2aNnQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-brush.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-brush@3.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-color",
+      "version": "3.1.0",
+      "url": "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz",
+      "sha256": "d41bbcd99dd4f00e696546bffc73fed9b8fb6c3354905b6ea1721bff25f33b42",
+      "integrity": "sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-color.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-color@3.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-dispatch",
+      "version": "3.0.1",
+      "url": "https://registry.npmjs.org/d3-dispatch/-/d3-dispatch-3.0.1.tgz",
+      "sha256": "3d1a0b5c003e0e9608ad57f6ca21a0c8368031fcbe5f5317fe4e50b3f797ea23",
+      "integrity": "sha512-rzUyPU/S7rwUflMyLc1ETDeBj0NRuHKKAcvukozwhshr6g6c5d8zh4c2gQjY2bZ0dXeGLWc1PF174P2tVvKhfg==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-dispatch.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-dispatch@3.0.1/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-ease",
+      "version": "3.0.1",
+      "url": "https://registry.npmjs.org/d3-ease/-/d3-ease-3.0.1.tgz",
+      "sha256": "b249afe4aa8b741beeaf2d14f625ccf49270adb645e3f1c755d11476c1fdbe2a",
+      "integrity": "sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-ease.git",
+        "type": "git"
+      },
+      "license": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSES/d3-ease@3.0.1/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-format",
+      "version": "3.1.0",
+      "url": "https://registry.npmjs.org/d3-format/-/d3-format-3.1.0.tgz",
+      "sha256": "5439103fc9b6f033e02bf68fbeb13ecd2c33442f77ea772a4b2b1bc4f4cee5ba",
+      "integrity": "sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-format.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-format@3.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-hierarchy",
+      "version": "3.1.2",
+      "url": "https://registry.npmjs.org/d3-hierarchy/-/d3-hierarchy-3.1.2.tgz",
+      "sha256": "7681875f06440c088afda1fd834d853dd560166c945e731382ee0c636332360b",
+      "integrity": "sha512-FX/9frcub54beBdugHjDCdikxThEqjnR93Qt7PvQTOHxyiNCAlvMrHhclk3cD5VeAaq9fxmfRp+CnWw9rEMBuA==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-hierarchy.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-hierarchy@3.1.2/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-interpolate",
+      "version": "3.0.1",
+      "url": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz",
+      "sha256": "7e8df78d233cd102a0bb518658dc0b7d5c38442b6f2dbc8b95ffc14ba87c7c33",
+      "integrity": "sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-interpolate.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-interpolate@3.0.1/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-path",
+      "version": "1.0.9",
+      "url": "https://registry.npmjs.org/d3-path/-/d3-path-1.0.9.tgz",
+      "sha256": "2c10702bad9be578f0827d00e45010ae59cb67165f65462e5c781913a5505db1",
+      "integrity": "sha512-VLaYcn81dtHVTjEHd8B+pbe9yHWpXKZUC87PzoFmsFrJqgFwDe/qxfp5MlfsfM1V5E/iVt0MmEbWQ7FVIXh/bg==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-path.git",
+        "type": "git"
+      },
+      "license": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSES/d3-path@1.0.9/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-path",
+      "version": "3.1.0",
+      "url": "https://registry.npmjs.org/d3-path/-/d3-path-3.1.0.tgz",
+      "sha256": "94e9b69f82f113ed4ada36703c05f6b7406723c55affe2a443d69729d6d5da14",
+      "integrity": "sha512-p3KP5HCf/bvjBSSKuXid6Zqijx7wIfNW+J/maPs+iwR35at5JCbLUT0LzF1cnjbCHWhqzQTIN2Jpe8pRebIEFQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-path.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-path@3.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-sankey",
+      "version": "0.12.3",
+      "url": "https://registry.npmjs.org/d3-sankey/-/d3-sankey-0.12.3.tgz",
+      "sha256": "6bd8cdb143d4088ff38179def70954419868d4b95f136c168ffef2dad004ff22",
+      "integrity": "sha512-nQhsBRmM19Ax5xEIPLMY9ZmJ/cDvd1BG3UVvt5h3WRxKg5zGRbvnteTyWAbzeSvlh3tW7ZEmq4VwR5mB3tutmQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-sankey.git",
+        "type": "git"
+      },
+      "license": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSES/d3-sankey@0.12.3/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-scale-chromatic",
+      "version": "3.1.0",
+      "url": "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.1.0.tgz",
+      "sha256": "2573f980e0acbbecc919f5c5fdf7cd3a8110eda2497da7b94ae303fab9c32aa4",
+      "integrity": "sha512-A3s5PWiZ9YCXFye1o246KoscMWqf8BsD9eRiJ3He7C9OBaxKhAd5TFCdEx/7VbKtxxTsu//1mMJFrEt572cEyQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-scale-chromatic.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-scale-chromatic@3.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-scale",
+      "version": "4.0.2",
+      "url": "https://registry.npmjs.org/d3-scale/-/d3-scale-4.0.2.tgz",
+      "sha256": "bf50a1f34ba0e6fa25cb7ae902abe0b9e2f85ced39fdca7b18fbe863fbaa39a7",
+      "integrity": "sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-scale.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-scale@4.0.2/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-selection",
+      "version": "3.0.0",
+      "url": "https://registry.npmjs.org/d3-selection/-/d3-selection-3.0.0.tgz",
+      "sha256": "a1f872f30dca23b76de89cae9e882f56c325433e7f3aee87b95fa830d12789f3",
+      "integrity": "sha512-fmTRWbNMmsmWq6xJV8D19U/gw/bwrHfNXxrIN+HfZgnzqTHp9jOmKMhsTUjXOJnZOdZY9Q28y4yebKzqDKlxlQ==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-selection.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-selection@3.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-shape",
+      "version": "1.3.7",
+      "url": "https://registry.npmjs.org/d3-shape/-/d3-shape-1.3.7.tgz",
+      "sha256": "d19261dad8ff192357db2720d57c1786dbfb8c9f42eafe577cb7c4d5b473fd0e",
+      "integrity": "sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-shape.git",
+        "type": "git"
+      },
+      "license": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSES/d3-shape@1.3.7/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-shape",
+      "version": "3.2.0",
+      "url": "https://registry.npmjs.org/d3-shape/-/d3-shape-3.2.0.tgz",
+      "sha256": "8b4b2bc9daa99a957abe17656c5944fd3f28efb88f788e6b4fdba346cb80e602",
+      "integrity": "sha512-SaLBuwGm3MOViRq2ABk3eLoxwZELpH6zhl3FbAoJ7Vm1gofKx6El1Ib5z23NUEhF9AsGl7y+dzLe5Cw2AArGTA==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-shape.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-shape@3.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-time-format",
+      "version": "4.1.0",
+      "url": "https://registry.npmjs.org/d3-time-format/-/d3-time-format-4.1.0.tgz",
+      "sha256": "46f1492ef6be8afe04a844876a644a4a964da7f87937e90e93f9585acff9d30e",
+      "integrity": "sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-time-format.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-time-format@4.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-time",
+      "version": "3.1.0",
+      "url": "https://registry.npmjs.org/d3-time/-/d3-time-3.1.0.tgz",
+      "sha256": "a9f2c8e177b76e7068e7c9c77722c4924c71c9e54f9b1e245d27ef11b28dbc08",
+      "integrity": "sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-time.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-time@3.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-timer",
+      "version": "3.0.1",
+      "url": "https://registry.npmjs.org/d3-timer/-/d3-timer-3.0.1.tgz",
+      "sha256": "05cdf901e1876a7f24f4c365a879252752e22e3cc52b131ca616639f07e8ed05",
+      "integrity": "sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-timer.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-timer@3.0.1/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-transition",
+      "version": "3.0.1",
+      "url": "https://registry.npmjs.org/d3-transition/-/d3-transition-3.0.1.tgz",
+      "sha256": "260eb8eaed565581afc00634ec83c83fd3b7e830e2a6b73b49f3f744dce0254c",
+      "integrity": "sha512-ApKvfjsSR6tg06xrL434C0WydLr7JewBB3V+/39RMHsaXTOG0zmt/OAXeng5M5LBm0ojmxJrpomQVZ1aPvBL4w==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-transition.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-transition@3.0.1/LICENSE"
+      ]
+    },
+    {
+      "name": "d3-zoom",
+      "version": "3.0.0",
+      "url": "https://registry.npmjs.org/d3-zoom/-/d3-zoom-3.0.0.tgz",
+      "sha256": "846d28725c4889d6a2069c6cf084ca7e7730ee917a9b87960ecc53247f840f85",
+      "integrity": "sha512-b8AmV3kfQaqWAuacbPuNbL6vahnOJflOhexLzMMNLga62+/nh0JzvJ0aO/5a5MVgUFGS7Hu1P9P03o3fJkDCyw==",
+      "repository": {
+        "url": "git+https://github.com/d3/d3-zoom.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/d3-zoom@3.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "dagre-d3-es",
+      "version": "7.0.14",
+      "url": "https://registry.npmjs.org/dagre-d3-es/-/dagre-d3-es-7.0.14.tgz",
+      "sha256": "488d146fc076978029da937a54628f840dbbcb48e6f95ea79e6c58cc384fe157",
+      "integrity": "sha512-P4rFMVq9ESWqmOgK+dlXvOtLwYg0i7u0HBGJER0LZDJT2VHIPAMZ/riPxqJceWMStH5+E61QxFra9kIS3AqdMg==",
+      "repository": {
+        "url": "git+https://github.com/tbo47/dagre-es.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/dagre-d3-es@7.0.14/LICENSE.md"
+      ]
+    },
+    {
+      "name": "dayjs",
+      "version": "1.11.21",
+      "url": "https://registry.npmjs.org/dayjs/-/dayjs-1.11.21.tgz",
+      "sha256": "290ec8bf81878ae4927581d9be74125f07722ea8bbea2ff77a2226dce12df876",
+      "integrity": "sha512-98IT+HOahAisibz/yjKbzuOBwYcjJ7BCLPzARyHiyEBmRz4fatF+KPJszEHXsGYjUG234aH/cOjW1wwTbKUZlA==",
+      "repository": {
+        "url": "git+https://github.com/iamkun/dayjs.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/dayjs@1.11.21/LICENSE"
+      ]
+    },
+    {
+      "name": "dompurify",
+      "version": "3.4.12",
+      "url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.12.tgz",
+      "sha256": "4fd255d4cd435ffc74d59b7ffa8b4a92f8e4a7fc84faf1d0f9d298cd7d741616",
+      "integrity": "sha512-zQvGet8Z2sWbQhCmfFz/T5QWH2oBmjnqK3qvOjaqaNLrLEF912WamU+ohnTp0TCep/MFVHpdJuCZEdFOdTnEFg==",
+      "repository": {
+        "url": "git://github.com/cure53/DOMPurify.git",
+        "type": "git"
+      },
+      "license": "(MPL-2.0 OR Apache-2.0)",
+      "selectedLicense": "Apache-2.0",
+      "licenseFiles": [
+        "LICENSES/dompurify@3.4.12/LICENSE",
+        "LICENSES/dompurify@3.4.12/LICENSE-MPL"
+      ]
+    },
+    {
+      "name": "elkjs",
+      "version": "0.9.3",
+      "url": "https://registry.npmjs.org/elkjs/-/elkjs-0.9.3.tgz",
+      "sha256": "b95b224bd1ab71fd40f6d9a6365c28d989745dff6b0d514407bc1eb68f2f561e",
+      "integrity": "sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==",
+      "repository": {
+        "url": "git+https://github.com/kieler/elkjs.git",
+        "type": "git"
+      },
+      "license": "EPL-2.0",
+      "licenseFiles": [
+        "LICENSES/elkjs@0.9.3/LICENSE.md"
+      ]
+    },
+    {
+      "name": "es-toolkit",
+      "version": "1.45.1",
+      "url": "https://registry.npmjs.org/es-toolkit/-/es-toolkit-1.45.1.tgz",
+      "sha256": "0ab10ae18c0853f0c989ee187cecd9d5b2dd561bdf2b3c9f314bbc981aab427f",
+      "integrity": "sha512-/jhoOj/Fx+A+IIyDNOvO3TItGmlMKhtX8ISAHKE90c4b/k1tqaqEZ+uUqfpU8DMnW5cgNJv606zS55jGvza0Xw==",
+      "repository": {
+        "url": "git+https://github.com/toss/es-toolkit.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/es-toolkit@1.45.1/LICENSE"
+      ]
+    },
+    {
+      "name": "fastdom",
+      "version": "1.0.12",
+      "url": "https://registry.npmjs.org/fastdom/-/fastdom-1.0.12.tgz",
+      "sha256": "15e452be64ae3661c3cc9d736524ebb689c23f162765d60741dcc518ec182265",
+      "integrity": "sha512-LB+xjSTEbjHE1cWsxu+tN2Xqr1kpi+V9aADI7sVM5ZMaXyYGPHULQMzpJMYqOTULK/73pUkWVzzObFRBkPr+hg==",
+      "repository": {
+        "url": "git://github.com/wilsonpage/fastdom.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/fastdom@1.0.12/LICENSE-from-README.txt"
+      ]
+    },
+    {
+      "name": "hachure-fill",
+      "version": "0.5.2",
+      "url": "https://registry.npmjs.org/hachure-fill/-/hachure-fill-0.5.2.tgz",
+      "sha256": "d816b83fea8b39161ef35c46f5080a0a7e406dce39ebf26f1ec8a1daea06a837",
+      "integrity": "sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==",
+      "repository": {
+        "url": "git+https://github.com/pshihn/hachure-fill.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/hachure-fill@0.5.2/LICENSE"
+      ]
+    },
+    {
+      "name": "internmap",
+      "version": "2.0.3",
+      "url": "https://registry.npmjs.org/internmap/-/internmap-2.0.3.tgz",
+      "sha256": "39d1936831a4d3f2bd6e088db28a10de4458d823f652c36b2c808bf5b978c48d",
+      "integrity": "sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==",
+      "repository": {
+        "url": "git+https://github.com/mbostock/internmap.git",
+        "type": "git"
+      },
+      "license": "ISC",
+      "licenseFiles": [
+        "LICENSES/internmap@2.0.3/LICENSE"
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.3.0",
+      "url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.0.tgz",
+      "sha256": "8594ee34496dd2e41ec934fd202843dc993be9ab2d7d5d47579146962fbdfae6",
+      "integrity": "sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==",
+      "repository": {
+        "url": "git+https://github.com/nodeca/js-yaml.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/js-yaml@4.3.0/LICENSE"
+      ]
+    },
+    {
+      "name": "katex",
+      "version": "0.16.47",
+      "url": "https://registry.npmjs.org/katex/-/katex-0.16.47.tgz",
+      "sha256": "ad2d1ab2f7fcc227019784320e8a2c5218ff6bb333b36df4136d10365ae29375",
+      "integrity": "sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==",
+      "repository": {
+        "url": "git+https://github.com/KaTeX/KaTeX.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/katex@0.16.47/LICENSE"
+      ]
+    },
+    {
+      "name": "khroma",
+      "version": "2.1.0",
+      "url": "https://registry.npmjs.org/khroma/-/khroma-2.1.0.tgz",
+      "sha256": "8963d209f3a682374d7f7e45e5fa361a58fc060c8528df6656fae0fc7c508110",
+      "integrity": "sha512-Ls993zuzfayK269Svk9hzpeGUKob/sIgZzyHYdjQoAdQetRKpOLj+k/QQQ/6Qi0Yz65mlROrfd+Ev+1+7dz9Kw==",
+      "repository": {
+        "url": "git+https://github.com/fabiospampinato/khroma.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/khroma@2.1.0/license"
+      ]
+    },
+    {
+      "name": "langium",
+      "version": "4.2.1",
+      "url": "https://registry.npmjs.org/langium/-/langium-4.2.1.tgz",
+      "sha256": "640d97d6f78fc6c98411863f9390e516cb9d714d80b12a56e5b1b1e7e18e4f20",
+      "integrity": "sha512-zu9QWmjpzJcomzdJQAHgDVhLGq5bLosVak1KVa40NzQHXfqr4eAHupvnPOVXEoLkg6Ocefvf/93d//SB7du4YQ==",
+      "repository": {
+        "url": "git+https://github.com/eclipse-langium/langium.git",
+        "type": "git",
+        "directory": "packages/langium"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/langium@4.2.1/LICENSE"
+      ]
+    },
+    {
+      "name": "layout-base",
+      "version": "1.0.2",
+      "url": "https://registry.npmjs.org/layout-base/-/layout-base-1.0.2.tgz",
+      "sha256": "efea1306903d9d043c42c1e7931b2d97b4f519cff04b1347fa308032a52eebab",
+      "integrity": "sha512-8h2oVEZNktL4BH2JCOI90iD1yXwL6iNW7KcCKT2QZgQJR2vbqDsldCTPRU9NifTCqHZci57XvQQ15YTu+sTYPg==",
+      "repository": {
+        "url": "git+https://github.com/iVis-at-Bilkent/layout-base.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/layout-base@1.0.2/LICENSE"
+      ]
+    },
+    {
+      "name": "layout-base",
+      "version": "2.0.1",
+      "url": "https://registry.npmjs.org/layout-base/-/layout-base-2.0.1.tgz",
+      "sha256": "34165e46d8c4b9d719a592e39a60fa5f7324c21a3edd02733e1116b17013defd",
+      "integrity": "sha512-dp3s92+uNI1hWIpPGH3jK2kxE2lMjdXdr+DH8ynZHpd6PUlH6x6cbuXnoMmiNumznqaNO31xu9e79F0uuZ0JFg==",
+      "repository": {
+        "url": "git+https://github.com/iVis-at-Bilkent/layout-base.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/layout-base@2.0.1/LICENSE"
+      ]
+    },
+    {
+      "name": "lodash-es",
+      "version": "4.17.23",
+      "url": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.23.tgz",
+      "sha256": "2dbc40d4f256e6c2eccc6c355e5e068acf78b3117a8b0c458be004319a3108ff",
+      "integrity": "sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==",
+      "repository": {
+        "url": "git+https://github.com/lodash/lodash.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/lodash-es@4.17.23/LICENSE"
+      ]
+    },
+    {
+      "name": "lodash-es",
+      "version": "4.18.1",
+      "url": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.18.1.tgz",
+      "sha256": "b0c810e5cd4cd580ed7b18fc71384b9a80c151dc5c85b1729bd656a49e3f16f8",
+      "integrity": "sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==",
+      "repository": {
+        "url": "git+https://github.com/lodash/lodash.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/lodash-es@4.18.1/LICENSE"
+      ]
+    },
+    {
+      "name": "marked",
+      "version": "16.3.0",
+      "url": "https://registry.npmjs.org/marked/-/marked-16.3.0.tgz",
+      "sha256": "c333c47cd3802a1d631dfdd8c6cfc411a88599a872c04ce8cd2291381a7767a0",
+      "integrity": "sha512-K3UxuKu6l6bmA5FUwYho8CfJBlsUWAooKtdGgMcERSpF7gcBUrCGsLH7wDaaNOzwq18JzSUDyoEb/YsrqMac3w==",
+      "repository": {
+        "url": "git://github.com/markedjs/marked.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/marked@16.3.0/LICENSE.md"
+      ]
+    },
+    {
+      "name": "mermaid",
+      "version": "12.0.0",
+      "url": "https://registry.npmjs.org/mermaid/-/mermaid-12.0.0.tgz",
+      "sha256": "7df1e7de572d26ea7aca5eaa7b0e77f5caacb63567006f4077c2753d730ffd9d",
+      "integrity": "sha512-/wQXC9iBxoGV8p3erbvaXs9h77VyLDBH6GdayVjj3hEcSQhFU4N1WUhUppotCEqlIxI2pRMwjwBSwTB1MfZBgQ==",
+      "repository": {
+        "url": "git+https://github.com/mermaid-js/mermaid.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/mermaid@12.0.0/LICENSE"
+      ]
+    },
+    {
+      "name": "path-data-parser",
+      "version": "0.1.0",
+      "url": "https://registry.npmjs.org/path-data-parser/-/path-data-parser-0.1.0.tgz",
+      "sha256": "09be555fc313a8e831b55d4cc727699655f5c224fde2d8062f3f52bc9386d3b0",
+      "integrity": "sha512-NOnmBpt5Y2RWbuv0LMzsayp3lVylAHLPUTut412ZA3l+C4uw4ZVkQbjShYCQ8TCpUMdPapr4YjUqLYD6v68j+w==",
+      "repository": {
+        "url": "git+https://github.com/pshihn/path-data-parser.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/path-data-parser@0.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "points-on-curve",
+      "version": "0.2.0",
+      "url": "https://registry.npmjs.org/points-on-curve/-/points-on-curve-0.2.0.tgz",
+      "sha256": "adc00f4d5ae800c315aea316822fb6f8dd4529f76107facbdccf356372e5ddbf",
+      "integrity": "sha512-0mYKnYYe9ZcqMCWhUjItv/oHjvgEsfKvnUTg8sAtnHr3GVy7rGkXCb6d5cSyqrWqL4k81b9CPg3urd+T7aop3A==",
+      "repository": {
+        "url": "git+https://github.com/pshihn/bezier-points.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/points-on-curve@0.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "points-on-path",
+      "version": "0.2.1",
+      "url": "https://registry.npmjs.org/points-on-path/-/points-on-path-0.2.1.tgz",
+      "sha256": "eb57ddbb156d4e73cbc8d9416e1b666ace0d8abf9dc783f8c934ab63dbae6e44",
+      "integrity": "sha512-25ClnWWuw7JbWZcgqY/gJ4FQWadKxGWk+3kR/7kD0tCaDtPPMj7oHu2ToLaVhfpnHrZzYby2w6tUA0eOIuUg8g==",
+      "repository": {
+        "url": "git+https://github.com/pshihn/points-on-path.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/points-on-path@0.2.1/LICENSE"
+      ]
+    },
+    {
+      "name": "roughjs",
+      "version": "4.6.6",
+      "url": "https://registry.npmjs.org/roughjs/-/roughjs-4.6.6.tgz",
+      "sha256": "373873b2c3f1b7ddba878525c774816057c5818029780c7fba081f06018ba78c",
+      "integrity": "sha512-ZUz/69+SYpFN/g/lUlo2FXcIjRkSu3nDarreVdGGndHEBJ6cXPdKguS8JGxwj5HA5xIbVKSmLgr5b3AWxtRfvQ==",
+      "repository": {
+        "url": "git+https://github.com/pshihn/rough.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/roughjs@4.6.6/LICENSE"
+      ]
+    },
+    {
+      "name": "stylis",
+      "version": "4.3.6",
+      "url": "https://registry.npmjs.org/stylis/-/stylis-4.3.6.tgz",
+      "sha256": "57bd37727276e7e30d2f15472a43c5d5b8ae6cd9cebd36dbb84880c500de568e",
+      "integrity": "sha512-yQ3rwFWRfwNUY7H5vpU0wfdkNSnvnJinhF9830Swlaxl03zsOjCfmX0ugac+3LtK0lYSgwL/KXc8oYL3mG4YFQ==",
+      "repository": {
+        "url": "git+https://github.com/thysultan/stylis.js.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/stylis@4.3.6/LICENSE"
+      ]
+    },
+    {
+      "name": "ts-dedent",
+      "version": "2.2.0",
+      "url": "https://registry.npmjs.org/ts-dedent/-/ts-dedent-2.2.0.tgz",
+      "sha256": "f04cddc15ce3aad91287aebdcb0d6b6997b85222769c35c910038f59bfd2234d",
+      "integrity": "sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==",
+      "repository": {
+        "url": "git+https://github.com/tamino-martinius/node-ts-dedent.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/ts-dedent@2.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "uuid",
+      "version": "14.0.0",
+      "url": "https://registry.npmjs.org/uuid/-/uuid-14.0.0.tgz",
+      "sha256": "ca468c168ec7f2021f6a98041e943443b29e67e0e0ff5b4c1caca17c6efa9870",
+      "integrity": "sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==",
+      "repository": {
+        "url": "git+https://github.com/uuidjs/uuid.git",
+        "type": "git"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/uuid@14.0.0/LICENSE.md"
+      ]
+    },
+    {
+      "name": "vscode-jsonrpc",
+      "version": "8.2.0",
+      "url": "https://registry.npmjs.org/vscode-jsonrpc/-/vscode-jsonrpc-8.2.0.tgz",
+      "sha256": "3da44531c398f1545074cb728e359a822f35b9f8ac7171c847f42f0728b9c7cb",
+      "integrity": "sha512-C+r0eKJUIfiDIfwJhria30+TYWPtuHJXHtI7J0YlOmKAo7ogxP20T0zxB7HZQIFhIyvoBPwWskjxrvAtfjyZfA==",
+      "repository": {
+        "url": "git+https://github.com/Microsoft/vscode-languageserver-node.git",
+        "type": "git",
+        "directory": "jsonrpc"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/vscode-jsonrpc@8.2.0/License.txt",
+        "LICENSES/vscode-jsonrpc@8.2.0/thirdpartynotices.txt"
+      ]
+    },
+    {
+      "name": "vscode-languageserver-protocol",
+      "version": "3.17.5",
+      "url": "https://registry.npmjs.org/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.17.5.tgz",
+      "sha256": "7473eb2d2163f3f8bea09644f9d803789a195e596b65d3946c4157e583e3ccc8",
+      "integrity": "sha512-mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==",
+      "repository": {
+        "url": "git+https://github.com/Microsoft/vscode-languageserver-node.git",
+        "type": "git",
+        "directory": "protocol"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/vscode-languageserver-protocol@3.17.5/License.txt",
+        "LICENSES/vscode-languageserver-protocol@3.17.5/thirdpartynotices.txt"
+      ]
+    },
+    {
+      "name": "vscode-languageserver-textdocument",
+      "version": "1.0.12",
+      "url": "https://registry.npmjs.org/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.12.tgz",
+      "sha256": "9f1d28814d6ee81267f52f5bc8c920bb6a0a23eb6de48960345a0a25fbf3b0db",
+      "integrity": "sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==",
+      "repository": {
+        "url": "git+https://github.com/Microsoft/vscode-languageserver-node.git",
+        "type": "git",
+        "directory": "textDocument"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/vscode-languageserver-textdocument@1.0.12/License.txt",
+        "LICENSES/vscode-languageserver-textdocument@1.0.12/thirdpartynotices.txt"
+      ]
+    },
+    {
+      "name": "vscode-languageserver-types",
+      "version": "3.17.5",
+      "url": "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.17.5.tgz",
+      "sha256": "d673f9e7f8bbe51351be51c58f32d4dcfa97a670ebb86bc633368394c609cac0",
+      "integrity": "sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==",
+      "repository": {
+        "url": "git+https://github.com/Microsoft/vscode-languageserver-node.git",
+        "type": "git",
+        "directory": "types"
+      },
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSES/vscode-languageserver-types@3.17.5/License.txt",
+        "LICENSES/vscode-languageserver-types@3.17.5/thirdpartynotices.txt"
+      ]
+    }
+  ],
+  "elkCompiledLibraries": [
+    {
+      "group": "org.gwtproject",
+      "name": "gwt-user",
+      "version": "2.10.0",
+      "license": "Apache-2.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/org/gwtproject/gwt-user/2.10.0/gwt-user-2.10.0-sources.jar",
+      "sourceSHA256": "731ff22188418a1dfaca30c8956ea107e87219ba7c4fb32d2f059ede317660b9",
+      "noticeFile": "LICENSES/elk-gwt-user-2.10.0-copyrights.txt"
+    },
+    {
+      "group": "com.google.guava",
+      "name": "guava-gwt",
+      "version": "31.1-jre",
+      "license": "Apache-2.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/com/google/guava/guava-gwt/31.1-jre/guava-gwt-31.1-jre-sources.jar",
+      "sourceSHA256": "d7e52f41ac6ea010787b5b3c8db7ffb54375d8d0c39c98c2badc9c38de7bf14b",
+      "noticeFile": "LICENSES/elk-guava-gwt-31.1-jre-copyrights.txt"
+    },
+    {
+      "group": "com.google.guava",
+      "name": "guava",
+      "version": "31.1-jre",
+      "license": "Apache-2.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/com/google/guava/guava/31.1-jre/guava-31.1-jre-sources.jar",
+      "sourceSHA256": "8ab1853cdaf936ec88be80c17302b7c20abafbd4f54d4fb54d7011c529e3a44a",
+      "noticeFile": "LICENSES/elk-guava-31.1-jre-copyrights.txt"
+    },
+    {
+      "group": "com.genmymodel.emf.gwt",
+      "name": "emf-common",
+      "version": "2.12.4",
+      "license": "EPL-1.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/com/genmymodel/emf/gwt/emf-common/2.12.4/emf-common-2.12.4-sources.jar",
+      "sourceSHA256": "8dfc4e97ca8eee5474927e2b0c5f3bdbd9a52dcd5dff8c0b433b1e938b843bbe",
+      "noticeFile": "LICENSES/elk-emf-common-2.12.4-copyrights.txt"
+    },
+    {
+      "group": "com.genmymodel.emf.gwt",
+      "name": "emf-ecore",
+      "version": "2.12.4",
+      "license": "EPL-1.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/com/genmymodel/emf/gwt/emf-ecore/2.12.4/emf-ecore-2.12.4-sources.jar",
+      "sourceSHA256": "dd3b8c1c3bd0a27c1fbba908bcf0ff21a999148da4e68b3546bcde1dbce7b13a",
+      "noticeFile": "LICENSES/elk-emf-ecore-2.12.4-copyrights.txt"
+    },
+    {
+      "group": "org.eclipse.xtend",
+      "name": "org.eclipse.xtend.lib",
+      "version": "2.28.0",
+      "license": "EPL-2.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib/2.28.0/org.eclipse.xtend.lib-2.28.0-sources.jar",
+      "sourceSHA256": "899f1ffb8d761f11bb5f7b74e46cdd790bd8f9bc398221cd62524eea9344d926",
+      "noticeFile": "LICENSES/elk-org.eclipse.xtend.lib-2.28.0-copyrights.txt"
+    },
+    {
+      "group": "org.eclipse.xtext",
+      "name": "org.eclipse.xtext.xbase.lib",
+      "version": "2.28.0",
+      "license": "EPL-2.0",
+      "sourceURL": "https://repo.maven.apache.org/maven2/org/eclipse/xtext/org.eclipse.xtext.xbase.lib/2.28.0/org.eclipse.xtext.xbase.lib-2.28.0-sources.jar",
+      "sourceSHA256": "2b35e9ccd4308f605e213371bb26f458b6a84bbd1e3a13cecaac0eba607db69f",
+      "noticeFile": "LICENSES/elk-org.eclipse.xtext.xbase.lib-2.28.0-copyrights.txt"
+    }
+  ],
+  "elkSource": {
+    "sourceURL": "https://github.com/kieler/elkjs/tree/0.9.3",
+    "sourceArchiveURL": "https://codeload.github.com/kieler/elkjs/tar.gz/refs/tags/0.9.3",
+    "sourceArchiveSHA256": "b79f22b70f92f74f3393663763ac6e4a3c6ceaa2d52a252aa099675e85b3d1a4",
+    "kernelURL": "https://github.com/eclipse/elk/tree/v0.9.1",
+    "kernelArchiveURL": "https://codeload.github.com/eclipse/elk/tar.gz/refs/tags/v0.9.1",
+    "kernelArchiveSHA256": "8f7ce8eebf527f085904a2a4ae402fae26335cd36c6a7dbc044f62dd8b33bf5a",
+    "additionalPatchURL": "https://github.com/eclipse/elk/pull/955",
+    "additionalPatchDownloadURL": "https://patch-diff.githubusercontent.com/raw/eclipse/elk/pull/955.patch",
+    "additionalPatchSHA256": "7f204a6e304031b7898dca1f09865d4bb6c9b9b58bd185e56f82931ff1551ec3",
+    "releaseNotes": "https://github.com/kieler/elkjs/releases/tag/0.9.3"
+  },
+  "upstreamPatches": [
+    {
+      "package": "fastdom",
+      "version": "1.0.12",
+      "sourceURL": "https://github.com/mermaid-js/mermaid/blob/mermaid%4012.0.0/patches/fastdom.patch",
+      "pnpmPatchHash": "10bad52c2ff6c742f43492850f2a5a74e9d70a33f42a442cdbda4e174356aa87"
+    },
+    {
+      "package": "roughjs",
+      "version": "4.6.6",
+      "sourceURL": "https://github.com/mermaid-js/mermaid/blob/mermaid%4012.0.0/patches/roughjs.patch",
+      "pnpmPatchHash": "3543d47108cb41b68ec6a671c0e1f9d0cfe2ce524fea5b0992511ae84c3c6b64"
+    }
+  ]
+}

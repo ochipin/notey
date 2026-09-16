@@ -11,7 +11,8 @@
 - **画像** — 段幅に自動リサイズ + WebP srcset + 遅延読み込み + クリックで拡大ライトボックス
 - **コードブロック** — 言語ラベル、タイトル、コピーボタン、Chroma のライト/ダーク配色
 - **ショートコード** — 注意書き・カード・タブ・手順・動画に加え、ヒーロー・段組み・ボタンなど全22種類
-- **Mermaid** — 図のあるページだけ遅延読み込み
+- **Mermaid** — v12.0.0 を同梱し、図のあるページだけローカルから遅延読み込み
+- **数式** — LaTeX 記法を Hugo 内蔵の KaTeX でビルド時に描画。CSS・フォントも同梱
 - **OG 画像** — 背景画像とフォントを配置するとページごとに自動生成、または既定画像
 
 ## 必要環境
@@ -199,6 +200,63 @@ hugo server
 
 以前のメタデータ中心のトップページから移行する場合、`hero` の `title`・`eyebrow`・`lead`・`image`・`imageAlt` は `params.hero` に移します。`hero.buttons`・`hero.install` は `actions` / `button` / `command`、`specs` は `specs` / `spec`、`features` は `section` / `card-grid` / `card`、`showcase` は `columns` / `column` と Markdown、`cta` は `section variant="cta"` として本文に書き直してください。旧メタデータのブロックは自動描画しません。
 
+## Mermaid と数式
+
+どちらも標準設定では CDN を使いません。図や数式のために npm を実行する必要もありません。本文用の Google Fonts も無効にして完全にローカルで表示する場合は、`params.fonts.google: false` にします。
+
+### Mermaid
+
+`mermaid` のコードフェンスに図を書きます。Mermaid **12.0.0** と、各種の図・レイアウトに必要な ESM ファイルを同梱しています。図があるページだけ読み込み、ライト／ダーク切替に合わせて描画し直します。
+
+````markdown
+```mermaid
+flowchart LR
+  A[Markdown] --> B[Hugo]
+  B --> C[Webサイト]
+```
+````
+
+既存の図の見た目を保つため、レイアウトは `dagre`、描画スタイルは `classic` を既定にしています。図内の設定で `layout: elk` などを選ぶこともできます。図内の数式ラベルにはブラウザーの MathML 表示を使います。外部の画像・アイコン集などを指定する場合は、その素材も別途ローカルに用意してください。
+
+`params.mermaid.url` は引き続き使用できます。指定すると同梱版に代わってその ESM URL を読み込みます。`/vendor/...` のようなサイト内パスは `baseURL` のサブディレクトリに対応します。CDN の URL を指定した場合はネット接続が必要になります。
+
+### 数式
+
+単独の数式は、追加設定なしで `math` のコードフェンスに書けます。
+
+````markdown
+```math
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+```
+````
+
+本文中の `\(...\)`、独立した数式の `$$...$$` と `\[...\]` も使用できます。その場合は、サイトの `hugo.yaml` に次の設定を追加します。`exampleSite/hugo.yaml` には設定済みです。
+
+```yaml
+markup:
+  goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          inline: [['\(', '\)']]
+          block: [['$$', '$$'], ['\[', '\]']]
+```
+
+```markdown
+本文中の数式は \(\sqrt{x^2 + y^2}\) のように書きます。
+
+$$
+\int_0^1 x^2\,dx = \frac{1}{3}
+$$
+```
+
+通貨やシェルの記法と衝突しないよう、単独の `$...$` は既定の区切り文字にしません。通常のコードフェンス・インラインコード内の記法は数式に変換しません。長い数式は本文の幅に収め、その枠内で横スクロールできます。
+
+Hugo の `transform.ToMath` で HTML と MathML を生成するため、閲覧時の JavaScript は不要です。KaTeX **0.18.4** の CSS・フォントを同梱し、Hugo **0.166.0** の内蔵版に合わせています。Hugo の内蔵 KaTeX が更新された場合は、同梱の CSS・フォントとの互換性も確認してください。不正な式はビルド警告とページ内のエラー表示になり、元の入力は残ります。
+
+使用例は [数式のサンプル記事](exampleSite/content/reference/math.ja.md)、配布物の出典・ライセンスは [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を参照してください。同梱版は固定しているため、ライブラリの更新はテーマの更新として行います。
+
 ## 主な params
 
 | キー | 既定 | 説明 |
@@ -212,7 +270,7 @@ hugo server
 | `params.og.default` | – | 既定の OG 画像 |
 | `params.og.font` | `fonts/og.ttf` | OG 自動生成に使う TTF（assets 配下） |
 | `params.fonts.google` | `true` | Google Fonts（Murecho / Source Code Pro）の読み込み |
-| `params.mermaid.url` | jsDelivr | Mermaid の ESM URL |
+| `params.mermaid.url` | 同梱の Mermaid 12.0.0 | 別の Mermaid ESM URL を使う場合に指定 |
 
 OG 画像は、ページの `params.image`、ページバンドル内の `cover`・`og`・`thumbnail` 画像、自動生成画像、`params.og.default` の順に選びます。自動生成には `assets/og/base.png` と `assets/fonts/og.ttf`（または `params.og.font` の指定先）の両方が必要です。サンプルの既定画像は同梱の `/favicon.png` を使っています。`/images/share.png` のようなサイト内パスは `baseURL` の配下に解決されます。
 
@@ -248,6 +306,8 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 ## ライセンス
 
 テーマ本体は [MIT](LICENSE) です。アイコンの元 SVG と、それらから生成したフォントには [Apache License 2.0](LICENSES/Apache-2.0.txt) が適用されます。48 個すべてを Google 公式の Material Symbols Rounded から取得し直し、出典が未確定だった旧フォントの図形は使用していません。
+
+同梱の Mermaid・KaTeX とその依存ライブラリ・フォントには、それぞれのライセンスが適用されます。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と `static/vendor/` 内のライセンス・出典ファイルを参照してください。生成サイトにもコピーされるこれらのファイルは、アプリやサイトを再配布する際も保持してください。
 
 取得元のコミット、アイコンごとの URL・SHA-256・名前の対応は [manifest.json](icons/material-symbols/manifest.json)、加工内容と配布時の扱いは [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) に記録しています。`icomoon` という名前は既存の CSS とファイル名の互換性のために残しており、現在のフォント生成には FontTools を使用します。
 

@@ -1,0 +1,21 @@
+{
+  "auditDate": "2026-09-17",
+  "npmPackage": {
+    "name": "katex",
+    "version": "0.18.4",
+    "url": "https://registry.npmjs.org/katex/-/katex-0.18.4.tgz",
+    "sha256": "0090b1ebccc77d1402ec95e85ee539e1da514d6cd6934156c00baf39dcb0e3aa",
+    "integrity": "sha512-IMPntbRLOU+eu88XDiFKqQ8Akhr9Tv7jDMXqPhjG9SI1JMA4DIgXk4x9k4skJz2NZJXBRbC+2pYBLj9olqcZow==",
+    "repository": {
+      "url": "git+https://github.com/KaTeX/KaTeX.git",
+      "type": "git"
+    },
+    "license": "MIT"
+  },
+  "scope": "Unmodified dist/katex.min.css and all 60 dist/fonts assets. JavaScript is not distributed here. Hugo 0.166.0 embeds KaTeX 0.18.4 for build-time rendering.",
+  "codeLicense": "MIT",
+  "fontsLicense": "OFL-1.1",
+  "fontLicenseEvidence": "FONT-NOTICES.txt is extracted from the original TTF name tables (IDs 0, 13, 14).",
+  "oflOfficialText": "https://openfontlicense.org/open-font-license-official-text/",
+  "oflTextSource": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/OFL-1.1.txt"
+}

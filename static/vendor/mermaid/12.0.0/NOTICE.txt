@@ -1,0 +1,68 @@
+Mermaid 12.0.0 — third-party notices for the Notey distribution
+
+Upstream project: https://github.com/mermaid-js/mermaid
+Release: https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4012.0.0
+Package: https://registry.npmjs.org/mermaid/-/mermaid-12.0.0.tgz
+Copyright (c) 2014 - 2022 Knut Sveidqvist
+Mermaid itself is distributed under the MIT License; see LICENSE.
+
+Notey redistributes the official minified ESM entry point and all 104 of
+its static/dynamic import chunks without changing their bytes. Notey does
+not ship the alternate UMD/core builds, source maps, or TypeScript files.
+The official build already includes upstream patches to fastdom and
+roughjs; these patches are not changes made by Notey.
+
+LICENSES/ contains the original package license texts and applicable
+notices of the included third-party code. PROVENANCE.json records exact
+versions, npm archive URLs, SHA-256 and npm SHA-512 integrity values, and
+source availability. VENDOR-MANIFEST.json records the shipped file hashes.
+The inventory was traced from the released Mermaid and parser source maps,
+the release lockfile, and the build configuration of prebundled libraries;
+it is not an unfiltered development-dependency inventory.
+
+DOMPurify is dual-licensed. This distribution uses its Apache-2.0 option;
+both original upstream license files are retained for reference.
+The KaTeX 0.16.47 JavaScript inside Mermaid has an MIT license and is distinct
+from Notey's separately distributed KaTeX 0.18.4 CSS and font directory.
+
+ECLIPSE SOURCE AVAILABILITY
+
+This distribution includes elkjs 0.9.3 / Eclipse Layout Kernel code under
+EPL-2.0, including code compiled from Java. Its Source Code is available
+under EPL-2.0 from these upstream sources:
+
+  elkjs 0.9.3 (wrapper, build scripts, Java emulation and published JS):
+    https://github.com/kieler/elkjs/tree/0.9.3
+    https://codeload.github.com/kieler/elkjs/tar.gz/refs/tags/0.9.3
+
+  Eclipse Layout Kernel 0.9.1:
+    https://github.com/eclipse/elk/tree/v0.9.1
+    https://codeload.github.com/eclipse/elk/tar.gz/refs/tags/v0.9.1
+
+  Additional ELK change included by the elkjs 0.9.3 release:
+    https://github.com/eclipse/elk/pull/955
+    https://patch-diff.githubusercontent.com/raw/eclipse/elk/pull/955.patch
+
+  Upstream release identifies the ELK version and additional change:
+    https://github.com/kieler/elkjs/releases/tag/0.9.3
+
+The ELK bundle also contains GWT / Guava (Apache-2.0), Eclipse EMF for GWT
+(EPL-1.0), and Xtend / Xtext runtime code (EPL-2.0). Exact Maven source-JAR
+URLs and their hashes are recorded as elkCompiledLibraries in
+PROVENANCE.json. Those source JARs can be downloaded using a web browser
+and opened as ZIP archives. Each remains under its recorded license.
+Original copyright headers and license texts are preserved in LICENSES/.
+No additional Notey changes have been made to these components.
+
+The original elk-0.9.1-NOTICE.md and gwt-2.10.0-COPYING.txt describe their
+larger upstream projects. Preserving those notices does not mean that the
+entire ELK desktop application, GWT SDK, its examples, or development tools
+are bundled in Notey. The shipped subset is documented in PROVENANCE.json.
+
+REDISTRIBUTION
+
+Keep this NOTICE.txt, LICENSE, LICENSES/, PROVENANCE.json and
+VENDOR-MANIFEST.json with copies of these JavaScript assets, including in
+applications and generated sites. The EPL-covered components and their
+Source Code retain their Eclipse licenses; Notey's MIT license does not
+replace those terms. Other components retain their respective licenses.

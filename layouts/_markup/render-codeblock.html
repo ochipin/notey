@@ -9,6 +9,9 @@
 {{- else if eq $type "mermaid" -}}
   <div class="mermaid-wrap"><pre class="mermaid">{{- .Inner -}}</pre></div>
 
+{{- else if eq $type "math" -}}
+  {{- partial "math.html" (dict "page" .Page "source" .Inner "block" true "position" .Position) -}}
+
 {{- else -}}
   {{- $title := .Attributes.title -}}
   {{- $label := $type -}}

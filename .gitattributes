@@ -2,3 +2,6 @@
 LICENSES/Apache-2.0.txt text eol=lf
 static/fonts/LICENSES/Apache-2.0.txt text eol=lf
 icons/material-symbols/svg/*.svg text eol=lf
+# Preserve the exact bytes of vendored libraries, fonts, and upstream notices.
+static/vendor/** -text
+LICENSES/** text eol=lf

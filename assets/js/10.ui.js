@@ -1,4 +1,4 @@
-/* Notey UI — drawer / theme / pickers / code / tabs / lightbox / toc / mermaid */
+/* Notey UI — drawer / theme / pickers / code / tabs / lightbox / toc */
 (function () {
   "use strict";
   var doc = document;
@@ -241,27 +241,4 @@
     el.insertAdjacentHTML("afterend", '<span class="meta-rel"> · ' + txt + "</span>");
   });
 
-  /* ---- Mermaid（図があるページだけ読み込む） ---- */
-  if (doc.querySelector("pre.mermaid")) {
-    var src = "{{ site.Params.mermaid.url | default "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs" }}";
-    var mermaidMod = null;
-    var sources = [];
-    doc.querySelectorAll("pre.mermaid").forEach(function (p) { sources.push(p.textContent); });
-    function render() {
-      if (!mermaidMod) return;
-      mermaidMod.initialize({
-        startOnLoad: false,
-        securityLevel: "strict",
-        theme: root.dataset.theme === "dark" ? "dark" : "default",
-        fontFamily: getComputedStyle(doc.body).fontFamily
-      });
-      doc.querySelectorAll("pre.mermaid").forEach(function (p, i) {
-        p.removeAttribute("data-processed");
-        p.textContent = sources[i];
-      });
-      mermaidMod.run({ querySelector: "pre.mermaid" });
-    }
-    import(src).then(function (m) { mermaidMod = m.default || m; render(); }).catch(function () {});
-    doc.addEventListener("notey:theme", render);
-  }
 })();

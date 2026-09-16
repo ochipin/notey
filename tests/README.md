@@ -1,0 +1,27 @@
+# Rendering regression check
+
+Normal theme use needs no Node.js build step. This optional maintainer check
+requires Hugo 0.166.0, Node.js, Playwright and Chromium.
+
+With Playwright installed and its Chromium downloaded, run from the theme:
+
+```sh
+node scripts/check-offline-rendering.cjs
+python3 scripts/check-vendor-assets.py
+```
+
+If the test tools are installed elsewhere, `NOTEY_PLAYWRIGHT` can point to
+the Playwright or playwright-core module, `NOTEY_BROWSER` to a Chromium
+executable, and `NOTEY_HUGO` to a Hugo executable. The browser defaults to
+Playwright's Chromium. Nothing is installed or downloaded by these scripts.
+
+The rendering check builds a temporary multilingual site under `/review/`.
+All assets are served from the generated files using browser request routing;
+external requests are blocked and fail the check. It covers local fonts and
+Mermaid chunks, math and nested shortcodes, literal code, multiple diagram
+types, explicit ELK, math labels, invalid-diagram isolation, theme switching,
+and mobile/desktop overflow. The intentionally invalid diagram in the fixture
+must show a readable error while subsequent diagrams still render.
+
+The temporary site is deleted after the check. The vendor check is offline
+and verifies provenance records, licenses, resource references and checksums.

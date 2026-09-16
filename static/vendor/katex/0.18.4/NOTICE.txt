@@ -1,0 +1,26 @@
+KaTeX 0.18.4 — CSS and fonts bundled with Notey
+
+Project: https://github.com/KaTeX/KaTeX
+Release: https://github.com/KaTeX/KaTeX/releases/tag/v0.18.4
+Package: https://registry.npmjs.org/katex/-/katex-0.18.4.tgz
+
+The CSS is licensed under the MIT License (LICENSE).
+Copyright (c) 2013-2020 Khan Academy and other contributors.
+
+The font files are licensed under the SIL Open Font License 1.1
+(OFL-1.1.txt). FONT-NOTICES.txt preserves their original copyright and
+Reserved Font Name statements from the fonts' name tables. These include
+Design Science, Inc. and Khan Academy. All 60 WOFF2, WOFF and TTF assets
+and the stylesheet are copied byte-for-byte from the official package.
+No fonts are modified or renamed. The OFL permits bundling the fonts with
+software; the font files may not be sold by themselves.
+
+Hugo 0.166.0 includes KaTeX 0.18.4 for build-time math rendering. This folder
+contains the matching CSS and fonts, not a client-side rendering script.
+Mermaid carries its own separate MIT-licensed KaTeX JavaScript component.
+
+PROVENANCE.json records the source and verified archive checksums.
+VENDOR-MANIFEST.json records all shipped file checksums. Keep this notice,
+LICENSE, OFL-1.1.txt, FONT-NOTICES.txt and those manifests with redistributed
+copies, including generated sites. Notey's MIT license does not replace
+the font license.

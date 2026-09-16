@@ -1,4 +1,7 @@
 ui:
+  diagram_error: "Could not display this diagram. Check the Mermaid syntax."
+  diagram_load_error: "Could not load the files needed to display diagrams."
+  math_error: "Unable to render formula"
   search: "Search"
   search_placeholder: "Search the docs"
   search_hint: "Type a keyword to start"

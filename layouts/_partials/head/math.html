@@ -1,0 +1,11 @@
+{{- /* RenderString records the page flag, while markdownify (details, captions,
+     lead text and copyright) can use a different page context. Inspect the
+     rendered fragments too. Lists may embed child content or summaries. */ -}}
+{{- $content := .Content -}}
+{{- $lead := .Params.lead | default .Description | default "" | markdownify -}}
+{{- $copyright := site.Copyright | default "" | markdownify -}}
+{{- $marker := `class="math math--` -}}
+{{- $hasMath := or (.Store.Get "notey-has-math") (strings.Contains (printf "%s" $content) $marker) (strings.Contains (printf "%s" $lead) $marker) (strings.Contains (printf "%s" $copyright) $marker) -}}
+{{- if or $hasMath .IsBranch -}}
+  <link rel="stylesheet" href="{{ partial "site-url.html" "/vendor/katex/0.18.4/katex.min.css" }}">
+{{- end -}}
