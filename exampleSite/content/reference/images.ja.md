@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "画像の扱い"
 weight: 20
 description: "自動リサイズ・WebP・ライトボックス"

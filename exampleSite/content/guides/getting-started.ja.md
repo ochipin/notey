@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "はじめる"
 weight: 10
 description: "Notey を Hugo サイトに導入する手順"

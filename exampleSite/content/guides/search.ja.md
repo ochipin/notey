@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "検索（Pagefind）"
 weight: 20
 description: "ビルド後に検索インデックスを生成する"

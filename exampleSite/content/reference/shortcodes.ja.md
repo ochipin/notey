@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "ショートコード"
 weight: 10
 description: "ノート・タブ・カード・折り畳み"
