@@ -2,11 +2,12 @@
   <div class="sdlg-box">
     <div class="sdlg-head">
       <span class="icon icon-search" aria-hidden="true"></span>
-      <input id="search-input" class="sdlg-input" type="search" autocomplete="off" spellcheck="false" placeholder="{{ i18n "ui.search_placeholder" }}">
+      <input id="search-input" class="sdlg-input" type="search" autocomplete="off" spellcheck="false" aria-label="{{ i18n "ui.search_placeholder" }}" aria-controls="search-results" placeholder="{{ i18n "ui.search_placeholder" }}">
       <button class="sdlg-close" data-search-close aria-label="{{ i18n "ui.close" }}"><kbd>Esc</kbd></button>
     </div>
+    <p id="search-summary" class="sdlg-summary" role="status" aria-atomic="true" hidden></p>
     <div class="sdlg-body">
-      <p id="search-status" class="sdlg-status">{{ i18n "ui.search_hint" }}</p>
+      <p id="search-status" class="sdlg-status" role="status">{{ i18n "ui.search_hint" }}</p>
       <ol id="search-results" class="sdlg-results"></ol>
       <button id="search-more" class="sdlg-more" hidden>{{ i18n "ui.load_more" }}</button>
     </div>

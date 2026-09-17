@@ -8,8 +8,10 @@
   <a class="brand" href="{{ site.Home.RelPermalink }}">
     {{ with site.Params.logo | default site.Params.favicon }}<img class="brand-mark" src="{{ . | partial "site-url.html" }}" width="28" height="28" alt="">{{ end }}
     <span class="brand-name">{{ site.Title }}</span>
-    {{ with site.Params.versions }}
-      {{ range . }}{{ if .current }}<span class="brand-ver">{{ .name }}</span>{{ end }}{{ end }}
+    {{ if ne site.Params.showVersion false }}
+      {{ with site.Params.versions }}
+        {{ range . }}{{ if .current }}<span class="brand-ver">{{ .name }}</span>{{ end }}{{ end }}
+      {{ end }}
     {{ end }}
   </a>
 

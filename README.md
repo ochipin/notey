@@ -3,9 +3,9 @@
 ドキュメント専用サイトのための Hugo テーマ。Starlight 系のレイアウト（左サイドバー + 本文 + 右目次）を、素の CSS / JavaScript だけで構成しています。
 
 - **トップページ** — ヒーロー、スペック帯、カード、段組み、CTA を Markdown とショートコードで自由に組み立て
-- **Pagefind 全文検索** — Ctrl/⌘ + K、`/`、キーボード操作、日本語対応
+- **Pagefind 全文検索** — 記事の総件数、一致した見出しを記事ごとに最大3件表示。Ctrl/⌘ + K、`/`、キーボード操作、日本語対応
 - **多言語（i18n）** — `/ja/` `/en/` のサブディレクトリ構成、言語切替
-- **バージョン切替** — `params.versions` からヘッダのドロップダウンを生成
+- **バージョン切替** — `params.versions` からドロップダウンを生成。`params.showVersion` で表示切替
 - **ライト / ダーク** — 初回は OS 設定、以降は localStorage、切替時に Mermaid も再描画
 - **モバイル** — 左からのドロワー、スクリム、リンク選択で自動クローズ
 - **画像** — 段幅に自動リサイズ + WebP srcset + 遅延読み込み + クリックで拡大ライトボックス
@@ -86,6 +86,11 @@ npx -y pagefind --site public
 ```
 
 Pagefind を実行しないと検索ダイアログにインデックス未生成のメッセージが表示されます（他の機能は動作します）。
+
+検索結果には記事の総件数と、各記事のタイトル・パス・抜粋を表示します。
+さらに、検索語が見出しまたはその配下の本文に一致した箇所を、記事ごとに最大3件表示します。
+記事タイトルから記事の先頭へ、見出しから該当箇所へ移動できます。見出しがタブや折りたたみの中にある場合は、その部分を開きます。
+↑ / ↓ と Enter でも記事・見出しを選択できます。件数は「さらに読み込む」で表示する記事数や見出し数によらず、検索に一致した記事全体の数です。
 
 ## コンテンツ構成
 
@@ -265,14 +270,63 @@ Hugo の `transform.ToMath` で HTML と MathML を生成するため、閲覧�
 | `params.character` | `/favicon.png` | hero の image とページの params.hero.image を省略したときの画像 |
 | `params.logo` | `favicon` | ヘッダのロゴ画像 |
 | `params.editURL` | – | 「このページを編集」のベース URL |
+| `params.showEditLink` | `true` | 編集リンクの表示。`editURL` と記事ファイルがある場合のみ表示し、ページの `params` で上書き可能 |
 | `params.images.maxWidth` | `1440` | 本文画像のリサイズ上限 |
 | `params.versions` | – | `[{name, url, current, label}]` |
+| `params.showVersion` | `true` | サイト全体のバージョン選択とサイト名横のバージョン表示。`versions` がある場合のみ表示 |
 | `params.og.default` | – | 既定の OG 画像 |
 | `params.og.font` | `fonts/og.ttf` | OG 自動生成に使う TTF（assets 配下） |
 | `params.fonts.google` | `true` | Google Fonts（Murecho / Source Code Pro）の読み込み |
 | `params.mermaid.url` | 同梱の Mermaid 12.0.0 | 別の Mermaid ESM URL を使う場合に指定 |
 
 OG 画像は、ページの `params.image`、ページバンドル内の `cover`・`og`・`thumbnail` 画像、自動生成画像、`params.og.default` の順に選びます。自動生成には `assets/og/base.png` と `assets/fonts/og.ttf`（または `params.og.font` の指定先）の両方が必要です。サンプルの既定画像は同梱の `/favicon.png` を使っています。`/images/share.png` のようなサイト内パスは `baseURL` の配下に解決されます。
+
+### バージョン表示とヘッダのリンク
+
+バージョン表示が不要な場合は、サイトの `hugo.yaml` に以下を指定します。`exampleSite` は非表示にしています。
+
+```yaml
+params:
+  showVersion: false
+```
+
+PC・モバイルのバージョン選択と、サイト名横のバージョン表示をまとめて切り替えます。サイト全体の設定で、記事ごとの上書きはありません。
+`params.versions` は残しておけるので、必要になったときに `showVersion: true` にすれば再表示できます。フラグを省略した既存サイトでは、これまでどおり `versions` の設定に従います。
+
+ヘッダの外部リンクは `menus.main` で追加する任意のメニューです。以前の `exampleSite` にあった GitHub リンクは削除しました。
+既存サイトにそのリンクが残っている場合は、`hugo.yaml` の `menus.main` から該当する GitHub の項目を削除してください。ほかにメニューがなければ `menus.main` 自体も省略できます。
+
+### 「このページを編集」の表示
+
+HuPongo などでローカル編集して Git に push する場合は、サイトの `hugo.yaml` で非表示にできます。`exampleSite` はこの設定にしています。
+
+```yaml
+params:
+  showEditLink: false
+```
+
+Web 上のエディターへのリンクが必要な場合は、`showEditLink: true` と `editURL` を指定してください。
+`editURL` を省略・空文字にした場合もリンクは表示しません。既存サイトで `showEditLink` を指定しない場合は、これまでどおり `editURL` の設定に従います。
+
+ページごとに切り替える場合は、記事の front matter の `params.showEditLink` を指定します。ページの設定がサイト全体の設定より優先されます。
+
+```yaml
+title: "編集リンクを表示しない記事"
+params:
+  showEditLink: false
+```
+
+GitHub 専用の機能ではなく、指定した `editURL` にコンテンツディレクトリからのファイルパス（例: `guides/start.ja.md`）を付けて、各サービスの Web エディターを開くリンクです。
+以下は `main` ブランチの `content/` に記事を置く場合の例です。ホスト名、所有者、リポジトリ名、ブランチ、コンテンツの場所を実際の構成に合わせて変更してください。
+
+| サービス | `params.editURL` の例 |
+|:--|:--|
+| GitHub | `https://github.com/OWNER/REPO/edit/main/content/` |
+| Forgejo | `https://forgejo.example.com/OWNER/REPO/_edit/main/content/` |
+| Gitea | `https://gitea.example.com/OWNER/REPO/_edit/main/content/` |
+| GitLab | `https://gitlab.com/OWNER/REPO/-/edit/main/content/` |
+
+ログインや編集権限、変更の保存方法はリンク先サービスが扱います。テーマが Git の push を実行する機能ではありません。
 
 ## HuPongo のショートコード補完
 

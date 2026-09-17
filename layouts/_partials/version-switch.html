@@ -1,3 +1,4 @@
+{{- if ne site.Params.showVersion false }}
 {{- with site.Params.versions }}
 {{- $cur := "" }}{{ range . }}{{ if .current }}{{ $cur = .name }}{{ end }}{{ end }}
 <div class="picker" data-picker>
@@ -12,4 +13,5 @@
     {{ end }}
   </ul>
 </div>
+{{- end }}
 {{- end }}

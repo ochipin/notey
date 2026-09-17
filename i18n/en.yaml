@@ -9,7 +9,9 @@ ui:
   search_running: "Searching…"
   search_failed: "Could not load search results. Please try again."
   search_missing: "Search index not found. Run npx pagefind --site public after hugo build."
-  search_count: "results"
+  search_count:
+    one: "{count} article found"
+    other: "{count} articles found"
   load_more: "Load more"
   kbd_move: "to navigate"
   kbd_open: "to open"

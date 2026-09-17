@@ -8,7 +8,15 @@
     </span>
   {{ end }}
   {{ with .ReadingTime }}<span class="meta-item"><span class="icon icon-history" aria-hidden="true"></span>{{ i18n "ui.reading_time" (dict "min" .) }}</span>{{ end }}
-  {{ $edit := "" }}
-  {{ with site.Params.editURL }}{{ $edit = printf "%s%s" . ($.File.Path | default "") }}{{ end }}
-  {{ with $edit }}<a class="meta-item meta-link" href="{{ . }}" target="_blank" rel="noopener"><span class="icon icon-edit" aria-hidden="true"></span>{{ i18n "ui.edit_page" }}</a>{{ end }}
+  {{ $showEditLink := true }}
+  {{ if isset site.Params "showeditlink" }}{{ $showEditLink = site.Params.showEditLink }}{{ end }}
+  {{ if isset .Params "showeditlink" }}{{ $showEditLink = .Params.showEditLink }}{{ end }}
+  {{ if and $showEditLink .File }}
+    {{ with site.Params.editURL }}
+      {{ $segments := slice }}
+      {{ range split (replace $.File.Path "\\" "/") "/" }}{{ $segments = $segments | append (urls.PathEscape .) }}{{ end }}
+      {{ $edit := printf "%s/%s" (strings.TrimSuffix "/" .) (delimit $segments "/") }}
+      <a class="meta-item meta-link" href="{{ $edit }}" target="_blank" rel="noopener"><span class="icon icon-edit" aria-hidden="true"></span>{{ i18n "ui.edit_page" }}</a>
+    {{ end }}
+  {{ end }}
 </div>

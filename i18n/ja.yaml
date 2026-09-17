@@ -9,7 +9,8 @@ ui:
   search_running: "検索中…"
   search_failed: "検索結果を取得できませんでした。もう一度お試しください。"
   search_missing: "検索インデックスが見つかりません。hugo のビルド後に npx pagefind --site public を実行してください。"
-  search_count: "件"
+  search_count:
+    other: "{count} 件の記事が見つかりました"
   load_more: "さらに読み込む"
   kbd_move: "移動"
   kbd_open: "開く"

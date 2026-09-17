@@ -8,6 +8,7 @@
   var input = doc.getElementById("search-input");
   var list = doc.getElementById("search-results");
   var status = doc.getElementById("search-status");
+  var summary = doc.getElementById("search-summary");
   var more = doc.getElementById("search-more");
 
   var T = {
@@ -16,7 +17,8 @@
     searching: "{{ i18n "ui.search_running" }}",
     missing: "{{ i18n "ui.search_missing" }}",
     failed: "{{ i18n "ui.search_failed" }}",
-    count: "{{ i18n "ui.search_count" }}"
+    count: "{{ i18n "ui.search_count" (dict "Count" 2) }}",
+    countOne: "{{ i18n "ui.search_count" (dict "Count" 1) }}"
   };
   var BASE = "{{ "pagefind/pagefind.js" | relURL }}";
   var LANG = doc.documentElement.lang || "";
@@ -75,6 +77,37 @@
     return esc(p.join(" / "));
   }
 
+  function headings(hit) {
+    var seen = new Set();
+    return (hit.sub_results || []).filter(function (sub) {
+      // Pagefind also returns a page-level result before the first heading.
+      if (!sub.anchor || !sub.url || !sub.title || !/^h[1-6]$/i.test(sub.anchor.element)) return false;
+      var hash = sub.url.indexOf("#");
+      if (hash < 0 || hash === sub.url.length - 1 || seen.has(sub.url)) return false;
+      seen.add(sub.url);
+      return true;
+    }).slice(0, 3);
+  }
+
+  function resultHTML(hit) {
+    var sections = headings(hit);
+    var html =
+      '<a class="sdlg-hit" data-search-hit href="' + esc(hit.url) + '">' +
+      '<span class="sdlg-hit-crumb">' + crumb(hit) + "</span>" +
+      '<span class="sdlg-hit-title">' + esc((hit.meta && hit.meta.title) || hit.url) + "</span>" +
+      '<span class="sdlg-hit-excerpt">' + (hit.excerpt || "") + "</span></a>";
+    if (sections.length) {
+      html += '<ul class="sdlg-subresults">';
+      sections.forEach(function (sub) {
+        html += '<li><a class="sdlg-subhit" data-search-hit href="' + esc(sub.url) + '">' +
+          '<span class="sdlg-subhit-title">' + esc(sub.title) + "</span>" +
+          '<span class="sdlg-hit-excerpt">' + (sub.excerpt || "") + "</span></a></li>";
+      });
+      html += "</ul>";
+    }
+    return html;
+  }
+
   function render(reset) {
     if (!dlg.open || pendingBatch) return;
     var version = searchVersion;
@@ -91,15 +124,9 @@
       if (!current()) return;
       var fragment = doc.createDocumentFragment();
       rows.forEach(function (d) {
-        var sub = (d.sub_results && d.sub_results[0]) || null;
-        var url = (sub && sub.url) || d.url;
         var li = doc.createElement("li");
-        li.innerHTML =
-          '<a class="sdlg-hit" href="' + esc(url) + '">' +
-          '<span class="sdlg-hit-crumb">' + crumb(d) + "</span>" +
-          '<span class="sdlg-hit-title">' + esc((d.meta && d.meta.title) || d.url) + "</span>" +
-          '<span class="sdlg-hit-excerpt">' + ((sub && sub.excerpt) || d.excerpt || "") + "</span>" +
-          "</a>";
+        li.className = "sdlg-result";
+        li.innerHTML = resultHTML(d);
         fragment.appendChild(li);
       });
       list.appendChild(fragment);
@@ -124,6 +151,8 @@
     results = [];
     shown = 0;
     list.innerHTML = "";
+    summary.hidden = true;
+    summary.textContent = "";
     more.hidden = true;
     more.disabled = false;
   }
@@ -139,6 +168,9 @@
       return api.debouncedSearch(q, {}, 120).then(function (res) {
         if (!res || !dlg.open || version !== searchVersion) return;
         results = res.results;
+        summary.textContent = (results.length === 1 ? T.countOne : T.count)
+          .replace("{count}", results.length.toLocaleString(LANG || undefined));
+        summary.hidden = false;
         if (!results.length) { list.innerHTML = ""; status.textContent = T.empty; more.hidden = true; return; }
         status.hidden = true;
         render(true);
@@ -161,6 +193,19 @@
   });
   more.addEventListener("click", function () { render(false); });
 
+  list.addEventListener("click", function (e) {
+    // Also dismiss the modal when a heading points into the current page.
+    if (e.target.closest("[data-search-hit]") && e.button === 0 &&
+        !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) close();
+  });
+
+  dlg.addEventListener("focusin", function (e) {
+    var focused = e.target.closest("[data-search-hit]");
+    list.querySelectorAll("[data-search-hit]").forEach(function (hit) {
+      hit.classList.toggle("is-active", hit === focused);
+    });
+  });
+
   dlg.addEventListener("keydown", function (e) {
     if (e.isComposing || e.keyCode === 229) return;
     if (e.key === "Escape") {
@@ -170,19 +215,22 @@
       close();
       return;
     }
-    var hits = Array.prototype.slice.call(list.querySelectorAll(".sdlg-hit"));
+    var hits = Array.prototype.slice.call(list.querySelectorAll("[data-search-hit]"));
     if (!hits.length) return;
     var i = hits.findIndex(function (h) { return h.classList.contains("is-active"); });
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (e.target !== input && !e.target.closest("[data-search-hit]")) return;
       e.preventDefault();
       var n = e.key === "ArrowDown" ? Math.min(i + 1, hits.length - 1) : Math.max(i - 1, 0);
       hits.forEach(function (h) { h.classList.remove("is-active"); });
       hits[n].classList.add("is-active");
+      if (e.target !== input) hits[n].focus({ preventScroll: true });
       var box = hits[n].getBoundingClientRect(), pbox = list.parentNode.getBoundingClientRect();
       if (box.bottom > pbox.bottom) list.parentNode.scrollTop += box.bottom - pbox.bottom + 8;
       if (box.top < pbox.top) list.parentNode.scrollTop -= pbox.top - box.top + 8;
     }
-    if (e.key === "Enter" && i >= 0) { e.preventDefault(); hits[i].click(); }
+    // Focused links and buttons retain their native Enter behavior.
+    if (e.key === "Enter" && e.target === input && i >= 0) { e.preventDefault(); hits[i].click(); }
   });
 
   dlg.addEventListener("close", function () {

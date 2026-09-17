@@ -129,6 +129,7 @@
   });
 
   /* ---- タブ（連続する .tab-panel をまとめる） ---- */
+  var revealTab = new WeakMap();
   doc.querySelectorAll(".prose .tab-panel").forEach(function (panel) {
     if (panel.dataset.tabDone) return;
     var group = [], n = panel;
@@ -153,6 +154,7 @@
       b.setAttribute("role", "tab");
       b.textContent = p.dataset.tabTitle || "Tab " + (i + 1);
       b.addEventListener("click", function () { show(i); });
+      revealTab.set(p, function () { show(i); });
       bar.appendChild(b);
     });
     function show(i) {
@@ -169,6 +171,50 @@
       if (e.key === "ArrowLeft") { var p = (i - 1 + group.length) % group.length; bar.children[p].focus(); bar.children[p].click(); }
     });
     show(active);
+  });
+
+  /* ---- 非表示のタブ・折りたたみ内への見出しリンク ---- */
+  var fragmentFrame = 0;
+  function revealFragment(hash) {
+    if (!hash || hash === "#") return;
+    var id = hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) {}
+    var target = doc.getElementById(id);
+    if (!target || !target.closest(".prose")) return;
+    var ancestors = [], node = target;
+    while (node && node !== doc.body) {
+      ancestors.push(node);
+      node = node.parentElement;
+    }
+    // Reveal outer containers first, so nested tab groups retain their own
+    // selected state and all enclosing details elements become visible.
+    ancestors.reverse().forEach(function (ancestor) {
+      if (ancestor.tagName === "DETAILS") ancestor.open = true;
+      var showTab = revealTab.get(ancestor);
+      if (showTab) showTab();
+    });
+    // scrollIntoView honors the heading's scroll-margin beneath the header.
+    target.scrollIntoView({ block: "start", behavior: "auto" });
+  }
+  function queueFragment(hash) {
+    cancelAnimationFrame(fragmentFrame);
+    fragmentFrame = requestAnimationFrame(function () {
+      if (location.hash === hash) revealFragment(hash);
+    });
+  }
+  queueFragment(location.hash);
+  addEventListener("load", function () { queueFragment(location.hash); }, { once: true });
+  addEventListener("hashchange", function () { queueFragment(location.hash); });
+  doc.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var link = e.target.closest("a[href]");
+    if (!link || link.hasAttribute("download") || (link.target && link.target !== "_self")) return;
+    var url;
+    try { url = new URL(link.href, doc.baseURI); } catch (error) { return; }
+    if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search || !url.hash) return;
+    // Clicking the current hash emits no hashchange. Defer until the native
+    // navigation and the search dialog's close handler have both completed.
+    queueFragment(url.hash);
   });
 
   /* ---- ライトボックス ---- */

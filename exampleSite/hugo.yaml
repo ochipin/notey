@@ -58,6 +58,7 @@ params:
   tagline: "ため込む・整理する・取り出す。ドキュメントのための Hugo テーマ。"
   logo: "/favicon.png"
   favicon: "/favicon.png"
+  showEditLink: false  # HuPongo などクライアント側で編集する場合は非表示
   editURL: "https://github.com/ochipin/notey/edit/main/exampleSite/content/"
   images:
     maxWidth: 1440
@@ -67,6 +68,7 @@ params:
     default: "/favicon.png"  # 同梱画像。サイト用の共有画像に置き換えられます
     # assets/og/base.png と assets/fonts/og.ttf を置くと、ページごとの OG 画像を自動生成します
     font: "fonts/og.ttf"
+  showVersion: false  # バージョン選択とサイト名横のバージョン表示
   versions:
     - name: "v2"
       url: "/"
@@ -74,9 +76,3 @@ params:
       label: "latest"
     - name: "v1"
       url: "https://v1.example.com/"
-
-menus:
-  main:
-    - name: GitHub
-      url: https://github.com/ochipin/notey
-      weight: 10
