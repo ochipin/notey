@@ -20,9 +20,10 @@ The rendering check builds a temporary multilingual site under `/review/`.
 All assets are served from the generated files using browser request routing;
 external requests are blocked and fail the check. It covers local fonts and
 Mermaid chunks, math and nested shortcodes, literal code, multiple diagram
-types, explicit ELK, math labels, invalid-diagram isolation, theme switching,
-and mobile/desktop overflow. The intentionally invalid diagram in the fixture
-must show a readable error while subsequent diagrams still render.
+types, explicit ELK, math labels, inline formulas without scrollbars or clipping,
+invalid-diagram isolation, theme switching, and mobile/desktop overflow.
+The intentionally invalid diagram in the fixture must show a readable error
+while subsequent diagrams still render.
 
 The temporary site is deleted after the check. The vendor check is offline
 and verifies provenance records, licenses, resource references and checksums.

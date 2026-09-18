@@ -7,6 +7,12 @@ draft: false
 
 Inline \(\sqrt{x^2+y^2}\) and currency $500, $600; shell `$HOME`.
 
+例えば、距離は \(d = \sqrt{x^2 + y^2}\)、円の面積は \(S = \pi r^2\) です。
+
+Fractions \(\frac{1}{\sqrt{x^2+1}}\) and integrals \(\int_0^1 x^2\,dx = \frac{1}{3}\) stay in the text.
+
+Long inline formula \(a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z = 0\) wraps at operators.
+
 $$
 x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
 $$
@@ -28,6 +34,8 @@ $$ \frac{1}{2} $$
 {{< column >}}
 Inline \(\sqrt{a}\).
 {{< tips >}}
+Inline \(d = \sqrt{x^2 + y^2}\) inside a callout.
+
 $$\int_0^1 x^2\,dx = \frac{1}{3}$$
 {{< /tips >}}
 {{< /column >}}

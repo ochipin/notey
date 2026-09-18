@@ -79,12 +79,31 @@ fs.writeFileSync(path.join(work, 'content/plain.ja.md'), '---\ntitle: Plain\ndra
       const ids = await page.locator('pre.mermaid > svg').evaluateAll(els => els.map(el => el.id));
       assert.equal(new Set(ids).size, ids.length);
 
-      for (const width of [390, 860, 1280]) {
+      await page.evaluate(() => document.fonts.ready);
+      for (const width of [320, 390, 860, 1280]) {
         await page.setViewportSize({ width, height: 1000 });
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'Page overflow at ' + width);
         assert(await page.locator('.math--block').evaluateAll(els => els.every(el => el.clientWidth <= el.parentElement.clientWidth + 1)), 'Math block overflow');
+        const inlineMath = await page.locator('.math--inline').evaluateAll(els => els.map(el => {
+          // Detect scrollable formulas even when the OS uses invisible overlay scrollbars.
+          el.scrollLeft = 10000;
+          el.scrollTop = 10000;
+          const style = getComputedStyle(el);
+          const result = {
+            formula: el.querySelector('annotation').textContent,
+            scrollX: el.scrollLeft, scrollY: el.scrollTop,
+            clipped: [style.overflowX, style.overflowY].some(value => ['hidden', 'clip'].includes(value))
+          };
+          el.scrollLeft = el.scrollTop = 0;
+          return result;
+        }));
+        for (const formula of inlineMath) {
+          assert.equal(formula.scrollX, 0, 'Inline math scrolls horizontally at ' + width + ': ' + formula.formula);
+          assert.equal(formula.scrollY, 0, 'Inline math scrolls vertically at ' + width + ': ' + formula.formula);
+          assert(!formula.clipped, 'Inline math must not hide overflowing glyphs');
+        }
       }
-      console.log(JSON.stringify({ language, status: 'PASS', diagrams: 12, checks: 'offline assets/fonts, math+diagram math, nested math, invalid diagram isolation, dark/rapid theme changes, responsive overflow' }));
+      console.log(JSON.stringify({ language, status: 'PASS', diagrams: 12, checks: 'offline assets/fonts, math+diagram math, nested math, inline math without scrollbars or clipping, invalid diagram isolation, dark/rapid theme changes, responsive overflow' }));
       await context.close();
     }
     const page = await browser.newPage();
