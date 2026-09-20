@@ -15,6 +15,9 @@ languages:
     label: English
     locale: en-US
     weight: 2
+    params:
+      description: "A lightweight Hugo theme for documentation"
+      tagline: "Collect, organize, and find. A Hugo theme for documentation."
 
 # テーマ: Hugo Modules でも themes/ 直置きでも動きます
 module:
