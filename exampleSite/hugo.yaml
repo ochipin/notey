@@ -79,3 +79,10 @@ params:
       label: "latest"
     - name: "v1"
       url: "https://v1.example.com/"
+
+# ヘッダに追加する任意のリンク（Hugo 標準のメニュー設定）
+menus:
+  main:
+    - name: "Hugo Docs"
+      url: "https://gohugo.io/documentation/"
+      weight: 10

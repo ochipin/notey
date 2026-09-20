@@ -3,32 +3,22 @@
     {{ partial "search-button.html" . }}
   </div>
 
+  {{ partial "section-menu.html" (dict "page" . "class" "sidebar-mobile sidebar-sections" "listClass" "topics" "linkClass" "topic" "icons" true) }}
+
   {{ partial "main-menu.html" (dict "page" . "class" "sidebar-mobile sidebar-nav" "linkClass" "sidebar-link") }}
 
   {{ if and (ne .Kind "404") (not .IsHome) (ne .Kind "term") }}
-  {{ with site.Sections }}
-    <ul class="topics" aria-label="{{ i18n "ui.sections" }}">
-      {{ $top := $.Page.FirstSection }}
-      {{ range .ByWeight }}
-        <li>
-          <a class="topic{{ if and $top (eq .RelPermalink $top.RelPermalink) }} is-current{{ end }}" href="{{ .RelPermalink }}">
-            <span class="icon icon-{{ .Params.icon | default "book" }}" aria-hidden="true"></span>
-            <span>{{ .Title }}</span>
-          </a>
-        </li>
-      {{ end }}
-    </ul>
-  {{ end }}
-
   {{ with .Page.FirstSection }}
     {{ partial "sidebar/tree.html" (dict "Node" . "Current" $.Page "Depth" 0) }}
   {{ end }}
   {{ end }}
 
-  {{ if or (and (ne site.Params.showVersion false) site.Params.versions) hugo.IsMultilingual }}
-    <div class="sidebar-mobile sidebar-foot">
-      {{ partial "version-switch.html" . }}
-      {{ partial "lang-switch.html" . }}
-    </div>
-  {{ end }}
+  <div class="sidebar-mobile sidebar-foot">
+    {{ partial "version-switch.html" . }}
+    {{ partial "lang-switch.html" . }}
+    <button class="icon-btn" data-theme-toggle aria-label="{{ i18n "ui.toggle_theme" }}" title="{{ i18n "ui.toggle_theme" }}">
+      <span class="icon icon-brightness only-light" aria-hidden="true"></span>
+      <span class="icon icon-light only-dark" aria-hidden="true"></span>
+    </button>
+  </div>
 </div>

@@ -9,23 +9,89 @@
   };
 
   /* ---- テーマ切替 ---- */
-  var themeBtn = doc.getElementById("theme-btn");
   function setTheme(v) {
     root.dataset.theme = v;
     try { localStorage.setItem("notey-theme", v); } catch (e) {}
     doc.dispatchEvent(new CustomEvent("notey:theme", { detail: v }));
   }
-  if (themeBtn) {
+  doc.querySelectorAll("#theme-btn, [data-theme-toggle]").forEach(function (themeBtn) {
     themeBtn.addEventListener("click", function () {
       setTheme(root.dataset.theme === "dark" ? "light" : "dark");
     });
+  });
+
+  /* ---- ヘッダーのカテゴリーナビゲーション ---- */
+  var headerNav = doc.querySelector(".hdr-nav-scroll");
+  function revealHeaderCurrent() {
+    if (!headerNav || !headerNav.clientWidth) return;
+    var currentLink = headerNav.querySelector('a[aria-current]:not([aria-current="false"]), a.is-current');
+    if (!currentLink) return;
+    var navRect = headerNav.getBoundingClientRect();
+    var linkRect = currentLink.getBoundingClientRect();
+    var left = navRect.left + headerNav.clientLeft;
+    var right = left + headerNav.clientWidth;
+    // Adjust only this container; scrollIntoView could also move the page.
+    if (linkRect.left < left) headerNav.scrollLeft += linkRect.left - left;
+    else if (linkRect.right > right) headerNav.scrollLeft += linkRect.right - right;
+  }
+  if (headerNav) {
+    headerNav.addEventListener("wheel", function (e) {
+      // Keep zoom, Shift-wheel and horizontal trackpad gestures native.
+      if (e.defaultPrevented || !e.cancelable || e.ctrlKey || e.shiftKey || e.deltaX || !e.deltaY) return;
+      if (!headerNav.clientWidth || headerNav.scrollWidth <= headerNav.clientWidth + 1) return;
+      var delta = e.deltaY;
+      if (e.deltaMode === 1) {
+        var style = getComputedStyle(headerNav);
+        delta *= parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.2 || 16;
+      } else if (e.deltaMode === 2) {
+        delta *= headerNav.clientWidth;
+      }
+      var previous = headerNav.scrollLeft;
+      headerNav.scrollLeft += delta;
+      // Let the page scroll once the corresponding horizontal edge is reached.
+      if (headerNav.scrollLeft !== previous) e.preventDefault();
+    }, { passive: false });
+    requestAnimationFrame(revealHeaderCurrent);
+    addEventListener("load", revealHeaderCurrent, { once: true });
+    if (doc.fonts) doc.fonts.ready.then(revealHeaderCurrent);
   }
 
   /* ---- モバイルドロワー ---- */
   var menuBtn = doc.getElementById("menu-btn");
   var sidebar = doc.getElementById("sidebar");
   var scrim = doc.getElementById("scrim");
+  var navFocusFrame = 0;
+  function navFocusable() {
+    return Array.from(sidebar.querySelectorAll('a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'))
+      .filter(function (el) { return !el.disabled && el.getClientRects().length && getComputedStyle(el).visibility === "visible"; });
+  }
+  function focusNavControl(target) {
+    target.focus({ preventScroll: true });
+    if (!sidebar.contains(target)) return;
+    var sidebarRect = sidebar.getBoundingClientRect();
+    var targetRect = target.getBoundingClientRect();
+    var top = sidebarRect.top + sidebar.clientTop;
+    var bottom = top + sidebar.clientHeight;
+    if (targetRect.top < top) sidebar.scrollTop += targetRect.top - top;
+    else if (targetRect.bottom > bottom) sidebar.scrollTop += targetRect.bottom - bottom;
+  }
+  function focusOpenedNav() {
+    navFocusFrame = 0;
+    if (!doc.body.classList.contains("nav-open") || mq.matches || doc.querySelector("dialog[open]")) return;
+    // A frame can run before the visibility transition has started.
+    if (getComputedStyle(sidebar).visibility !== "visible") {
+      navFocusFrame = requestAnimationFrame(focusOpenedNav);
+      return;
+    }
+    if (sidebar.contains(doc.activeElement)) return;
+    var first = navFocusable()[0];
+    if (first) focusNavControl(first);
+    // Descendants can finish their inherited visibility transition a frame later.
+    if (!sidebar.contains(doc.activeElement)) navFocusFrame = requestAnimationFrame(focusOpenedNav);
+  }
   function closeNav(restoreFocus) {
+    cancelAnimationFrame(navFocusFrame);
+    navFocusFrame = 0;
     var wasOpen = doc.body.classList.contains("nav-open");
     doc.body.classList.remove("nav-open");
     if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
@@ -33,18 +99,16 @@
     if (sidebar) closePickers(sidebar);
     if (wasOpen && restoreFocus) {
       var target = menuBtn && menuBtn.getClientRects().length ? menuBtn : doc.querySelector(".brand");
-      if (target) target.focus();
+      if (target) target.focus({ preventScroll: true });
     }
   }
   function openNav() {
+    if (mq.matches) return;
     doc.body.classList.add("nav-open");
     menuBtn.setAttribute("aria-expanded", "true");
     if (scrim) scrim.hidden = false;
-    requestAnimationFrame(function () {
-      if (!doc.body.classList.contains("nav-open")) return;
-      var first = sidebar.querySelector("button, a[href], input, [tabindex='0']");
-      if (first) first.focus();
-    });
+    cancelAnimationFrame(navFocusFrame);
+    navFocusFrame = requestAnimationFrame(focusOpenedNav);
   }
   if (menuBtn && sidebar) {
     menuBtn.addEventListener("click", function () {
@@ -55,20 +119,27 @@
       if (e.target.closest("a[href]")) closeNav();
     });
     addEventListener("keydown", function (e) {
-      if (!doc.body.classList.contains("nav-open") || doc.querySelector("dialog[open]")) return;
+      if (e.defaultPrevented || !doc.body.classList.contains("nav-open") || doc.querySelector("dialog[open]")) return;
       if (e.key === "Escape") { e.preventDefault(); closeNav(true); }
       if (e.key === "Tab") {
-        var focusable = [menuBtn].concat(Array.from(sidebar.querySelectorAll('a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]')))
-          .filter(function (el) { return !el.disabled && el.getClientRects().length && getComputedStyle(el).visibility !== "hidden"; });
+        var focusable = [menuBtn].concat(navFocusable());
         var i = focusable.indexOf(doc.activeElement);
         var next = i < 0 ? (e.shiftKey ? focusable.length - 1 : 0)
           : (i + (e.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
         e.preventDefault();
-        focusable[next].focus();
+        focusNavControl(focusable[next]);
       }
     });
     var mq = matchMedia("(min-width: 861px)");
-    mq.addEventListener("change", function () { closeNav(true); });
+    mq.addEventListener("change", function () {
+      closeNav(true);
+      closePickers();
+      if (doc.activeElement && !doc.activeElement.getClientRects().length) {
+        var target = mq.matches ? doc.querySelector(".brand") : menuBtn;
+        if (target) target.focus({ preventScroll: true });
+      }
+      if (mq.matches) requestAnimationFrame(revealHeaderCurrent);
+    });
   }
 
   /* 現在ページをサイドバー内に見えるようにする（スクロール位置調整） */

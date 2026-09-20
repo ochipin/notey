@@ -1,0 +1,17 @@
+{{- $page := .page -}}
+{{- $top := $page.FirstSection -}}
+{{- with $page.Site.Sections -}}
+<nav class="{{ $.class }}" aria-label="{{ i18n "ui.sections" }}">
+  <ul class="{{ $.listClass }}">
+    {{- range .ByWeight -}}
+      {{- $current := and $top (eq .RelPermalink $top.RelPermalink) -}}
+      <li>
+        <a class="{{ $.linkClass }}{{ if $current }} is-current{{ end }}" href="{{ .RelPermalink }}"{{ if $current }} aria-current="{{ if eq .RelPermalink $page.RelPermalink }}page{{ else }}location{{ end }}"{{ end }}>
+          {{- if $.icons }}<span class="icon icon-{{ .Params.icon | default "book" }}" aria-hidden="true"></span>{{ end -}}
+          <span>{{ .LinkTitle }}</span>
+        </a>
+      </li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end -}}

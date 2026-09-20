@@ -9,6 +9,7 @@ With Playwright installed and its Chromium downloaded, run from the theme:
 node scripts/check-offline-rendering.cjs
 python3 scripts/check-vendor-assets.py
 node scripts/check-search.cjs
+node scripts/check-navigation.cjs
 ```
 
 If the test tools are installed elsewhere, `NOTEY_PLAYWRIGHT` can point to
@@ -34,3 +35,7 @@ site and a real search index, then checks article counts, up to three matching
 heading links per article, pagination, keyboard navigation, stale searches,
 and heading navigation into tabs and collapsed details. Search requests are
 also mocked to exercise asynchronous updates and empty results predictably.
+
+The navigation check builds a multilingual site with many categories and a long
+site title. It checks header overflow, mouse-wheel and keyboard navigation,
+localized links, and the mobile drawer on home, article, taxonomy, and 404 pages.

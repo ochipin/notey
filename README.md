@@ -281,6 +281,12 @@ Hugo の `transform.ToMath` で HTML と MathML を生成するため、閲覧�
 
 OG 画像は、ページの `params.image`、ページバンドル内の `cover`・`og`・`thumbnail` 画像、自動生成画像、`params.og.default` の順に選びます。自動生成には `assets/og/base.png` と `assets/fonts/og.ttf`（または `params.og.font` の指定先）の両方が必要です。サンプルの既定画像は同梱の `/favicon.png` を使っています。`/images/share.png` のようなサイト内パスは `baseURL` の配下に解決されます。
 
+### カテゴリーナビゲーション
+
+`content/guides/` や `content/reference/` のような最上位のセクションを、ヘッダに自動で表示します。表示名は各セクションの `_index.md` の `linkTitle`（省略時は `title`）、並び順は `weight` で指定できます。左サイドバーには、選択中のセクションの記事一覧を表示します。
+
+カテゴリが横幅に収まらない場合は、メニュー上でマウスホイールを回すと横にスクロールします。トラックパッドの横スクロールと Tab キーでの移動にも対応します。画面幅が 860px 以下の場合は、右上のメニューボタンから左側のドロワーを開き、カテゴリ・記事一覧・言語・テーマなどを操作できます。
+
 ### バージョン表示とヘッダのリンク
 
 バージョン表示が不要な場合は、サイトの `hugo.yaml` に以下を指定します。`exampleSite` は非表示にしています。
