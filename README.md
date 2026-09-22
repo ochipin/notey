@@ -82,7 +82,7 @@ languages:
 
 ```bash
 hugo --minify
-npx -y pagefind --site public
+npx -y pagefind@1.5.2 --site public
 ```
 
 Pagefind を実行しないと検索ダイアログにインデックス未生成のメッセージが表示されます（他の機能は動作します）。
@@ -367,7 +367,13 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 
 テーマ本体は [MIT](LICENSE) です。アイコンの元 SVG と、それらから生成したフォントには [Apache License 2.0](LICENSES/Apache-2.0.txt) が適用されます。48 個すべてを Google 公式の Material Symbols Rounded から取得し直し、出典が未確定だった旧フォントの図形は使用していません。
 
+各ページのフッターと検索画面の「ライセンス・クレジット」から、共通のダイアログを開けます。Notey、Material Symbols、Mermaid、KaTeX、Pagefind の案内とライセンス原文へのリンクをまとめてあり、依存ライブラリの一覧も展開できます。日英表示・モバイル・ダークモードに対応し、検索中に開いた場合も検索内容を保持します。Esc、閉じるボタン、背景のクリックで閉じられます。
+
 同梱の Mermaid・KaTeX とその依存ライブラリ・フォントには、それぞれのライセンスが適用されます。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と `static/vendor/` 内のライセンス・出典ファイルを参照してください。生成サイトにもコピーされるこれらのファイルは、アプリやサイトを再配布する際も保持してください。
+
+検索に使う Pagefind 本体の [MIT ライセンス原文](LICENSES/Pagefind-MIT.txt) と、確認できたブラウザ用依存ライブラリの表記は `static/licenses/pagefind/` に収録しています。Hugo はこのディレクトリを生成サイトの `licenses/pagefind/` にコピーし、「ライセンス・クレジット」内の Pagefind の項目から案内を開けます。検索インデックスの `pagefind/` とは別の場所にあるため、インデックスを再生成しても保持されます。公開・配布する際は、このディレクトリも含めてください。収録内容は Pagefind 1.5.2 を基準としているので、使用バージョンを変更する場合は対応するライセンス・依存コードの表記も確認してください。
+
+**Pagefind の配布条件には確認が残っています。** 1.5.2 の検索用 WebAssembly が依存する `pagefind_microjson 0.1.4` には GPLv3 のライセンスと著作権表示があります。Pagefind 本体の MIT とは別の条件であり、表記を追加するだけでは GPL の再配布・対応するソースコードの提供に関する要件への対応は完了しません。サイト公開やアプリ同梱の前に確認が必要です。調査結果と収録範囲は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md#distribution-review-required-for-a-webassembly-dependency) に記録しています。テーマ本体のライセンスを変更するものではありません。
 
 取得元のコミット、アイコンごとの URL・SHA-256・名前の対応は [manifest.json](icons/material-symbols/manifest.json)、加工内容と配布時の扱いは [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) に記録しています。`icomoon` という名前は既存の CSS とファイル名の互換性のために残しており、現在のフォント生成には FontTools を使用します。
 

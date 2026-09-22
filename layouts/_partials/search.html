@@ -12,9 +12,10 @@
       <button id="search-more" class="sdlg-more" hidden>{{ i18n "ui.load_more" }}</button>
     </div>
     <div class="sdlg-foot">
-      <span><kbd>↑</kbd><kbd>↓</kbd> {{ i18n "ui.kbd_move" }}</span>
-      <span><kbd>Enter</kbd> {{ i18n "ui.kbd_open" }}</span>
-      <span class="sdlg-credit">Pagefind</span>
+      <span class="sdlg-keyhint"><kbd>↑</kbd><kbd>↓</kbd> {{ i18n "ui.kbd_move" }}</span>
+      <span class="sdlg-keyhint"><kbd>Enter</kbd> {{ i18n "ui.kbd_open" }}</span>
+      <span class="sdlg-powered">Pagefind</span>
+      <button type="button" class="sdlg-credit" data-credits-open aria-haspopup="dialog" aria-controls="credits-dialog">{{ i18n "ui.credits" }}</button>
     </div>
   </div>
 </dialog>

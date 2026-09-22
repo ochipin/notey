@@ -23,6 +23,7 @@
   </div>
 
   {{ partial "search.html" . }}
+  {{ partialCached "credits.html" . .Language.Name }}
   {{ partial "lightbox.html" . }}
   {{ partialCached "head/js.html" . .Language.Name }}
 </body>

@@ -15,11 +15,11 @@ Notey provides the search interface, while [Pagefind](https://pagefind.app/) gen
 
 ```bash
 hugo --minify
-npx -y pagefind --site public
+npx -y pagefind@1.5.2 --site public
 ```
 
 {{< info title="Add search to CI" >}}
-In GitHub Actions, add a step that runs `npx -y pagefind --site public` after `hugo`.
+In GitHub Actions, add a step that runs `npx -y pagefind@1.5.2 --site public` after `hugo`.
 {{< /info >}}
 
 ## Choose what gets indexed

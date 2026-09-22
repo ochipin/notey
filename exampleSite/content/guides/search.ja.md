@@ -15,11 +15,11 @@ Notey は検索 UI だけをテーマに持ち、インデックスは [Pagefind
 
 ```bash
 hugo --minify
-npx -y pagefind --site public
+npx -y pagefind@1.5.2 --site public
 ```
 
 {{< info title="CI に入れる" >}}
-GitHub Actions では `hugo` の後に `npx -y pagefind --site public` を実行するステップを追加するだけです。
+GitHub Actions では `hugo` の後に `npx -y pagefind@1.5.2 --site public` を実行するステップを追加するだけです。
 {{< /info >}}
 
 ## 検索対象の指定

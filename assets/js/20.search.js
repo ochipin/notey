@@ -45,7 +45,7 @@
     load();
     clearTimeout(focusTimer);
     focusTimer = setTimeout(function () {
-      if (dlg.open) { input.focus(); input.select(); }
+      if (dlg.open && !doc.querySelector("dialog[open]:not(#search-dialog)")) { input.focus(); input.select(); }
     }, 20);
   }
   function close() { if (dlg.open) dlg.close(); }
@@ -57,6 +57,8 @@
   });
 
   addEventListener("keydown", function (e) {
+    // Leave keyboard interaction with another modal on top of search intact.
+    if (e.defaultPrevented || doc.querySelector("dialog[open]:not(#search-dialog)")) return;
     var k = e.key.toLowerCase();
     if ((e.metaKey || e.ctrlKey) && k === "k") { e.preventDefault(); open(); return; }
     var typing = /^(input|textarea|select)$/i.test((doc.activeElement || {}).tagName || "");

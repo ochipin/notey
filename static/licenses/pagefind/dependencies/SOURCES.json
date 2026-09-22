@@ -1,0 +1,653 @@
+{
+  "pagefindVersion": "1.5.2",
+  "scope": "Notices for identified third-party JavaScript runtime code and normal WebAssembly dependencies of Pagefind 1.5.2. Build tools and npm wrapper/CLI dependencies are excluded. These notice files do not constitute a complete license-compliance assessment.",
+  "releaseSource": {
+    "sourceURL": "https://codeload.github.com/Pagefind/pagefind/tar.gz/refs/tags/v1.5.2",
+    "sha256": "b2562714098479a19ddade7ad226ddbb9ecee8663a51963018ada9101ef16f34"
+  },
+  "selection": "JavaScript versions are taken from the Pagefind v1.5.2 release npm lockfiles; npm archive integrity is checked against those lockfiles. Browser use is established from Pagefind source imports and generated assets. Svelte compiler dependencies and unused bcp-47 in the modular UI manifest are excluded. WebAssembly versions come from the separate pagefind_web/Cargo.lock, with official crate SHA-256 checksums verified. Its normal dependency graph excludes procedural macros, build-only dependencies, and disabled optional serde dependencies; optimized machine-code retention is not proven for every transitive crate.",
+  "files": [
+    {
+      "package": "adequate-little-templates",
+      "version": "1.0.2",
+      "license": "MIT",
+      "file": "adequate-little-templates@1.0.2/LICENSE",
+      "sourceURL": "https://registry.npmjs.org/adequate-little-templates/-/adequate-little-templates-1.0.2.tgz",
+      "sourcePath": "package/LICENSE",
+      "sha256": "497af9803b5f4c55e5f81ce326d39b1bd1a6681b520c62a2414f68d706bfb604",
+      "sourceArchiveSHA256": "2914e0d727bba90fd32967c85a55a5ba672ff8e591c55cc06c502faa33aeda0a",
+      "sourceIntegrity": "sha512-d0tFFG538l3Y4CElRKtticzrMr/OGohs32/nf3Ewn8rbTMBYwkVNe8mPdXWrDnMlz+ZVUFQjsTmsBD5zCtU4wg==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/component/package-lock.json",
+          "sha256": "4c8280aea479291d50423cf7d61fa41b4d012c9153953815e8f09804a084ec9b"
+        }
+      ],
+      "scope": [
+        "pagefind-component-ui.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "bcp-47",
+      "version": "2.1.0",
+      "license": "MIT",
+      "file": "bcp-47@2.1.0/license",
+      "sourceURL": "https://registry.npmjs.org/bcp-47/-/bcp-47-2.1.0.tgz",
+      "sourcePath": "package/license",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "sourceArchiveSHA256": "3b2c0bb662eac52be06826649ab7371a050212f0f0cd3883c59af9888c4db989",
+      "sourceIntegrity": "sha512-9IIS3UPrvIa1Ej+lVDdDwO7zLehjqsaByECw0bu2RRGP73jALm6FYbzI5gWbgHLvNdkvfXB5YrSbocZdOS0c0w==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/default/package-lock.json",
+          "sha256": "278a71cacfa1a5e1dbd9365039f67f363fc5ae18b4c6aa897ace00ed8b8761ae"
+        },
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/component/package-lock.json",
+          "sha256": "4c8280aea479291d50423cf7d61fa41b4d012c9153953815e8f09804a084ec9b"
+        }
+      ],
+      "scope": [
+        "pagefind-ui.js",
+        "pagefind-component-ui.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "bit-set",
+      "version": "0.10.0",
+      "license": "Apache-2.0 OR MIT",
+      "sourceURL": "https://static.crates.io/crates/bit-set/bit-set-0.10.0.crate",
+      "sourceArchiveSHA256": "09ec2f926cc3060f09db9ebc5b52823d85268d24bb917e472c0c4bea35780a7d",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "bit-set@0.10.0/LICENSE-APACHE",
+      "sourcePath": "bit-set-0.10.0/LICENSE-APACHE",
+      "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "bit-set",
+      "version": "0.10.0",
+      "license": "Apache-2.0 OR MIT",
+      "sourceURL": "https://static.crates.io/crates/bit-set/bit-set-0.10.0.crate",
+      "sourceArchiveSHA256": "09ec2f926cc3060f09db9ebc5b52823d85268d24bb917e472c0c4bea35780a7d",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "bit-set@0.10.0/LICENSE-MIT",
+      "sourcePath": "bit-set-0.10.0/LICENSE-MIT",
+      "sha256": "6b56ddc7cd80419e5e22e075f2252d720f6cbe17e3e2c17383095ee2712bcffa",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "bit-vec",
+      "version": "0.9.1",
+      "license": "Apache-2.0 OR MIT",
+      "sourceURL": "https://static.crates.io/crates/bit-vec/bit-vec-0.9.1.crate",
+      "sourceArchiveSHA256": "b71798fca2c1fe1086445a7258a4bc81e6e49dcd24c8d0dd9a1e57395b603f51",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "bit-vec@0.9.1/LICENSE-APACHE",
+      "sourcePath": "bit-vec-0.9.1/LICENSE-APACHE",
+      "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "bit-vec",
+      "version": "0.9.1",
+      "license": "Apache-2.0 OR MIT",
+      "sourceURL": "https://static.crates.io/crates/bit-vec/bit-vec-0.9.1.crate",
+      "sourceArchiveSHA256": "b71798fca2c1fe1086445a7258a4bc81e6e49dcd24c8d0dd9a1e57395b603f51",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "bit-vec@0.9.1/LICENSE-MIT",
+      "sourcePath": "bit-vec-0.9.1/LICENSE-MIT",
+      "sha256": "f51ac2c59a222f7476ce507ca879960e2b64ea64bb2786eefdbeb7b0b538d1b7",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "cfg-if",
+      "version": "1.0.4",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.4.crate",
+      "sourceArchiveSHA256": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "cfg-if@1.0.4/LICENSE-APACHE",
+      "sourcePath": "cfg-if-1.0.4/LICENSE-APACHE",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "cfg-if",
+      "version": "1.0.4",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.4.crate",
+      "sourceArchiveSHA256": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "cfg-if@1.0.4/LICENSE-MIT",
+      "sourcePath": "cfg-if-1.0.4/LICENSE-MIT",
+      "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "fflate",
+      "version": null,
+      "vendoredIn": "Pagefind 1.5.2",
+      "license": "MIT",
+      "file": "fflate-vendored/LICENSE.txt",
+      "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web_js/lib/gz.js",
+      "sourcePath": "pagefind_web_js/lib/gz.js",
+      "sha256": "53d276d15491f7d019e90a66e763d42d3e829b5ac380ea9b3193fde0b46e769a",
+      "sourceFileSHA256": "7450eb4426973ca026c8d18cfec66f09317fb249f8f7f3ca1d2153b6b71e0158",
+      "scope": [
+        "pagefind.js",
+        "pagefind-worker.js"
+      ],
+      "extraction": "Complete leading license comment from the release source, copied byte for byte including comment delimiters; the vendored source does not declare an fflate version."
+    },
+    {
+      "package": "is-alphabetical",
+      "version": "2.0.1",
+      "license": "MIT",
+      "file": "is-alphabetical@2.0.1/license",
+      "sourceURL": "https://registry.npmjs.org/is-alphabetical/-/is-alphabetical-2.0.1.tgz",
+      "sourcePath": "package/license",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "sourceArchiveSHA256": "85dddfd165e6ac37b3229c3b1c181b92d1fdde68fd5a46acf8b14696c9729f81",
+      "sourceIntegrity": "sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/default/package-lock.json",
+          "sha256": "278a71cacfa1a5e1dbd9365039f67f363fc5ae18b4c6aa897ace00ed8b8761ae"
+        },
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/component/package-lock.json",
+          "sha256": "4c8280aea479291d50423cf7d61fa41b4d012c9153953815e8f09804a084ec9b"
+        }
+      ],
+      "scope": [
+        "pagefind-ui.js",
+        "pagefind-component-ui.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "is-alphanumerical",
+      "version": "2.0.1",
+      "license": "MIT",
+      "file": "is-alphanumerical@2.0.1/license",
+      "sourceURL": "https://registry.npmjs.org/is-alphanumerical/-/is-alphanumerical-2.0.1.tgz",
+      "sourcePath": "package/license",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "sourceArchiveSHA256": "b6f98de1bfab7ed76025357018b57593bacd2d177985cd04bbd2a5059d3ea92b",
+      "sourceIntegrity": "sha512-hmbYhX/9MUMF5uh7tOXyK/n0ZvWpad5caBA17GsC6vyuCqaWliRG5K1qS9inmUhEMaOBIW7/whAnSwveW/LtZw==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/default/package-lock.json",
+          "sha256": "278a71cacfa1a5e1dbd9365039f67f363fc5ae18b4c6aa897ace00ed8b8761ae"
+        },
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/component/package-lock.json",
+          "sha256": "4c8280aea479291d50423cf7d61fa41b4d012c9153953815e8f09804a084ec9b"
+        }
+      ],
+      "scope": [
+        "pagefind-ui.js",
+        "pagefind-component-ui.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "is-decimal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "file": "is-decimal@2.0.1/license",
+      "sourceURL": "https://registry.npmjs.org/is-decimal/-/is-decimal-2.0.1.tgz",
+      "sourcePath": "package/license",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "sourceArchiveSHA256": "62b6375ccb0869ca7c26ccb1e5049de4c4f272157894360b50cf8466fc4c1beb",
+      "sourceIntegrity": "sha512-AAB9hiomQs5DXWcRB1rqsxGUstbRroFOPPVAomNk/3XHR5JyEZChOyTWe2oayKnsSsr/kcGqF+z6yuH6HHpN0A==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/default/package-lock.json",
+          "sha256": "278a71cacfa1a5e1dbd9365039f67f363fc5ae18b4c6aa897ace00ed8b8761ae"
+        },
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/component/package-lock.json",
+          "sha256": "4c8280aea479291d50423cf7d61fa41b4d012c9153953815e8f09804a084ec9b"
+        }
+      ],
+      "scope": [
+        "pagefind-ui.js",
+        "pagefind-component-ui.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "mark.js",
+      "version": "8.11.1",
+      "license": "MIT",
+      "file": "mark.js@8.11.1/LICENSE",
+      "sourceURL": "https://registry.npmjs.org/mark.js/-/mark.js-8.11.1.tgz",
+      "sourcePath": "package/LICENSE",
+      "sha256": "402936bcc8f1b6947750eb9193183d7d0c4dbca3c0ba06398571d94ee85c24be",
+      "sourceArchiveSHA256": "694fa154d0f0e63fbc55cfd33e414bd7e4b21239cdf56b4e6b80f2ccc1f86994",
+      "sourceIntegrity": "sha512-1I+1qpDt4idfgLQG+BNWmrqku+7/2bi5nLf4YwF8y8zXvmfiTBY3PV3ZibfrjBueCByROpuBjLLFCajqkgYoLQ==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web_js/package-lock.json",
+          "sha256": "f73ed2a5308157f992cb6979bed5a7275d6fcb6942cd707da204ce49c19c5b2b"
+        }
+      ],
+      "scope": [
+        "pagefind-highlight.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "minicbor",
+      "version": "2.2.1",
+      "license": "BlueOak-1.0.0",
+      "sourceURL": "https://static.crates.io/crates/minicbor/minicbor-2.2.1.crate",
+      "sourceArchiveSHA256": "e70eae6d4f18f7d76877fe7b13f0bc21f7c2b7239d2041c338335f7b388d0dd7",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "minicbor@2.2.1/LICENSE.md",
+      "sourcePath": "minicbor-2.2.1/LICENSE.md",
+      "sha256": "79860758b46e85f70a1762c21a8fff4f2d220d89f9bdca096e12aed15b9951c5",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "once_cell",
+      "version": "1.21.4",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/once_cell/once_cell-1.21.4.crate",
+      "sourceArchiveSHA256": "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "once_cell@1.21.4/LICENSE-APACHE",
+      "sourcePath": "once_cell-1.21.4/LICENSE-APACHE",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "once_cell",
+      "version": "1.21.4",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/once_cell/once_cell-1.21.4.crate",
+      "sourceArchiveSHA256": "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "once_cell@1.21.4/LICENSE-MIT",
+      "sourcePath": "once_cell-1.21.4/LICENSE-MIT",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "pagefind_microjson",
+      "version": "0.1.4",
+      "license": "GPL-3.0-or-later",
+      "sourceURL": "https://static.crates.io/crates/pagefind_microjson/pagefind_microjson-0.1.4.crate",
+      "sourceArchiveSHA256": "8f97aa64cde14e78d6274c473f36cec98d401f0b583282055e953d2df907e210",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "manifestLicense": "GPL-3.0-only",
+      "file": "pagefind_microjson@0.1.4/COPYRIGHT-from-source.txt",
+      "sourcePath": "pagefind_microjson-0.1.4/src/lib.rs",
+      "sourceFileSHA256": "2321e0825b1c5a0e6dfb35962f2f3e444d318233c4b346e122011cb6f248cea0",
+      "sha256": "896c175fa4250fb6c4032417c36a7d143c4e88bcb2c91fb957bb9f46ed9a4d35",
+      "extraction": "Complete leading source-file copyright and license header, copied byte for byte."
+    },
+    {
+      "package": "pagefind_microjson",
+      "version": "0.1.4",
+      "license": "GPL-3.0-only",
+      "sourceURL": "https://static.crates.io/crates/pagefind_microjson/pagefind_microjson-0.1.4.crate",
+      "sourceArchiveSHA256": "8f97aa64cde14e78d6274c473f36cec98d401f0b583282055e953d2df907e210",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "pagefind_microjson@0.1.4/LICENCE",
+      "sourcePath": "pagefind_microjson-0.1.4/LICENCE",
+      "sha256": "1b3782ccad7b8614100cda30d3faf42fc39f2e97932908c543005053b654ca68",
+      "extraction": "Complete upstream license file, copied byte for byte.",
+      "licenseDiscrepancy": "Cargo.toml declares GPL-3.0-only, while the source-file header grants version 3 or any later version. No alternate grant is recorded here."
+    },
+    {
+      "package": "pagefind_stem",
+      "version": "1.0.0",
+      "license": "MIT AND BSD-3-Clause",
+      "sourceURL": "https://static.crates.io/crates/pagefind_stem/pagefind_stem-1.0.0.crate",
+      "sourceArchiveSHA256": "8dfa810b158f3ac364e5acd43ca4a6020a6e729d40c15ce1bed1d911237a52e5",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.<language>.pagefind (stemming variants)"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "manifestLicense": "MIT",
+      "file": "pagefind_stem@1.0.0/LICENSES-from-source.txt",
+      "sourcePath": "pagefind_stem-1.0.0/src/lib.rs",
+      "sourceFileSHA256": "9f86c4dabd796b8e3f616a450dea8e69cc75979da05d7d7891c7cd2c8d967d4c",
+      "sha256": "40eaeaf1c81927234fbd9b98609bad763ca8cdced4eb88e43357dc5cf1facb38",
+      "extraction": "Complete source-file documentation comment containing rust-stemmers MIT and Snowball BSD notices, copied byte for byte including comment delimiters."
+    },
+    {
+      "package": "svelte",
+      "version": "4.2.20",
+      "license": "MIT",
+      "file": "svelte@4.2.20/LICENSE.md",
+      "sourceURL": "https://registry.npmjs.org/svelte/-/svelte-4.2.20.tgz",
+      "sourcePath": "package/LICENSE.md",
+      "sha256": "97a941bae1c510c556c5daf017180e4939ea392357d9a7bae2657e3e20c69c42",
+      "sourceArchiveSHA256": "17297670baa34da702204e0620d073359ec085450acb3791e42699b46fff48de",
+      "sourceIntegrity": "sha512-eeEgGc2DtiUil5ANdtd8vPwt9AgaMdnuUFnPft9F5oMvU/FHu5IHFic+p1dR/UOB7XU2mX2yHW+NcTch4DCh5Q==",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_ui/default/package-lock.json",
+          "sha256": "278a71cacfa1a5e1dbd9365039f67f363fc5ae18b4c6aa897ace00ed8b8761ae"
+        }
+      ],
+      "scope": [
+        "pagefind-ui.js"
+      ],
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "unicode-ident",
+      "version": "1.0.24",
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "sourceURL": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.24.crate",
+      "sourceArchiveSHA256": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "unicode-ident@1.0.24/LICENSE-APACHE",
+      "sourcePath": "unicode-ident-1.0.24/LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "unicode-ident",
+      "version": "1.0.24",
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "sourceURL": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.24.crate",
+      "sourceArchiveSHA256": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "unicode-ident@1.0.24/LICENSE-MIT",
+      "sourcePath": "unicode-ident-1.0.24/LICENSE-MIT",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "unicode-ident",
+      "version": "1.0.24",
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "sourceURL": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.24.crate",
+      "sourceArchiveSHA256": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "unicode-ident@1.0.24/LICENSE-UNICODE",
+      "sourcePath": "unicode-ident-1.0.24/LICENSE-UNICODE",
+      "sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "wasm-bindgen",
+      "version": "0.2.117",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/wasm-bindgen/wasm-bindgen-0.2.117.crate",
+      "sourceArchiveSHA256": "0551fc1bb415591e3372d0bc4780db7e587d84e2a7e79da121051c5c4b89d0b0",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "wasm-bindgen@0.2.117/LICENSE-APACHE",
+      "sourcePath": "wasm-bindgen-0.2.117/LICENSE-APACHE",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "wasm-bindgen",
+      "version": "0.2.117",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/wasm-bindgen/wasm-bindgen-0.2.117.crate",
+      "sourceArchiveSHA256": "0551fc1bb415591e3372d0bc4780db7e587d84e2a7e79da121051c5c4b89d0b0",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "wasm-bindgen@0.2.117/LICENSE-MIT",
+      "sourcePath": "wasm-bindgen-0.2.117/LICENSE-MIT",
+      "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "wasm-bindgen-shared",
+      "version": "0.2.117",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/wasm-bindgen-shared/wasm-bindgen-shared-0.2.117.crate",
+      "sourceArchiveSHA256": "39129a682a6d2d841b6c429d0c51e5cb0ed1a03829d8b3d1e69a011e62cb3d3b",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "wasm-bindgen-shared@0.2.117/LICENSE-APACHE",
+      "sourcePath": "wasm-bindgen-shared-0.2.117/LICENSE-APACHE",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "wasm-bindgen-shared",
+      "version": "0.2.117",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/wasm-bindgen-shared/wasm-bindgen-shared-0.2.117.crate",
+      "sourceArchiveSHA256": "39129a682a6d2d841b6c429d0c51e5cb0ed1a03829d8b3d1e69a011e62cb3d3b",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "wasm-bindgen-shared@0.2.117/LICENSE-MIT",
+      "sourcePath": "wasm-bindgen-shared-0.2.117/LICENSE-MIT",
+      "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "write-json",
+      "version": "0.1.4",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/write-json/write-json-0.1.4.crate",
+      "sourceArchiveSHA256": "23f6174b2566cc4a74f95e1367ec343e7fa80c93cc8087f5c4a3d6a1088b2118",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "write-json@0.1.4/LICENSE-APACHE",
+      "sourcePath": "write-json-0.1.4/LICENSE-APACHE",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    },
+    {
+      "package": "write-json",
+      "version": "0.1.4",
+      "license": "MIT OR Apache-2.0",
+      "sourceURL": "https://static.crates.io/crates/write-json/write-json-0.1.4.crate",
+      "sourceArchiveSHA256": "23f6174b2566cc4a74f95e1367ec343e7fa80c93cc8087f5c4a3d6a1088b2118",
+      "versionSources": [
+        {
+          "sourceURL": "https://raw.githubusercontent.com/Pagefind/pagefind/v1.5.2/pagefind_web/Cargo.lock",
+          "sha256": "d762f97d4dc284014c284f2b2147d0d29bb4add334df4bdc14eaf4e84201a5c3"
+        }
+      ],
+      "scope": [
+        "wasm.*.pagefind"
+      ],
+      "selectionBasis": "Normal dependencies of the release WebAssembly crate; surviving code after optimization has not been established for each transitive crate.",
+      "file": "write-json@0.1.4/LICENSE-MIT",
+      "sourcePath": "write-json-0.1.4/LICENSE-MIT",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "extraction": "Complete upstream license file, copied byte for byte."
+    }
+  ],
+  "knownLimitations": [
+    "pagefind_microjson 0.1.4 declares GPL-3.0-only in Cargo.toml but GPL version 3 or later in its source header. Both original notices are preserved. No alternative licensing grant is documented here; these attribution files do not resolve GPL distribution or corresponding-source obligations.",
+    "Rust standard-library code and its third-party components in the generated WebAssembly are outside this notice inventory."
+  ],
+  "pagefindMicrojsonReview": {
+    "package": "pagefind_microjson",
+    "version": "0.1.4",
+    "forkIntroductionURL": "https://github.com/Pagefind/pagefind/commit/6ca0526ca346e9a8180e30ee0e982ab0939e4227",
+    "upstreamSourceURL": "https://github.com/rspencer01/microjson/tree/379b16211a81805856be0b2ac14643a54d96b45a",
+    "licenseIntroductionURL": "https://github.com/rspencer01/microjson/commit/ff74cf18251829101ac29fad6845a95b3efad136",
+    "comparison": "The published crate src/lib.rs and LICENCE are byte-identical to the upstream revision previously used by Pagefind; Cargo.toml differs only by the pagefind_ package-name prefix.",
+    "finding": "GPL notices are present in both the source and license file, not only package metadata. No alternative grant was found in the inspected upstream history and Pagefind fork discussion. Attribution files do not resolve the license metadata inconsistency or applicable redistribution and source requirements."
+  }
+}

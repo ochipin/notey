@@ -183,11 +183,19 @@
   padding: 0.5rem 0.9rem; border-top: 1px solid var(--border);
   background: var(--surface-2); font-size: 0.72rem; color: var(--ink-muted);
 }
-.sdlg-foot span { display: inline-flex; align-items: center; gap: 0.25rem; }
-.sdlg-credit { margin-left: auto; font-family: var(--font-mono); letter-spacing: 0.03em; }
+.sdlg-foot .sdlg-keyhint { display: inline-flex; align-items: center; gap: 0.25rem; }
+.sdlg-credit {
+  margin-left: auto; min-height: 2.25rem; padding: 0.35rem 0.5rem;
+  border: 0; border-radius: var(--radius-sm); background: transparent;
+  color: var(--accent-ink); font: inherit; line-height: 1.5;
+  text-align: start; overflow-wrap: anywhere; cursor: pointer;
+}
+.sdlg-credit:hover { background: var(--accent-wash); color: var(--accent-hover); }
 @media (max-width: 640px) {
   .sdlg-box { width: 100vw; height: 100%; max-height: none; margin: 0; border-radius: 0; border: 0; }
-  .sdlg-foot { display: none; }
+  .sdlg-foot { padding: 0.25rem 0.75rem max(0.25rem, env(safe-area-inset-bottom)); }
+  .sdlg-foot .sdlg-keyhint { display: none; }
+  .sdlg-credit { min-height: 2.75rem; }
 }
 
 /* ライトボックス */

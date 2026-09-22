@@ -1,4 +1,5 @@
 <footer class="foot">
   <p>{{ with site.Copyright }}{{ . | markdownify }}{{ else }}© {{ now.Year }} {{ site.Title }}{{ end }}</p>
   <p class="foot-built">{{ i18n "ui.built_with" }}</p>
+  <button type="button" class="foot-credits" data-credits-open aria-haspopup="dialog" aria-controls="credits-dialog">{{ i18n "ui.credits" }}</button>
 </footer>
