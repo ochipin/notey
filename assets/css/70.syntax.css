@@ -1,9 +1,45 @@
 /* Chroma classes — noClasses: false / style: none 前提 */
 .highlight pre.chroma { color: var(--ink); }
-.chroma .lnt, .chroma .ln { color: var(--ink-muted); opacity: 0.55; }
+.chroma .lnt, .chroma .ln {
+  color: var(--ink-muted); white-space: pre;
+  -webkit-user-select: none; user-select: none;
+}
 .chroma .hl { background: var(--accent-wash); display: block; }
+.chroma .line { display: flex; }
+/* Highlight the whole row, including the part revealed by horizontal scrolling. */
+.highlight pre.chroma > code:has(> .line) {
+  display: block; width: max-content; min-width: 100%;
+}
+/* Hugo pads numbers to the widest line number; retain those spaces. */
+.chroma .ln {
+  flex-shrink: 0; min-width: calc(3ch + 0.75rem + 1px);
+  padding-inline-end: 0.75rem; margin-inline-end: 0.75rem;
+  border-inline-end: 1px solid var(--border); text-align: end;
+}
+/* Table-mode numbers and code share one horizontal scrollbar. */
+.highlight:has(.lntable) { max-width: 100%; overflow-x: auto; }
+.chroma .lntable {
+  display: table; width: 100%; margin: 0;
+  border: 0; border-spacing: 0; border-collapse: collapse; font-size: inherit;
+}
 .chroma .lntd { vertical-align: top; padding: 0; border: 0; }
-.chroma .lntable { border: 0; border-spacing: 0; width: auto; display: block; }
+.chroma .lntd pre { margin: 0; overflow: visible; }
+.chroma .lntd:first-child {
+  width: 1%; border-inline-end: 1px solid var(--border);
+  background: var(--surface-2); -webkit-user-select: none; user-select: none;
+}
+.chroma .lntd:first-child pre {
+  min-width: calc(3ch + 1.5rem); padding-inline: 0.75rem; text-align: end;
+}
+
+/* Keep linked line numbers quiet until hovered or selected via the URL hash. */
+.chroma :is(.ln, .lnt) a { color: inherit; text-decoration: none; }
+.chroma :is(.ln, .lnt) a:hover { color: var(--accent-ink); text-decoration: underline; }
+.chroma :is(.line, .ln, .lnt)[id] { scroll-margin-top: calc(var(--hdr-h) + 1.25rem); }
+.chroma .line.is-line-target {
+  background: var(--accent-wash); box-shadow: inset 3px 0 var(--accent);
+}
+.chroma :is(.ln, .lnt).is-line-target { color: var(--accent-ink); }
 
 :root[data-theme="light"] {
   --c-key: oklch(0.48 0.16 300);

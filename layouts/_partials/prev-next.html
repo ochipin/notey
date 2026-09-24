@@ -1,3 +1,5 @@
+{{- /* Only regular pages participate in the flattened reading order. */ -}}
+{{- if .IsPage }}
 {{- $root := .FirstSection }}
 {{- with $root }}
   {{- $all := partialCached "flatten-pages.html" . .RelPermalink }}
@@ -5,8 +7,9 @@
   {{- $prev := false }}{{ $next := false }}
   {{- range $i, $p := $all }}
     {{- if eq $p.RelPermalink $cur }}
-      {{- with index $all (sub $i 1) }}{{ $prev = . }}{{ end }}
-      {{- with index $all (add $i 1) }}{{ $next = . }}{{ end }}
+      {{- if gt $i 0 }}{{ $prev = index $all (sub $i 1) }}{{ end }}
+      {{- if lt (add $i 1) (len $all) }}{{ $next = index $all (add $i 1) }}{{ end }}
+      {{- break }}
     {{- end }}
   {{- end }}
   {{- if or $prev $next }}
@@ -25,4 +28,5 @@
     {{ end }}
   </nav>
   {{- end }}
+{{- end }}
 {{- end }}

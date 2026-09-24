@@ -1,7 +1,7 @@
 # Theme regression checks
 
-Normal theme use needs no Node.js build step. This optional maintainer check
-requires Hugo 0.166.0, Node.js, Playwright and Chromium.
+Normal theme use needs no Node.js build step. The optional browser checks
+require Hugo 0.166.0, Node.js, Playwright and Chromium.
 
 With Playwright installed and its Chromium downloaded, run from the theme:
 
@@ -39,3 +39,18 @@ also mocked to exercise asynchronous updates and empty results predictably.
 The navigation check builds a multilingual site with many categories and a long
 site title. It checks header overflow, mouse-wheel and keyboard navigation,
 localized links, and the mobile drawer on home, article, taxonomy, and 404 pages.
+
+The pager check needs only Python 3 and Hugo 0.166.0 or later:
+
+```sh
+python3 scripts/check-pager.py
+```
+
+It builds temporary sites with no articles, one-article sections, empty nested
+sections, and articles mixed with empty and populated sections. It checks that
+the flattened result contains only pages, follows section/page weights, and
+produces exact first/middle/last previous/next links without crossing top-level
+sections. Japanese-only and bilingual sites cover language-specific ordering
+and URLs with `/review/` as a base path, both with and without a language prefix
+for the default language. Set `NOTEY_HUGO` to select another Hugo executable.
+Successful fixtures are removed; failed fixtures are retained for inspection.

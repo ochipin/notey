@@ -130,72 +130,120 @@
     <div class="cdlg-body">
       <p class="cdlg-intro">{{ i18n "credits.intro" }}</p>
       <div class="credits-list">
-        <section class="credits-item">
-          <h3>Notey</h3>
-          <p>{{ i18n "credits.notey" }}</p>
-          <ul class="credits-links">
-            <li><a href="{{ partial "site-url.html" "/licenses/notey/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
-            <li><a href="https://github.com/ochipin/notey" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
-          </ul>
-        </section>
-        <section class="credits-item">
-          <h3>Google Material Symbols Rounded</h3>
-          <p>{{ i18n "credits.icons" }}</p>
-          <ul class="credits-links">
-            <li><a href="{{ partial "site-url.html" "/fonts/LICENSES/Apache-2.0.txt" }}" target="_blank" rel="noopener">Apache 2.0 · {{ i18n "credits.license" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/fonts/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/fonts/icon-sources.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
-            <li><a href="https://github.com/google/material-design-icons" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
-          </ul>
-        </section>
-        <section class="credits-item">
-          <h3>Mermaid <span class="credits-version">12.0.0</span></h3>
-          <p>{{ i18n "credits.mermaid" }}</p>
-          <ul class="credits-links">
-            <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/LICENSE" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/PROVENANCE.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
-            <li><a href="https://github.com/mermaid-js/mermaid" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
-          </ul>
-          <details class="credits-dependencies">
-            <summary>{{ i18n "credits.dependencies" }}</summary>
-            <ul class="credits-links credits-dependency-links">
-              {{- range $mermaidLicenses }}
-              <li><a href="{{ partial "site-url.html" (printf "/vendor/mermaid/12.0.0/LICENSES/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
-              {{- end }}
+        <details class="credits-item">
+          <summary class="credits-summary">
+            <span class="credits-identity">
+              <strong class="credits-name">Notey</strong>
+              <span class="credits-purpose">{{ i18n "credits.purpose_theme" }}</span>
+            </span>
+            <span class="credits-license">MIT</span>
+            <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+          </summary>
+          <div class="credits-detail">
+            <p>{{ i18n "credits.notey" }}</p>
+            <ul class="credits-links">
+              <li><a href="{{ partial "site-url.html" "/licenses/notey/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+              <li><a href="https://github.com/ochipin/notey" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
             </ul>
-          </details>
-        </section>
-        <section class="credits-item">
-          <h3>KaTeX <span class="credits-version">0.18.4</span></h3>
-          <p>{{ i18n "credits.katex" }}</p>
-          <ul class="credits-links">
-            <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/LICENSE" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/OFL-1.1.txt" }}" target="_blank" rel="noopener">SIL OFL 1.1 · {{ i18n "credits.license" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/FONT-NOTICES.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.font_notices" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/PROVENANCE.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
-            <li><a href="https://github.com/KaTeX/KaTeX" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
-          </ul>
-        </section>
-        <section class="credits-item">
-          <h3>Pagefind <span class="credits-version">1.5.2 · {{ i18n "credits.reference_version" }}</span></h3>
-          <p>{{ i18n "credits.pagefind" }}</p>
-          <ul class="credits-links">
-            <li><a href="{{ partial "site-url.html" "/licenses/pagefind/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/licenses/pagefind/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
-            <li><a href="{{ partial "site-url.html" "/licenses/pagefind/dependencies/SOURCES.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
-            <li><a href="https://github.com/Pagefind/pagefind" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
-          </ul>
-          <details class="credits-dependencies">
-            <summary>{{ i18n "credits.dependencies" }}</summary>
-            <ul class="credits-links credits-dependency-links">
-              {{- range $pagefindLicenses }}
-              <li><a href="{{ partial "site-url.html" (printf "/licenses/pagefind/dependencies/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
-              {{- end }}
+          </div>
+        </details>
+        <details class="credits-item">
+          <summary class="credits-summary">
+            <span class="credits-identity">
+              <strong class="credits-name">Material Symbols Rounded</strong>
+              <span class="credits-purpose">{{ i18n "credits.purpose_icons" }}</span>
+            </span>
+            <span class="credits-license">Apache 2.0</span>
+            <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+          </summary>
+          <div class="credits-detail">
+            <p>{{ i18n "credits.icons" }}</p>
+            <ul class="credits-links">
+              <li><a href="{{ partial "site-url.html" "/fonts/LICENSES/Apache-2.0.txt" }}" target="_blank" rel="noopener">Apache 2.0 · {{ i18n "credits.license" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/fonts/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/fonts/icon-sources.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+              <li><a href="https://github.com/google/material-design-icons" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
             </ul>
-          </details>
-        </section>
+          </div>
+        </details>
+        <details class="credits-item">
+          <summary class="credits-summary">
+            <span class="credits-identity">
+              <strong class="credits-name">Mermaid</strong>
+              <span class="credits-purpose">{{ i18n "credits.purpose_diagrams" }}</span>
+            </span>
+            <span class="credits-license">{{ i18n "credits.mit_other" }}</span>
+            <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+          </summary>
+          <div class="credits-detail">
+            <p class="credits-version">{{ i18n "credits.version" }} 12.0.0</p>
+            <p>{{ i18n "credits.mermaid" }}</p>
+            <ul class="credits-links">
+              <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/LICENSE" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/PROVENANCE.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+              <li><a href="https://github.com/mermaid-js/mermaid" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+            </ul>
+            <details class="credits-dependencies">
+              <summary>{{ i18n "credits.dependencies" }}</summary>
+              <ul class="credits-links credits-dependency-links">
+                {{- range $mermaidLicenses }}
+                <li><a href="{{ partial "site-url.html" (printf "/vendor/mermaid/12.0.0/LICENSES/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
+                {{- end }}
+              </ul>
+            </details>
+          </div>
+        </details>
+        <details class="credits-item">
+          <summary class="credits-summary">
+            <span class="credits-identity">
+              <strong class="credits-name">KaTeX</strong>
+              <span class="credits-purpose">{{ i18n "credits.purpose_math" }}</span>
+            </span>
+            <span class="credits-license">MIT · OFL 1.1</span>
+            <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+          </summary>
+          <div class="credits-detail">
+            <p class="credits-version">{{ i18n "credits.version" }} 0.18.4</p>
+            <p>{{ i18n "credits.katex" }}</p>
+            <ul class="credits-links">
+              <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/LICENSE" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/OFL-1.1.txt" }}" target="_blank" rel="noopener">SIL OFL 1.1 · {{ i18n "credits.license" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/FONT-NOTICES.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.font_notices" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/PROVENANCE.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+              <li><a href="https://github.com/KaTeX/KaTeX" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+            </ul>
+          </div>
+        </details>
+        <details class="credits-item">
+          <summary class="credits-summary">
+            <span class="credits-identity">
+              <strong class="credits-name">Pagefind</strong>
+              <span class="credits-purpose">{{ i18n "credits.purpose_search" }}</span>
+            </span>
+            <span class="credits-license">MIT · GPLv3</span>
+            <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+          </summary>
+          <div class="credits-detail">
+            <p class="credits-version">1.5.2 · {{ i18n "credits.reference_version" }}</p>
+            <p>{{ i18n "credits.pagefind" }}</p>
+            <ul class="credits-links">
+              <li><a href="{{ partial "site-url.html" "/licenses/pagefind/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/licenses/pagefind/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+              <li><a href="{{ partial "site-url.html" "/licenses/pagefind/dependencies/SOURCES.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+              <li><a href="https://github.com/Pagefind/pagefind" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+            </ul>
+            <details class="credits-dependencies">
+              <summary>{{ i18n "credits.dependencies" }}</summary>
+              <ul class="credits-links credits-dependency-links">
+                {{- range $pagefindLicenses }}
+                <li><a href="{{ partial "site-url.html" (printf "/licenses/pagefind/dependencies/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
+                {{- end }}
+              </ul>
+            </details>
+          </div>
+        </details>
       </div>
     </div>
   </div>

@@ -205,6 +205,22 @@ hugo server
 
 以前のメタデータ中心のトップページから移行する場合、`hero` の `title`・`eyebrow`・`lead`・`image`・`imageAlt` は `params.hero` に移します。`hero.buttons`・`hero.install` は `actions` / `button` / `command`、`specs` は `specs` / `spec`、`features` は `section` / `card-grid` / `card`、`showcase` は `columns` / `column` と Markdown、`cta` は `section variant="cta"` として本文に書き直してください。旧メタデータのブロックは自動描画しません。
 
+## コードの行へリンクする
+
+Hugo の `anchorlinenos=true` と `lineanchors` を指定すると、行番号をクリックしてその行へリンクできます。Notey は URL のリンク先になっている行を背景色と左端のラインで強調します。行番号の `table` / `inline` 表示、ライト／ダーク表示に対応しています。
+
+````markdown
+```text {linenos=table anchorlinenos=true lineanchors="sample-"}
+First line
+Second line
+Third line
+```
+
+[3行目へ](#sample--3)
+````
+
+`lineanchors` の値には Hugo が `-行番号` を付けるため、この例のリンク先は `#sample--3` です。コードブロックごとに異なる `lineanchors` を指定してください。別の行へ移動すると強調が切り替わり、通常の見出しへ移動すると解除されます。タブや折りたたみの中にある行へも移動できます。常に強調しておきたい行には、従来どおり Hugo の `hl_lines` を使えます。
+
 ## Mermaid と数式
 
 どちらも標準設定では CDN を使いません。図や数式のために npm を実行する必要もありません。本文用の Google Fonts も無効にして完全にローカルで表示する場合は、`params.fonts.google: false` にします。
@@ -367,7 +383,7 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 
 テーマ本体は [MIT](LICENSE) です。アイコンの元 SVG と、それらから生成したフォントには [Apache License 2.0](LICENSES/Apache-2.0.txt) が適用されます。48 個すべてを Google 公式の Material Symbols Rounded から取得し直し、出典が未確定だった旧フォントの図形は使用していません。
 
-各ページのフッターと検索画面の「ライセンス・クレジット」から、共通のダイアログを開けます。Notey、Material Symbols、Mermaid、KaTeX、Pagefind の案内とライセンス原文へのリンクをまとめてあり、依存ライブラリの一覧も展開できます。日英表示・モバイル・ダークモードに対応し、検索中に開いた場合も検索内容を保持します。Esc、閉じるボタン、背景のクリックで閉じられます。
+各ページのフッターと検索画面の「ライセンス・クレジット」から、共通のダイアログを開けます。最初は Notey、Material Symbols、Mermaid、KaTeX、Pagefind の名前・用途・ライセンスをコンパクトに表示し、各項目の「詳細」から説明・ライセンス原文・出典を確認できます。依存ライブラリの一覧は詳細内で展開できます。開き直すと一覧表示に戻ります。日英表示・モバイル・ダークモードに対応し、検索中に開いた場合も検索内容を保持します。Esc、閉じるボタン、背景のクリックで閉じられます。
 
 同梱の Mermaid・KaTeX とその依存ライブラリ・フォントには、それぞれのライセンスが適用されます。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と `static/vendor/` 内のライセンス・出典ファイルを参照してください。生成サイトにもコピーされるこれらのファイルは、アプリやサイトを再配布する際も保持してください。
 

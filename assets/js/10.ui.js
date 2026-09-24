@@ -244,13 +244,34 @@
     show(active);
   });
 
-  /* ---- 非表示のタブ・折りたたみ内への見出しリンク ---- */
+  /* ---- 見出し・コード行へのリンク（非表示のタブや折りたたみも開く） ---- */
   var fragmentFrame = 0;
+  var codeLineTargets = [];
+  function highlightCodeLine(target) {
+    codeLineTargets.forEach(function (el) { el.classList.remove("is-line-target"); });
+    codeLineTargets = [];
+    if (!target || !target.closest(".chroma")) return;
+    var number = target.closest(".ln, .lnt");
+    var line = target.closest(".line");
+    if (!line && number) {
+      // Table-mode anchors live in the number column, separate from the code.
+      // Match row positions, not displayed numbers (line numbering may start at 98).
+      var table = number.closest("table.lntable");
+      var cells = table && table.rows[0] && table.rows[0].cells;
+      if (cells && cells.length === 2) {
+        var index = Array.from(cells[0].querySelectorAll(".lnt")).indexOf(number);
+        line = cells[1].querySelectorAll(".line")[index];
+      }
+    }
+    if (!line) return;
+    codeLineTargets = number ? [line, number] : [line];
+    codeLineTargets.forEach(function (el) { el.classList.add("is-line-target"); });
+  }
   function revealFragment(hash) {
-    if (!hash || hash === "#") return;
     var id = hash.slice(1);
     try { id = decodeURIComponent(id); } catch (e) {}
-    var target = doc.getElementById(id);
+    var target = id ? doc.getElementById(id) : null;
+    highlightCodeLine(target);
     if (!target || !target.closest(".prose")) return;
     var ancestors = [], node = target;
     while (node && node !== doc.body) {
@@ -264,7 +285,7 @@
       var showTab = revealTab.get(ancestor);
       if (showTab) showTab();
     });
-    // scrollIntoView honors the heading's scroll-margin beneath the header.
+    // scrollIntoView honors the heading or code anchor's scroll-margin beneath the header.
     target.scrollIntoView({ block: "start", behavior: "auto" });
   }
   function queueFragment(hash) {

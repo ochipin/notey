@@ -12,6 +12,8 @@
     var trigger = e.target.closest("[data-credits-open]");
     if (!trigger || dlg.open) return;
     opener = trigger;
+    // Start with the compact overview, even after reading long notice lists.
+    dlg.querySelectorAll("details").forEach(function (detail) { detail.open = false; });
     dlg.showModal();
     dlg.querySelector(".cdlg-body").scrollTop = 0;
     doc.getElementById("credits-title").focus({ preventScroll: true });

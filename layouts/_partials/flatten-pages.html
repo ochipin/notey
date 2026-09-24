@@ -1,6 +1,13 @@
 {{- $out := slice -}}
 {{- range .Pages.ByWeight -}}
-  {{- if .IsSection -}}{{- $out = $out | append (partial "flatten-pages.html" .) -}}
-  {{- else if .IsPage -}}{{- $out = $out | append . -}}{{- end -}}
+  {{- if .IsSection -}}
+    {{- /* Append individual pages: empty subtrees can change the slice type,
+         causing a later page collection to be appended as a nested slice. */ -}}
+    {{- range partial "flatten-pages.html" . -}}
+      {{- $out = $out | append . -}}
+    {{- end -}}
+  {{- else if .IsPage -}}
+    {{- $out = $out | append . -}}
+  {{- end -}}
 {{- end -}}
 {{- return $out -}}

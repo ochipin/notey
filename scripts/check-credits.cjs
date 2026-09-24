@@ -77,6 +77,7 @@ async function check(browser, language, prefix) {
       await trigger.click();
       assert.equal(await isOpen(dialog), true);
       assert(await title.evaluate(el => el === document.activeElement), 'Opening credits focuses its title');
+      assert.equal(await dialog.locator('details[open]').count(), 0, 'Opening credits resets component and dependency details to the overview');
     };
     const closeCredits = async (method, trigger, searchOpen) => {
       if (method === 'Escape') await page.keyboard.press('Escape');
@@ -101,9 +102,14 @@ async function check(browser, language, prefix) {
     assert.equal(await dialog.getAttribute('data-pagefind-ignore'), '');
     assert.equal(await page.locator('[data-pagefind-body] #credits-dialog').count(), 0, 'Credits are outside indexed article content');
     assert.equal(await footer.textContent(), language === 'ja' ? 'ライセンス・クレジット' : 'Licenses & credits');
-    const headings = await dialog.locator('.credits-item > h3').allTextContents();
-    assert.equal(headings.length, 5);
-    for (const name of ['Notey', 'Google Material Symbols', 'Mermaid', 'KaTeX', 'Pagefind']) assert(headings.some(heading => heading.startsWith(name)), 'Credits include ' + name);
+    const items = dialog.locator('details.credits-item');
+    const names = await items.locator('.credits-name').allTextContents();
+    assert.deepEqual(names.map(name => name.trim()), ['Notey', 'Material Symbols Rounded', 'Mermaid', 'KaTeX', 'Pagefind']);
+    for (const selector of ['.credits-purpose', '.credits-license', '.credits-toggle']) {
+      const labels = await items.locator(selector).allTextContents();
+      assert.equal(labels.length, 5);
+      assert(labels.every(label => label.trim()), 'Each overview entry includes ' + selector);
+    }
     const links = await dialog.locator('a').evaluateAll(els => els.map(el => ({ href: el.href, target: el.target, rel: el.rel })));
     let localLinks = 0;
     for (const link of links) {
@@ -116,7 +122,39 @@ async function check(browser, language, prefix) {
       const file = path.join(output, decodeURIComponent(url.pathname.slice(prefix.length)));
       assert(fs.existsSync(file) && fs.statSync(file).isFile(), 'License links resolve to published files, not directories: ' + link.href);
     }
-    assert(localLinks > 100, 'Both dependency notice collections are individually linked');
+    assert.equal(localLinks, 129, 'All license texts and dependency notice files remain individually linked');
+    assert.equal(links.length - localLinks, 5, 'Each component retains its upstream source link');
+
+    await openCredits(footer);
+    const overview = await dialog.evaluate(el => {
+      const body = el.querySelector('.cdlg-body');
+      const bounds = body.getBoundingClientRect();
+      const summaries = [...el.querySelectorAll('.credits-item > summary')];
+      return { scrollHeight: body.scrollHeight, clientHeight: body.clientHeight,
+        rowsVisible: summaries.every(summary => {
+          const row = summary.getBoundingClientRect();
+          return row.height > 0 && row.top >= bounds.top && row.bottom <= bounds.bottom + 1;
+        }) };
+    });
+    assert(overview.rowsVisible && overview.scrollHeight <= overview.clientHeight + 1, 'All five collapsed entries fit the desktop dialog without scrolling');
+    for (let i = 0; i < await items.count(); i++) {
+      const item = items.nth(i);
+      const summary = item.locator(':scope > summary');
+      const detail = item.locator(':scope > .credits-detail');
+      assert.equal(await detail.isVisible(), false, 'Long notices are hidden in the overview');
+      await summary.focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await isOpen(item), true, 'Keyboard opens component details');
+      assert.equal(await detail.isVisible(), true);
+      assert.equal(await detail.locator(':scope > .credits-links a').first().isVisible(), true, 'Expanded details expose original license links');
+      await page.keyboard.press('Enter');
+      assert.equal(await isOpen(item), false, 'Keyboard closes component details');
+      await summary.click();
+      assert.equal(await isOpen(item), true, 'Pointer opens component details');
+      await summary.click();
+      assert.equal(await isOpen(item), false, 'Pointer closes component details');
+    }
+    await closeCredits('Escape', footer, false);
 
     for (const method of ['Escape', 'button', 'backdrop']) {
       await openCredits(footer);
@@ -126,12 +164,15 @@ async function check(browser, language, prefix) {
     await openCredits(footer);
     await title.focus();
     const tabStops = await dialog.locator('a,button,summary').evaluateAll(els => els.filter(el => el.checkVisibility()).length);
+    assert.equal(tabStops, 6, 'Collapsed credits expose only the close button and five component summaries to keyboard navigation');
     for (let i = 0; i < tabStops + 2; i++) {
       await page.keyboard.press('Tab');
+      assert(await page.evaluate(() => document.activeElement.tagName !== 'A'), 'Hidden license links are skipped by Tab');
       assert(await dialog.evaluate(el => el.contains(document.activeElement)), 'Tab stays within the top modal (step ' + i + '/' + tabStops + ', active ' + await page.evaluate(() => document.activeElement.outerHTML.slice(0, 180)) + ')');
     }
     for (let i = 0; i < tabStops + 2; i++) {
       await page.keyboard.press('Shift+Tab');
+      assert(await page.evaluate(() => document.activeElement.tagName !== 'A'), 'Hidden license links are skipped by Shift+Tab');
       assert(await dialog.evaluate(el => el.contains(document.activeElement)), 'Shift+Tab stays within the top modal');
     }
     await closeCredits('Escape', footer, false);
@@ -176,7 +217,6 @@ async function check(browser, language, prefix) {
         await openCredits(searchCredit);
         assert.equal(await dialog.locator('.cdlg-body').evaluate(el => el.scrollTop), 0, 'Reopened credits start at the introduction');
         if (process.env.NOTEY_CREDITS_SCREENSHOTS && language === 'ja' && prefix && color === 'light' && [320, 1440].includes(size.width)) {
-          await dialog.locator('details').evaluateAll(els => els.forEach(el => { el.open = false; }));
           await page.screenshot({ path: path.join(process.env.NOTEY_CREDITS_SCREENSHOTS, 'notey-credits-' + size.width + '.png') });
         }
         await closeCredits('Escape', searchCredit, true);
@@ -189,7 +229,7 @@ async function check(browser, language, prefix) {
     assert.equal(await dialog.count(), 1, 'Home page contains exactly one shared modal');
     assert.deepEqual(errors, []);
     assert.deepEqual(missing, []);
-    console.log(language + ' ' + (prefix || 'root') + ': notices, focus/Escape/backdrop, search preservation, light/dark 320–1440px and short viewport PASS (' + localLinks + ' local links)');
+    console.log(language + ' ' + (prefix || 'root') + ': compact overview/details, notices, focus/Escape/backdrop, search preservation, light/dark 320–1440px and short viewport PASS (' + localLinks + ' local links)');
   } finally { await context.close(); }
 }
 
