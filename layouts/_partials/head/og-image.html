@@ -25,7 +25,9 @@
         "linespacing" 22 "lineheight" 1.25)) -}}
     {{- $img = $img.Filter (images.Text (site.Params.og.label | default site.Title) (dict
         "font" $font "size" 30 "x" 84 "y" 470 "color" (site.Params.og.accent | default "#1f6fa8"))) -}}
-    {{- $url = ($img | resources.Copy (printf "og/%s.png" (.RelPermalink | anchorize | default "home"))).Permalink -}}
+    {{- /* URL の長さ・階層・言語にかかわらず、ページごとに固定長の名前にする。 */ -}}
+    {{- $id := printf "%.32s" (crypto.SHA256 .Permalink) -}}
+    {{- $url = ($img | resources.Copy (printf "og/%s.png" $id)).Permalink -}}
   {{- end -}}
 {{- end -}}
 

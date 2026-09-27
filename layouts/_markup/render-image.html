@@ -28,12 +28,17 @@
   {{- $orig := $img -}}
   {{- /* 大きい画像は段幅に合わせて縮小し、WebP の srcset を用意する */ -}}
   {{- $max := int (site.Params.images.maxWidth | default 1440) -}}
+  {{- $source := $img -}}
+  {{- if or (gt $w $max) (ge $w 480) -}}
+    {{- /* 加工前に短い名前へコピーし、生成画像とキャッシュへ元の長いパスを引き継がない。 */ -}}
+    {{- $source = partial "image-processing-source.html" $img -}}
+  {{- end -}}
   {{- $display := $img -}}
-  {{- if gt $w $max -}}{{- $display = $img.Resize (printf "%dx webp q82" $max) -}}{{- end -}}
+  {{- if gt $w $max -}}{{- $display = $source.Resize (printf "%dx webp q82" $max) -}}{{- end -}}
   {{- $set := slice -}}
   {{- range (slice 480 768 1024 1440) -}}
     {{- if le . $w -}}
-      {{- $v := $orig.Resize (printf "%dx webp q80" .) -}}
+      {{- $v := $source.Resize (printf "%dx webp q80" .) -}}
       {{- $set = $set | append (printf "%s%s %dw" $v.RelPermalink $suffix .) -}}
     {{- end -}}
   {{- end -}}

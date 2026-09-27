@@ -1,0 +1,6 @@
+{{- /* Keep processed output and Hugo's image-cache paths short. Identical
+     bytes can share variants; different images with the same name cannot. */ -}}
+{{- $id := printf "%.32s" (crypto.SHA256 .Content) -}}
+{{- $ext := path.Ext .Name | lower -}}
+{{- if not $ext }}{{ $ext = printf ".%s" .MediaType.SubType }}{{ end -}}
+{{- return (resources.Copy (printf "img/%s%s" $id $ext) .) -}}

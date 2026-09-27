@@ -63,3 +63,20 @@ responses, closing/reopening while loading, retry after HTTP/invalid
 content failures, all published notice links, focus and Escape behavior, search
 state preservation, and mobile/light/dark layouts. It runs under a base path in
 Japanese and English, plus a Japanese-only site at the root.
+
+The image path check also needs only Python 3 and Hugo:
+
+```sh
+python3 scripts/check-image-paths.py
+```
+
+It generates temporary PNGs and uses a bundled font to check 240-character
+image names, deep page bundles, same-named images with different content,
+shared translation resources, and global assets. It verifies that processed
+image URLs and Hugo's actual image cache paths stay short, while original
+files, Markdown, lightbox links, query strings and image fragments are preserved.
+Responsive variants and small images are covered. Generated OGP filenames must
+remain stable across cold/warm builds and distinct for pages whose old names
+collided. Japanese-only root and bilingual `/review/` sites are built offline.
+These checks run on the current host; they do not certify Windows Explorer's
+path limits for the original source files or the overall site directory.

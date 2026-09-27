@@ -205,6 +205,14 @@ hugo server
 
 以前のメタデータ中心のトップページから移行する場合、`hero` の `title`・`eyebrow`・`lead`・`image`・`imageAlt` は `params.hero` に移します。`hero.buttons`・`hero.install` は `actions` / `button` / `command`、`specs` は `specs` / `spec`、`features` は `section` / `card-grid` / `card`、`showcase` は `columns` / `column` と Markdown、`cta` は `section variant="cta"` として本文に書き直してください。旧メタデータのブロックは自動描画しません。
 
+## 画像の生成ファイル名
+
+本文画像を縮小・WebP 化するときは、加工用のコピーを `img/<画像内容から作った32桁のID>.<拡張子>` に置いてから処理します。公開する加工画像と Hugo の画像キャッシュが、元の長いファイル名や深いフォルダー階層を引き継がないようにしています。同名でも画像内容が違えば別の生成名になり、同一内容の画像は加工結果を共有できます。元画像・Markdown の参照・ライトボックスで開く原寸画像は変更しません。
+
+自動生成する OGP 画像も、ページ URL から作った固定長 ID を使う `og/<32桁のID>.png` に保存します。ページ階層や URL が長くても、生成名の長さは変わりません。
+
+この対策は Notey が作る加工画像のパスを短くするものです。元画像の配置先や HuPongo の作業フォルダー全体の長さまでは変更しません。すでに生成された古いファイルも自動では改名されません。テーマ更新後にサイトを再ビルドし、不要になった Hugo の画像キャッシュは通常のビルドに `--gc` を付けて整理できます（[Hugo の画像キャッシュ整理](https://gohugo.io/content-management/image-processing/#garbage-collection)）。
+
 ## コードの行へリンクする
 
 Hugo の `anchorlinenos=true` と `lineanchors` を指定すると、行番号をクリックしてその行へリンクできます。Notey は URL のリンク先になっている行を背景色と左端のラインで強調します。行番号の `table` / `inline` 表示、ライト／ダーク表示に対応しています。
