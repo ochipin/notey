@@ -40,6 +40,18 @@
   overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable;
   overflow-wrap: anywhere; font-size: var(--step--1); line-height: 1.8;
 }
+.cdlg-status {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  min-height: 5rem; color: var(--ink-soft);
+}
+.cdlg-message { flex: 1 1 15rem; }
+.cdlg-retry {
+  min-height: 2.75rem; padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-2); color: var(--accent-ink); font: inherit; cursor: pointer;
+}
+.cdlg-retry:hover { background: var(--accent-wash); }
+.cdlg-status[hidden], .cdlg-retry[hidden], .cdlg-content[hidden] { display: none; }
 .cdlg-intro { color: var(--ink-soft); margin-bottom: 0.75rem; }
 .credits-list { display: grid; grid-template-columns: minmax(0, 1fr); }
 .credits-item { min-width: 0; }

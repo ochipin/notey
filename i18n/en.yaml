@@ -54,6 +54,9 @@ error:
   404_title: "Page not found"
   404_description: "The page may have moved or been removed. Try searching for it."
 credits:
+  loading: "Loading credits…"
+  load_error: "Credits could not be loaded. Please try again."
+  retry: "Try again"
   intro: "Projects and licenses used by Notey. Open details for license texts and sources."
   details: "Details"
   purpose_theme: "Documentation theme"

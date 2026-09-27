@@ -36,9 +36,30 @@ function build(multilingual) {
   return prefix;
 }
 
+function deferred() {
+  let resolve;
+  const promise = new Promise(done => { resolve = done; });
+  return { promise, resolve };
+}
+
 async function check(browser, language, prefix) {
+  const base = prefix + (prefix ? '/' + language : '') + '/';
+  const rawArticle = fs.readFileSync(path.join(output, prefix ? language : '', 'article/index.html'), 'utf8');
+  const sourceMatch = rawArticle.match(/\bdata-credits-src=(?:"([^"]+)"|'([^']+)'|([^\s>]+))/);
+  assert(sourceMatch, 'Article HTML advertises the shared credits fragment');
+  const creditsURL = new URL(sourceMatch[1] || sourceMatch[2] || sourceMatch[3], origin + base).href;
+  const creditsPath = new URL(creditsURL).pathname;
+  assert(creditsPath.startsWith(prefix + '/'), 'Credits resource preserves the deployment prefix');
+  assert(/\.[a-f0-9]{32,}\.html$/.test(creditsPath), 'Credits content is fingerprinted for safe browser caching');
+  const creditsFile = path.join(output, decodeURIComponent(creditsPath.slice(prefix.length)));
+  assert(fs.existsSync(creditsFile), 'The shared credits fragment is published');
+  assert(!rawArticle.includes('class=credits-list') && !rawArticle.includes('class="credits-list"'), 'Article HTML omits the credits inventory');
+  for (const notice of ['/licenses/notey/LICENSE.txt', '/fonts/NOTICE.txt', '/vendor/mermaid/12.0.0/LICENSE', '/licenses/pagefind/dependencies/']) {
+    assert(!rawArticle.includes(notice), 'Article HTML does not embed license destinations: ' + notice);
+  }
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
-  const errors = [], missing = [];
+  const errors = [], missing = [], creditsRequests = [];
+  let creditsInterceptor = null;
   await context.route('**/*', route => {
     const url = new URL(route.request().url());
     if (url.origin !== origin || !url.pathname.startsWith(prefix + '/')) {
@@ -54,6 +75,10 @@ async function check(browser, language, prefix) {
           url: url + '#introduction', excerpt: query, anchor: { element: 'h2' } }] }) }] };
       }
     ` });
+    if (url.href === creditsURL) {
+      creditsRequests.push(url.href);
+      if (creditsInterceptor) return creditsInterceptor(route);
+    }
     let file = path.join(output, decodeURIComponent(url.pathname.slice(prefix.length)));
     if (url.pathname.endsWith('/')) file = path.join(file, 'index.html');
     if (!fs.existsSync(file) || !fs.statSync(file).isFile()) { missing.push(url.href); return route.abort(); }
@@ -62,7 +87,6 @@ async function check(browser, language, prefix) {
   try {
     const page = await context.newPage();
     page.on('pageerror', error => errors.push(error.message));
-    const base = prefix + (prefix ? '/' + language : '') + '/';
     await page.goto(origin + base + 'article/');
     await page.evaluate(() => document.fonts.ready);
     const dialog = page.locator('#credits-dialog');
@@ -72,13 +96,22 @@ async function check(browser, language, prefix) {
     const search = page.locator('#search-dialog');
     const title = page.locator('#credits-title');
     const close = dialog.locator('[data-credits-close]');
+    const content = dialog.locator('.cdlg-content');
+    const status = dialog.locator('.cdlg-status');
+    const retry = dialog.locator('[data-credits-retry]');
     const isOpen = locator => locator.evaluate(el => el.open);
-    const openCredits = async trigger => {
+    const clickCredits = async trigger => {
       await trigger.click();
       assert.equal(await isOpen(dialog), true);
       assert(await title.evaluate(el => el === document.activeElement), 'Opening credits focuses its title');
       assert.equal(await dialog.locator('details[open]').count(), 0, 'Opening credits resets component and dependency details to the overview');
     };
+    const waitForCredits = async () => {
+      await page.waitForFunction(() => document.querySelectorAll('#credits-dialog .cdlg-content [data-credits-content] .credits-item').length === 5);
+      assert.notEqual(await content.getAttribute('aria-busy'), 'true', 'Successful loading clears the busy state');
+      assert.equal(await status.isVisible(), false, 'Loaded credits hide the loading status');
+    };
+    const openCredits = async trigger => { await clickCredits(trigger); await waitForCredits(); };
     const closeCredits = async (method, trigger, searchOpen) => {
       if (method === 'Escape') await page.keyboard.press('Escape');
       else if (method === 'button') await close.click();
@@ -102,6 +135,11 @@ async function check(browser, language, prefix) {
     assert.equal(await dialog.getAttribute('data-pagefind-ignore'), '');
     assert.equal(await page.locator('[data-pagefind-body] #credits-dialog').count(), 0, 'Credits are outside indexed article content');
     assert.equal(await footer.textContent(), language === 'ja' ? 'ライセンス・クレジット' : 'Licenses & credits');
+    assert.equal(creditsRequests.length, 0, 'Page loading does not fetch credits');
+    assert.equal(await content.locator('*').count(), 0, 'The initial dialog contains only an empty content placeholder');
+    assert.equal(await dialog.locator('a').count(), 0, 'No credits links are embedded in the initial article DOM');
+    await openCredits(footer);
+    assert.equal(creditsRequests.length, 1, 'The first open fetches the shared credits fragment once');
     const items = dialog.locator('details.credits-item');
     const names = await items.locator('.credits-name').allTextContents();
     assert.deepEqual(names.map(name => name.trim()), ['Notey', 'Material Symbols Rounded', 'Mermaid', 'KaTeX', 'Pagefind']);
@@ -125,7 +163,6 @@ async function check(browser, language, prefix) {
     assert.equal(localLinks, 129, 'All license texts and dependency notice files remain individually linked');
     assert.equal(links.length - localLinks, 5, 'Each component retains its upstream source link');
 
-    await openCredits(footer);
     const overview = await dialog.evaluate(el => {
       const body = el.querySelector('.cdlg-body');
       const bounds = body.getBoundingClientRect();
@@ -224,12 +261,108 @@ async function check(browser, language, prefix) {
     }
     await page.keyboard.press('Escape');
     assert.equal(await isOpen(search), false, 'Search still closes independently after credits');
+    assert.equal(creditsRequests.length, 1, 'Footer and search openings reuse the loaded fragment without another request');
+
+    // Hold responses explicitly so loading, failure and close races do not depend on network timing.
+    const controlledResponse = response => ({ entered: deferred(), release: deferred(), response });
+    const useResponses = responses => {
+      creditsInterceptor = async route => {
+        const step = responses.shift();
+        assert(step, 'No unexpected concurrent or duplicate credits request');
+        step.entered.resolve();
+        await step.release.promise;
+        return route.fulfill(step.response);
+      };
+    };
+    const assertLoading = async () => {
+      assert.equal(await status.getAttribute('role'), 'status');
+      assert.equal(await status.isVisible(), true, 'Loading is announced in the dialog');
+      assert.equal(await content.getAttribute('aria-busy'), 'true');
+      assert.equal(await retry.isVisible(), false, 'Retry is shown only after a failed request');
+      assert((await status.locator('.cdlg-message').textContent()).trim(), 'Loading has a translated status message');
+    };
+    const assertFailure = async () => {
+      await retry.waitFor({ state: 'visible' });
+      assert.notEqual(await content.getAttribute('aria-busy'), 'true', 'Failures clear the busy state');
+      assert.equal(await content.locator('[data-credits-content]').count(), 0, 'Failed or unrelated HTML is not inserted into the dialog');
+      assert((await status.locator('.cdlg-message').textContent()).trim(), 'Failures have a readable status message');
+    };
+    const failure = controlledResponse({ status: 503, contentType: 'text/plain', body: 'Unavailable' });
+    const fallback = controlledResponse({ status: 200, contentType: 'text/html', body: rawArticle });
+    const recovered = controlledResponse({ path: creditsFile, contentType: 'text/html' });
+    useResponses([failure, fallback, recovered]);
+    await page.goto(origin + base + 'article/');
+    assert.equal(creditsRequests.length, 1, 'Fresh article visits still do not prefetch credits');
+    await page.setViewportSize({ width: 320, height: 740 });
+    await clickCredits(footer);
+    await failure.entered.promise;
+    await assertLoading();
+    const loadingMessage = await status.locator('.cdlg-message').textContent();
+    failure.release.resolve();
+    await assertFailure();
+    assert.notEqual(await status.locator('.cdlg-message').textContent(), loadingMessage, 'Failure replaces the loading message');
+    const errorGeometry = await dialog.evaluate(el => ({ width: innerWidth, document: document.documentElement.scrollWidth,
+      content: el.querySelector('.cdlg-body').scrollWidth - el.querySelector('.cdlg-body').clientWidth,
+      retryBottom: el.querySelector('[data-credits-retry]').getBoundingClientRect().bottom, height: innerHeight }));
+    assert(errorGeometry.document <= errorGeometry.width && errorGeometry.content <= 1 && errorGeometry.retryBottom <= errorGeometry.height, 'The error and retry state fits mobile screens');
+    await retry.click();
+    await fallback.entered.promise;
+    await assertLoading();
+    fallback.release.resolve();
+    await assertFailure();
+    await retry.focus();
+    await page.keyboard.press('Enter');
+    await recovered.entered.promise;
+    await assertLoading();
+    recovered.release.resolve();
+    await waitForCredits();
+    assert(await title.evaluate(el => el === document.activeElement), 'A successful keyboard retry moves focus off the now-hidden retry control');
+    assert.equal(creditsRequests.length, 4, 'HTTP failure and unrelated successful HTML each require an explicit retry');
+    await closeCredits('Escape', footer, false);
+    await openCredits(footer);
+    assert.equal(creditsRequests.length, 4, 'A successful retry is cached for later openings');
+    await closeCredits('button', footer, false);
+
+    const delayed = controlledResponse({ path: creditsFile, contentType: 'text/html' });
+    useResponses([delayed]);
+    await page.goto(origin + base + 'article/');
+    await clickCredits(footer);
+    await delayed.entered.promise;
+    await assertLoading();
+    await page.keyboard.press('Tab');
+    assert(await close.evaluate(el => el === document.activeElement), 'The loading state keeps its close button keyboard accessible');
+    await page.keyboard.press('Tab');
+    assert(await close.evaluate(el => el === document.activeElement), 'Loading does not expose hidden retry controls to Tab');
+    await closeCredits('Escape', footer, false);
+    await clickCredits(footer);
+    await assertLoading();
+    assert.equal(creditsRequests.length, 5, 'Reopening during a pending load shares the existing request');
+    await closeCredits('Escape', footer, false);
+    await page.keyboard.press('Control+k');
+    await input.fill('after closing credits');
+    await input.focus();
+    delayed.release.resolve();
+    await waitForCredits();
+    assert.equal(await isOpen(dialog), false, 'A late response does not reopen a closed dialog');
+    assert.equal(await isOpen(search), true, 'Search opened during a pending fetch remains open');
+    assert(await input.evaluate(el => el === document.activeElement), 'A late response does not steal focus from the search input');
+    assert.equal(await input.inputValue(), 'after closing credits');
+    await page.keyboard.press('Escape');
+    await openCredits(footer);
+    assert.equal(creditsRequests.length, 5, 'The late response is reused when credits are next opened');
+    await closeCredits('Escape', footer, false);
+    creditsInterceptor = null;
+
     await page.goto(origin + base);
     assert.equal(await page.locator('.foot-credits').count(), 1, 'Home page also provides credits');
     assert.equal(await dialog.count(), 1, 'Home page contains exactly one shared modal');
+    assert.equal(await content.locator('*').count(), 0, 'The home page also starts without embedded credits');
+    assert.equal(await dialog.getAttribute('data-credits-src'), sourceMatch[1] || sourceMatch[2] || sourceMatch[3], 'Home and article pages share the same language resource');
+    assert.equal(creditsRequests.length, 5, 'The home page does not prefetch the credits resource');
     assert.deepEqual(errors, []);
     assert.deepEqual(missing, []);
-    console.log(language + ' ' + (prefix || 'root') + ': compact overview/details, notices, focus/Escape/backdrop, search preservation, light/dark 320–1440px and short viewport PASS (' + localLinks + ' local links)');
+    console.log(language + ' ' + (prefix || 'root') + ': lazy/cache/retry/close races, compact overview/details, notices, focus/Escape/backdrop, search preservation, light/dark 320–1440px and short viewport PASS (' + localLinks + ' local links)');
+    return creditsURL;
   } finally { await context.close(); }
 }
 
@@ -237,7 +370,9 @@ async function check(browser, language, prefix) {
   const browser = await chromium.launch({ ...(process.env.NOTEY_BROWSER ? { executablePath: process.env.NOTEY_BROWSER } : {}), headless: true });
   try {
     const prefix = build(true);
-    for (const language of ['ja', 'en']) await check(browser, language, prefix);
+    const japaneseCredits = await check(browser, 'ja', prefix);
+    const englishCredits = await check(browser, 'en', prefix);
+    assert.notEqual(japaneseCredits, englishCredits, 'Japanese and English use separate translated credits resources');
     await check(browser, 'ja', build(false));
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => {

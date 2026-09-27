@@ -1,0 +1,250 @@
+{{- /* Keep these links in sync with the bundled notice inventories. Explicit
+     paths also work when Notey is installed as a Hugo module. */ -}}
+{{- $mermaidLicenses := slice
+  "@braintree+sanitize-url@7.1.2/LICENSE"
+  "@chevrotain+gast@11.1.2/LICENSE.txt"
+  "@chevrotain+regexp-to-ast@11.1.2/LICENSE.txt"
+  "@chevrotain+utils@11.1.2/LICENSE.txt"
+  "@iconify+utils@3.0.2/license.txt"
+  "@mermaid-js+parser@2.0.0/LICENSE"
+  "@upsetjs+venn.js@2.0.0/LICENSE"
+  "Apache-2.0.txt"
+  "BUNDLED-LICENSE-COMMENTS.txt"
+  "EPL-1.0.txt"
+  "EPL-2.0.md"
+  "chevrotain-allstar@0.3.1/LICENSE"
+  "chevrotain@11.1.2/LICENSE.txt"
+  "cose-base@1.0.3/LICENSE"
+  "cose-base@2.2.0/LICENSE"
+  "cytoscape-cose-bilkent@4.1.0/LICENSE"
+  "cytoscape-fcose@2.2.0/LICENSE"
+  "cytoscape@3.34.0/LICENSE"
+  "d3-array@2.12.1/LICENSE"
+  "d3-array@3.2.4/LICENSE"
+  "d3-axis@3.0.0/LICENSE"
+  "d3-brush@3.0.0/LICENSE"
+  "d3-color@3.1.0/LICENSE"
+  "d3-dispatch@3.0.1/LICENSE"
+  "d3-ease@3.0.1/LICENSE"
+  "d3-format@3.1.0/LICENSE"
+  "d3-hierarchy@3.1.2/LICENSE"
+  "d3-interpolate@3.0.1/LICENSE"
+  "d3-path@1.0.9/LICENSE"
+  "d3-path@3.1.0/LICENSE"
+  "d3-sankey@0.12.3/LICENSE"
+  "d3-scale-chromatic@3.1.0/LICENSE"
+  "d3-scale@4.0.2/LICENSE"
+  "d3-selection@3.0.0/LICENSE"
+  "d3-shape@1.3.7/LICENSE"
+  "d3-shape@3.2.0/LICENSE"
+  "d3-time-format@4.1.0/LICENSE"
+  "d3-time@3.1.0/LICENSE"
+  "d3-timer@3.0.1/LICENSE"
+  "d3-transition@3.0.1/LICENSE"
+  "d3-zoom@3.0.0/LICENSE"
+  "dagre-d3-es@7.0.14/LICENSE.md"
+  "dayjs@1.11.21/LICENSE"
+  "dompurify@3.4.12/LICENSE"
+  "dompurify@3.4.12/LICENSE-MPL"
+  "elk-0.9.1-NOTICE.md"
+  "elk-emf-common-2.12.4-copyrights.txt"
+  "elk-emf-ecore-2.12.4-copyrights.txt"
+  "elk-guava-31.1-jre-copyrights.txt"
+  "elk-guava-gwt-31.1-jre-copyrights.txt"
+  "elk-gwt-user-2.10.0-copyrights.txt"
+  "elk-org.eclipse.xtend.lib-2.28.0-copyrights.txt"
+  "elk-org.eclipse.xtext.xbase.lib-2.28.0-copyrights.txt"
+  "elkjs-bundled-copyrights.txt"
+  "elkjs@0.9.3/LICENSE.md"
+  "es-toolkit@1.45.1/LICENSE"
+  "fastdom@1.0.12/LICENSE-from-README.txt"
+  "gwt-2.10.0-COPYING.txt"
+  "hachure-fill@0.5.2/LICENSE"
+  "internmap@2.0.3/LICENSE"
+  "js-yaml@4.3.0/LICENSE"
+  "katex@0.16.47/LICENSE"
+  "khroma@2.1.0/license"
+  "langium@4.2.1/LICENSE"
+  "layout-base@1.0.2/LICENSE"
+  "layout-base@2.0.1/LICENSE"
+  "lodash-es@4.17.23/LICENSE"
+  "lodash-es@4.18.1/LICENSE"
+  "marked@16.3.0/LICENSE.md"
+  "mermaid@12.0.0/LICENSE"
+  "path-data-parser@0.1.0/LICENSE"
+  "points-on-curve@0.2.0/LICENSE"
+  "points-on-path@0.2.1/LICENSE"
+  "roughjs@4.6.6/LICENSE"
+  "stylis@4.3.6/LICENSE"
+  "ts-dedent@2.2.0/LICENSE"
+  "uuid@14.0.0/LICENSE.md"
+  "vscode-jsonrpc@8.2.0/License.txt"
+  "vscode-jsonrpc@8.2.0/thirdpartynotices.txt"
+  "vscode-languageserver-protocol@3.17.5/License.txt"
+  "vscode-languageserver-protocol@3.17.5/thirdpartynotices.txt"
+  "vscode-languageserver-textdocument@1.0.12/License.txt"
+  "vscode-languageserver-textdocument@1.0.12/thirdpartynotices.txt"
+  "vscode-languageserver-types@3.17.5/License.txt"
+  "vscode-languageserver-types@3.17.5/thirdpartynotices.txt"
+-}}
+{{- $pagefindLicenses := slice
+  "adequate-little-templates@1.0.2/LICENSE"
+  "bcp-47@2.1.0/license"
+  "bit-set@0.10.0/LICENSE-APACHE"
+  "bit-set@0.10.0/LICENSE-MIT"
+  "bit-vec@0.9.1/LICENSE-APACHE"
+  "bit-vec@0.9.1/LICENSE-MIT"
+  "cfg-if@1.0.4/LICENSE-APACHE"
+  "cfg-if@1.0.4/LICENSE-MIT"
+  "fflate-vendored/LICENSE.txt"
+  "is-alphabetical@2.0.1/license"
+  "is-alphanumerical@2.0.1/license"
+  "is-decimal@2.0.1/license"
+  "mark.js@8.11.1/LICENSE"
+  "minicbor@2.2.1/LICENSE.md"
+  "once_cell@1.21.4/LICENSE-APACHE"
+  "once_cell@1.21.4/LICENSE-MIT"
+  "pagefind_microjson@0.1.4/COPYRIGHT-from-source.txt"
+  "pagefind_microjson@0.1.4/LICENCE"
+  "pagefind_stem@1.0.0/LICENSES-from-source.txt"
+  "svelte@4.2.20/LICENSE.md"
+  "unicode-ident@1.0.24/LICENSE-APACHE"
+  "unicode-ident@1.0.24/LICENSE-MIT"
+  "unicode-ident@1.0.24/LICENSE-UNICODE"
+  "wasm-bindgen-shared@0.2.117/LICENSE-APACHE"
+  "wasm-bindgen-shared@0.2.117/LICENSE-MIT"
+  "wasm-bindgen@0.2.117/LICENSE-APACHE"
+  "wasm-bindgen@0.2.117/LICENSE-MIT"
+  "write-json@0.1.4/LICENSE-APACHE"
+  "write-json@0.1.4/LICENSE-MIT"
+-}}
+
+<!DOCTYPE html>
+<html lang="{{ .Language.Locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <title>{{ i18n "ui.credits" }}</title>
+</head>
+<body>
+<div data-credits-content data-pagefind-ignore>
+  <p class="cdlg-intro">{{ i18n "credits.intro" }}</p>
+  <div class="credits-list">
+    <details class="credits-item">
+      <summary class="credits-summary">
+        <span class="credits-identity">
+          <strong class="credits-name">Notey</strong>
+          <span class="credits-purpose">{{ i18n "credits.purpose_theme" }}</span>
+        </span>
+        <span class="credits-license">MIT</span>
+        <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+      </summary>
+      <div class="credits-detail">
+        <p>{{ i18n "credits.notey" }}</p>
+        <ul class="credits-links">
+          <li><a href="{{ partial "site-url.html" "/licenses/notey/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+          <li><a href="https://github.com/ochipin/notey" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+        </ul>
+      </div>
+    </details>
+    <details class="credits-item">
+      <summary class="credits-summary">
+        <span class="credits-identity">
+          <strong class="credits-name">Material Symbols Rounded</strong>
+          <span class="credits-purpose">{{ i18n "credits.purpose_icons" }}</span>
+        </span>
+        <span class="credits-license">Apache 2.0</span>
+        <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+      </summary>
+      <div class="credits-detail">
+        <p>{{ i18n "credits.icons" }}</p>
+        <ul class="credits-links">
+          <li><a href="{{ partial "site-url.html" "/fonts/LICENSES/Apache-2.0.txt" }}" target="_blank" rel="noopener">Apache 2.0 · {{ i18n "credits.license" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/fonts/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/fonts/icon-sources.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+          <li><a href="https://github.com/google/material-design-icons" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+        </ul>
+      </div>
+    </details>
+    <details class="credits-item">
+      <summary class="credits-summary">
+        <span class="credits-identity">
+          <strong class="credits-name">Mermaid</strong>
+          <span class="credits-purpose">{{ i18n "credits.purpose_diagrams" }}</span>
+        </span>
+        <span class="credits-license">{{ i18n "credits.mit_other" }}</span>
+        <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+      </summary>
+      <div class="credits-detail">
+        <p class="credits-version">{{ i18n "credits.version" }} 12.0.0</p>
+        <p>{{ i18n "credits.mermaid" }}</p>
+        <ul class="credits-links">
+          <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/LICENSE" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/mermaid/12.0.0/PROVENANCE.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+          <li><a href="https://github.com/mermaid-js/mermaid" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+        </ul>
+        <details class="credits-dependencies">
+          <summary>{{ i18n "credits.dependencies" }}</summary>
+          <ul class="credits-links credits-dependency-links">
+            {{- range $mermaidLicenses }}
+            <li><a href="{{ partial "site-url.html" (printf "/vendor/mermaid/12.0.0/LICENSES/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
+            {{- end }}
+          </ul>
+        </details>
+      </div>
+    </details>
+    <details class="credits-item">
+      <summary class="credits-summary">
+        <span class="credits-identity">
+          <strong class="credits-name">KaTeX</strong>
+          <span class="credits-purpose">{{ i18n "credits.purpose_math" }}</span>
+        </span>
+        <span class="credits-license">MIT · OFL 1.1</span>
+        <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+      </summary>
+      <div class="credits-detail">
+        <p class="credits-version">{{ i18n "credits.version" }} 0.18.4</p>
+        <p>{{ i18n "credits.katex" }}</p>
+        <ul class="credits-links">
+          <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/LICENSE" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/OFL-1.1.txt" }}" target="_blank" rel="noopener">SIL OFL 1.1 · {{ i18n "credits.license" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/FONT-NOTICES.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.font_notices" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/katex/0.18.4/PROVENANCE.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+          <li><a href="https://github.com/KaTeX/KaTeX" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+        </ul>
+      </div>
+    </details>
+    <details class="credits-item">
+      <summary class="credits-summary">
+        <span class="credits-identity">
+          <strong class="credits-name">Pagefind</strong>
+          <span class="credits-purpose">{{ i18n "credits.purpose_search" }}</span>
+        </span>
+        <span class="credits-license">MIT · GPLv3</span>
+        <span class="credits-toggle">{{ i18n "credits.details" }}</span>
+      </summary>
+      <div class="credits-detail">
+        <p class="credits-version">1.5.2 · {{ i18n "credits.reference_version" }}</p>
+        <p>{{ i18n "credits.pagefind" }}</p>
+        <ul class="credits-links">
+          <li><a href="{{ partial "site-url.html" "/licenses/pagefind/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/licenses/pagefind/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/licenses/pagefind/dependencies/SOURCES.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
+          <li><a href="https://github.com/Pagefind/pagefind" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+        </ul>
+        <details class="credits-dependencies">
+          <summary>{{ i18n "credits.dependencies" }}</summary>
+          <ul class="credits-links credits-dependency-links">
+            {{- range $pagefindLicenses }}
+            <li><a href="{{ partial "site-url.html" (printf "/licenses/pagefind/dependencies/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
+            {{- end }}
+          </ul>
+        </details>
+      </div>
+    </details>
+  </div>
+</div>
+</body>
+</html>

@@ -6,7 +6,10 @@ the theme's MIT license does not replace those terms. Bundled diagram and
 mathematics assets retain the licenses described below.
 
 The footer and search dialog open a shared "Licenses & credits" dialog.
-It links to the published license texts, notices, and source records for
+Its contents are loaded on demand from a fingerprinted HTML fragment in the
+published `credits/` directory, one per language. Include this directory when
+deploying the generated site. Each article contains only the dialog shell.
+The loaded content links to the published license texts, notices, and source records for
 the components below, including individual dependency notices. Notey's own
 MIT license is also published as `licenses/notey/LICENSE.txt`. The dialog
 does not replace the original notices or resolve distribution requirements.
@@ -177,5 +180,5 @@ to Hugo's embedded renderer (`hugo env`), then verify diagrams, formulae,
 light/dark mode, and operation with external network requests blocked.
 
 When a component or its notice inventory changes, update its entry and
-dependency links in `layouts/_partials/credits.html` as well. Keep
+dependency links in `layouts/_partials/credits-content.html` as well. Keep
 `static/licenses/notey/LICENSE.txt` identical to the theme's `LICENSE`.

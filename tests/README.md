@@ -10,6 +10,7 @@ node scripts/check-offline-rendering.cjs
 python3 scripts/check-vendor-assets.py
 node scripts/check-search.cjs
 node scripts/check-navigation.cjs
+node scripts/check-credits.cjs
 ```
 
 If the test tools are installed elsewhere, `NOTEY_PLAYWRIGHT` can point to
@@ -54,3 +55,11 @@ sections. Japanese-only and bilingual sites cover language-specific ordering
 and URLs with `/review/` as a base path, both with and without a language prefix
 for the default language. Set `NOTEY_HUGO` to select another Hugo executable.
 Successful fixtures are removed; failed fixtures are retained for inspection.
+
+The credits check verifies that article HTML contains only a lightweight dialog
+shell, with no embedded notice links. The shared language-specific fragment is
+requested only when opened and reused within the page. It covers delayed
+responses, closing/reopening while loading, retry after HTTP/invalid
+content failures, all published notice links, focus and Escape behavior, search
+state preservation, and mobile/light/dark layouts. It runs under a base path in
+Japanese and English, plus a Japanese-only site at the root.
