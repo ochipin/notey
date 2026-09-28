@@ -87,37 +87,6 @@
   "vscode-languageserver-types@3.17.5/License.txt"
   "vscode-languageserver-types@3.17.5/thirdpartynotices.txt"
 -}}
-{{- $pagefindLicenses := slice
-  "adequate-little-templates@1.0.2/LICENSE"
-  "bcp-47@2.1.0/license"
-  "bit-set@0.10.0/LICENSE-APACHE"
-  "bit-set@0.10.0/LICENSE-MIT"
-  "bit-vec@0.9.1/LICENSE-APACHE"
-  "bit-vec@0.9.1/LICENSE-MIT"
-  "cfg-if@1.0.4/LICENSE-APACHE"
-  "cfg-if@1.0.4/LICENSE-MIT"
-  "fflate-vendored/LICENSE.txt"
-  "is-alphabetical@2.0.1/license"
-  "is-alphanumerical@2.0.1/license"
-  "is-decimal@2.0.1/license"
-  "mark.js@8.11.1/LICENSE"
-  "minicbor@2.2.1/LICENSE.md"
-  "once_cell@1.21.4/LICENSE-APACHE"
-  "once_cell@1.21.4/LICENSE-MIT"
-  "pagefind_microjson@0.1.4/COPYRIGHT-from-source.txt"
-  "pagefind_microjson@0.1.4/LICENCE"
-  "pagefind_stem@1.0.0/LICENSES-from-source.txt"
-  "svelte@4.2.20/LICENSE.md"
-  "unicode-ident@1.0.24/LICENSE-APACHE"
-  "unicode-ident@1.0.24/LICENSE-MIT"
-  "unicode-ident@1.0.24/LICENSE-UNICODE"
-  "wasm-bindgen-shared@0.2.117/LICENSE-APACHE"
-  "wasm-bindgen-shared@0.2.117/LICENSE-MIT"
-  "wasm-bindgen@0.2.117/LICENSE-APACHE"
-  "wasm-bindgen@0.2.117/LICENSE-MIT"
-  "write-json@0.1.4/LICENSE-APACHE"
-  "write-json@0.1.4/LICENSE-MIT"
--}}
 
 <!DOCTYPE html>
 <html lang="{{ .Language.Locale }}">
@@ -127,7 +96,7 @@
   <title>{{ i18n "ui.credits" }}</title>
 </head>
 <body>
-<div data-credits-content data-pagefind-ignore>
+<div data-credits-content data-search-ignore>
   <p class="cdlg-intro">{{ i18n "credits.intro" }}</p>
   <div class="credits-list">
     <details class="credits-item">
@@ -219,29 +188,19 @@
     <details class="credits-item">
       <summary class="credits-summary">
         <span class="credits-identity">
-          <strong class="credits-name">Pagefind</strong>
+          <strong class="credits-name">MiniSearch</strong>
           <span class="credits-purpose">{{ i18n "credits.purpose_search" }}</span>
         </span>
-        <span class="credits-license">MIT · GPLv3</span>
+        <span class="credits-license">MIT</span>
         <span class="credits-toggle">{{ i18n "credits.details" }}</span>
       </summary>
       <div class="credits-detail">
-        <p class="credits-version">1.5.2 · {{ i18n "credits.reference_version" }}</p>
-        <p>{{ i18n "credits.pagefind" }}</p>
+        <p class="credits-version">{{ i18n "credits.version" }} 7.2.0</p>
+        <p>{{ i18n "credits.minisearch" }}</p>
         <ul class="credits-links">
-          <li><a href="{{ partial "site-url.html" "/licenses/pagefind/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
-          <li><a href="{{ partial "site-url.html" "/licenses/pagefind/NOTICE.txt" }}" target="_blank" rel="noopener">{{ i18n "credits.notices" }}</a></li>
-          <li><a href="{{ partial "site-url.html" "/licenses/pagefind/dependencies/SOURCES.json" }}" target="_blank" rel="noopener">{{ i18n "credits.sources" }}</a></li>
-          <li><a href="https://github.com/Pagefind/pagefind" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
+          <li><a href="{{ partial "site-url.html" "/vendor/minisearch/7.2.0/LICENSE.txt" }}" target="_blank" rel="noopener">MIT · {{ i18n "credits.license" }}</a></li>
+          <li><a href="https://github.com/lucaong/minisearch" target="_blank" rel="noopener">{{ i18n "credits.source" }}</a></li>
         </ul>
-        <details class="credits-dependencies">
-          <summary>{{ i18n "credits.dependencies" }}</summary>
-          <ul class="credits-links credits-dependency-links">
-            {{- range $pagefindLicenses }}
-            <li><a href="{{ partial "site-url.html" (printf "/licenses/pagefind/dependencies/%s" .) }}" target="_blank" rel="noopener">{{ . }}</a></li>
-            {{- end }}
-          </ul>
-        </details>
       </div>
     </details>
   </div>

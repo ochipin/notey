@@ -1,0 +1,9 @@
+MiniSearch 7.2.0
+Copyright 2022 Luca Ongaro
+License: MIT (see LICENSE.txt)
+Source: https://github.com/lucaong/minisearch/tree/v7.2.0
+
+The official npm dist/es/index.js is minified with Hugo 0.166.0.
+Its source-map comment is removed; the upstream license is included both
+in the JavaScript header and in LICENSE.txt. No external runtime dependencies.
+PROVENANCE.json records the package archive integrity and processing details.

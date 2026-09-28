@@ -5,7 +5,7 @@ params:
   hero:
     eyebrow: Hugo theme v2
     title: Collect, organize, and <em>find your documentation</em>
-    lead: A documentation theme for Hugo with Pagefind full-text search, multilingual support, version switching, and dark mode built in.
+    lead: A documentation theme for Hugo with MiniSearch full-text search, multilingual support, version switching, and dark mode built in.
     image: /favicon.png
     imageAlt: A squirrel reading a book
 ---
@@ -29,8 +29,8 @@ params:
 {{< section title="What your documentation needs" >}}
 {{< card-grid variant="feature" >}}
 
-{{< card title="Pagefind full-text search" icon="search" href="/guides/search/" >}}
-Open the search dialog with Ctrl / ⌘ + K. It supports Japanese word segmentation, and you can generate the index with a single command after building your site.
+{{< card title="MiniSearch full-text search" icon="search" href="/guides/search/" >}}
+Open the search dialog with Ctrl / ⌘ + K. It supports Japanese word segmentation, and Hugo generates the search data automatically.
 {{< /card >}}
 
 {{< card title="Large images, handled for you" icon="overview" href="/reference/images/" >}}

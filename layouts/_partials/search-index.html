@@ -1,0 +1,47 @@
+{{- /* Publish one index per language as part of Hugo's normal build. Call with
+     the Site and cache by language; there is no external indexing step. */ -}}
+{{- $pages := slice -}}
+{{- range .Pages -}}
+  {{- if and (in (slice "home" "section" "page") .Kind) (.OutputFormats.Get "HTML") .RelPermalink (ne .Params.search false) -}}
+    {{- $description := .Params.lead | default .Description | default "" | markdownify | plainify | htmlUnescape -}}
+    {{- $pageURL := .RelPermalink -}}
+    {{- $sections := partial "search-sections.html" . -}}
+    {{- /* Section cards are rendered inside the searchable article. Retain
+         their labels and summaries, but honor explicit search exclusions. */ -}}
+    {{- if .IsSection -}}
+      {{- $cards := slice -}}
+      {{- range .Pages.ByWeight -}}
+        {{- if and (.OutputFormats.Get "HTML") .RelPermalink (ne .Params.search false) -}}
+          {{- $cards = $cards | append .LinkTitle -}}
+          {{- with .Description | default (.Summary | plainify | truncate 90) -}}
+            {{- $cards = $cards | append (printf "%s" . | htmlUnescape) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- with $cards -}}
+        {{- $content := delimit . " " -}}
+        {{- $rest := $sections -}}
+        {{- if $sections -}}
+          {{- $first := index $sections 0 -}}
+          {{- if not $first.title -}}
+            {{- $content = printf "%s %s" $first.content $content -}}
+            {{- $rest = after 1 $sections -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $sections = slice (dict "title" "" "url" $pageURL "content" $content) -}}
+        {{- range $rest }}{{ $sections = $sections | append . }}{{ end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $pages = $pages | append (dict
+      "id" .RelPermalink
+      "url" .RelPermalink
+      "title" .Title
+      "crumb" ""
+      "description" $description
+      "sections" $sections
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $data := dict "version" 1 "pages" $pages -}}
+{{- $path := printf "search/%s.json" .Language.Name -}}
+{{- return (resources.FromString $path ($data | jsonify) | fingerprint) -}}

@@ -10,7 +10,7 @@ ui:
   search_empty: "一致する記事が見つかりませんでした"
   search_running: "検索中…"
   search_failed: "検索結果を取得できませんでした。もう一度お試しください。"
-  search_missing: "検索インデックスが見つかりません。hugo のビルド後に npx pagefind@1.5.2 --site public を実行してください。"
+  search_missing: "検索用ファイルを読み込めませんでした。Hugo で生成したサイト全体が公開されているか確認してください。"
   search_count:
     other: "{count} 件の記事が見つかりました"
   load_more: "さらに読み込む"
@@ -68,8 +68,7 @@ credits:
   icons: "Google の Material Symbols Rounded を Notey のアイコンフォントに加工しています。Apache 2.0 ライセンスが適用されます。"
   mermaid: "図の表示に使用しています。Mermaid 本体は MIT ライセンスで、同梱する依存ライブラリにはそれぞれのライセンスが適用されます。"
   katex: "数式のスタイルとフォントに使用しています。スタイルシートは MIT、フォントは SIL Open Font License 1.1 で提供されています。"
-  pagefind: "ドキュメントの検索に使用しています。検索用ファイルは別途生成され、ここでの表記は 1.5.2 を基準としています。Pagefind 本体は MIT ライセンスですが、依存部品には GPLv3 のものも含まれます。"
-  reference_version: "表記の基準バージョン"
+  minisearch: "ドキュメントの検索に使用しています。MiniSearch をテーマに同梱し、サイト内のファイルだけで動作します。MIT ライセンスで、外部の実行時依存ライブラリはありません。"
   license: "ライセンス原文"
   notices: "著作権・配布に関する表記"
   source: "ソースコード"

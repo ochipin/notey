@@ -5,7 +5,7 @@ params:
   hero:
     eyebrow: Hugo theme v2
     title: ドキュメントを、<em>ため込む・整理する・取り出す</em>
-    lead: Hugo のためのドキュメント専用テーマ。Pagefind の全文検索、多言語、バージョン切替、ダークモードを最初から備えています。
+    lead: Hugo のためのドキュメント専用テーマ。MiniSearch の全文検索、多言語、バージョン切替、ダークモードを最初から備えています。
     image: /favicon.png
     imageAlt: 本を読むリスのキャラクター
 ---
@@ -29,8 +29,8 @@ params:
 {{< section title="ドキュメントに必要なものだけ" >}}
 {{< card-grid variant="feature" >}}
 
-{{< card title="Pagefind 全文検索" icon="search" href="/guides/search/" >}}
-Ctrl / ⌘ + K で開く検索ダイアログ。日本語も分割して検索でき、インデックスはビルド後に 1 コマンドで生成します。
+{{< card title="MiniSearch 全文検索" icon="search" href="/guides/search/" >}}
+Ctrl / ⌘ + K で開く検索ダイアログ。日本語も分割して検索でき、検索用データは Hugo が自動生成します。
 {{< /card >}}
 
 {{< card title="大きな画像もそのまま" icon="overview" href="/reference/images/" >}}

@@ -1,4 +1,4 @@
-/* Notey search — Pagefind */
+/* Notey search — MiniSearch, with a Hugo-generated local index. */
 (function () {
   "use strict";
   var doc = document;
@@ -20,23 +20,41 @@
     count: "{{ i18n "ui.search_count" (dict "Count" 2) }}",
     countOne: "{{ i18n "ui.search_count" (dict "Count" 1) }}"
   };
-  var BASE = "{{ "pagefind/pagefind.js" | relURL }}";
+  var LIBRARY = "{{ "vendor/minisearch/7.2.0/minisearch.min.mjs" | relURL }}";
+  var ENGINE = "{{ (resources.Get "search/engine.js" | minify | fingerprint).RelPermalink }}";
+  var INDEX = dlg.getAttribute("data-search-index");
   var LANG = doc.documentElement.lang || "";
 
-  var pf = null, loading = null, results = [], shown = 0, PAGE = 6, timer = 0;
+  var engine = null, loading = null, results = [], shown = 0, PAGE = 6, timer = 0;
   var focusTimer = 0, searchVersion = 0;
   var pendingBatch = null;
 
   function load() {
-    if (pf) return Promise.resolve(pf);
+    if (engine) return Promise.resolve(engine);
     if (loading) return loading;
-    loading = import(BASE)
-      .then(function (m) {
-        return Promise.resolve(m.options({ language: LANG }))
-          .then(function () { return m.init(); })
-          .then(function () { pf = m; return pf; });
+    var controller = new AbortController();
+    var timeout;
+    var request = Promise.all([
+      import(ENGINE),
+      import(LIBRARY),
+      fetch(INDEX, { signal: controller.signal }).then(function (response) {
+        if (!response.ok) throw new Error("Search data unavailable");
+        return response.json();
       })
-      .catch(function () { loading = null; return null; });
+    ]);
+    loading = Promise.race([request, new Promise(function (_, reject) {
+      timeout = setTimeout(function () {
+        controller.abort();
+        reject(new Error("Search loading timed out"));
+      }, 15000);
+    })]).then(function (parts) {
+      // The deadline covers network loading, not local indexing. A slow device
+      // must not start duplicate indexes while an earlier build is still running.
+      clearTimeout(timeout);
+      return parts[0].createSearch(parts[1].default, parts[2], LANG);
+    }).then(function (api) { engine = api; return api; })
+      .catch(function () { loading = null; return null; })
+      .finally(function () { clearTimeout(timeout); });
     return loading;
   }
 
@@ -79,20 +97,9 @@
     return esc(p.join(" / "));
   }
 
-  function headings(hit) {
-    var seen = new Set();
-    return (hit.sub_results || []).filter(function (sub) {
-      // Pagefind also returns a page-level result before the first heading.
-      if (!sub.anchor || !sub.url || !sub.title || !/^h[1-6]$/i.test(sub.anchor.element)) return false;
-      var hash = sub.url.indexOf("#");
-      if (hash < 0 || hash === sub.url.length - 1 || seen.has(sub.url)) return false;
-      seen.add(sub.url);
-      return true;
-    }).slice(0, 3);
-  }
 
   function resultHTML(hit) {
-    var sections = headings(hit);
+    var sections = hit.sections || [];
     var html =
       '<a class="sdlg-hit" data-search-hit href="' + esc(hit.url) + '">' +
       '<span class="sdlg-hit-crumb">' + crumb(hit) + "</span>" +
@@ -121,7 +128,7 @@
     more.disabled = true;
     function current() { return dlg.open && version === searchVersion && pendingBatch === batch; }
     Promise.all(slice.map(function (r) {
-      return Promise.resolve().then(function () { return r.data(); });
+      return Promise.resolve().then(function () { return engine.result(r); });
     })).then(function (rows) {
       if (!current()) return;
       var fragment = doc.createDocumentFragment();
@@ -167,7 +174,7 @@
     load().then(function (api) {
       if (!dlg.open || version !== searchVersion) return;
       if (!api) { status.textContent = T.missing; return; }
-      return api.debouncedSearch(q, {}, 120).then(function (res) {
+      return Promise.resolve(api.search(q)).then(function (res) {
         if (!res || !dlg.open || version !== searchVersion) return;
         results = res.results;
         summary.textContent = (results.length === 1 ? T.countOne : T.count)
@@ -184,15 +191,17 @@
     });
   }
 
-  input.addEventListener("input", function () {
+  function changed(e) {
     clearTimeout(timer);
     searchVersion += 1;
     resetResults();
     var q = input.value.trim();
     status.hidden = false;
     status.textContent = q ? T.searching : T.hint;
-    timer = setTimeout(function () { run(q); }, 90);
-  });
+    if (!e || !e.isComposing) timer = setTimeout(function () { run(q); }, 120);
+  }
+  input.addEventListener("input", changed);
+  input.addEventListener("compositionend", changed);
   more.addEventListener("click", function () { render(false); });
 
   list.addEventListener("click", function (e) {

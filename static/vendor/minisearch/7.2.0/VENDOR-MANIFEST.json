@@ -1,0 +1,22 @@
+{
+  "name": "minisearch",
+  "version": "7.2.0",
+  "files": {
+    "LICENSE.txt": {
+      "bytes": 1051,
+      "sha256": "70d37354d6395629fb99edb28cb37a5d356ffa24a48cd02a5def5b83a300a899"
+    },
+    "NOTICE.txt": {
+      "bytes": 429,
+      "sha256": "c8c3bd30b39b77bdfc811a0bbaeb71bb3eb682a048350b52173fabfcbe98136d"
+    },
+    "PROVENANCE.json": {
+      "bytes": 1072,
+      "sha256": "83fb3c5dc20f1d747de0520b72bf50bbf36cd50293ae925a4ac1dfa503ed4578"
+    },
+    "minisearch.min.mjs": {
+      "bytes": 20504,
+      "sha256": "9d31258f46a9a51999f5792dcf930460c665cb5a8851b10fa350c99dfcc0c735"
+    }
+  }
+}

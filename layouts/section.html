@@ -5,7 +5,7 @@
     <h1 class="doc-title"><span class="icon icon-{{ $icon }} doc-title-icon" aria-hidden="true"></span>{{ .Title }}</h1>
     {{ with .Params.lead | default .Description }}<p class="doc-lead">{{ . | markdownify }}</p>{{ end }}
     {{ partial "toc-inline.html" . }}
-    <div class="prose" data-pagefind-body>
+    <div class="prose" data-search-body>
       {{ partial "render-content.html" . }}
       {{ with .Pages.ByWeight }}
         <div class="cards">

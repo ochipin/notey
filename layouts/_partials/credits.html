@@ -2,7 +2,7 @@
 {{- $content := partial "credits-content.html" . -}}
 {{- $path := printf "credits/%s.html" .Language.Name -}}
 {{- $resource := resources.FromString $path $content | minify | fingerprint -}}
-<dialog id="credits-dialog" class="cdlg" aria-labelledby="credits-title" data-credits-src="{{ $resource.RelPermalink }}" data-pagefind-ignore>
+<dialog id="credits-dialog" class="cdlg" aria-labelledby="credits-title" data-credits-src="{{ $resource.RelPermalink }}" data-search-ignore>
   <div class="cdlg-box">
     <header class="cdlg-head">
       <h2 id="credits-title" tabindex="-1">{{ i18n "ui.credits" }}</h2>

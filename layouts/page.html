@@ -6,7 +6,7 @@
     {{ with .Params.lead | default .Description }}<p class="doc-lead">{{ . | markdownify }}</p>{{ end }}
     {{ partial "page-meta.html" . }}
     {{ partial "toc-inline.html" . }}
-    <div class="prose" data-pagefind-body>
+    <div class="prose" data-search-body>
       {{ partial "render-content.html" . }}
     </div>
     {{ partial "prev-next.html" . }}

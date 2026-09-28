@@ -1,11 +1,11 @@
 name = 'Notey'
 license = 'MIT'
 licenselink = 'https://github.com/ochipin/notey/blob/main/LICENSE'
-description = 'ドキュメント指向の軽量 Hugo テーマ。Pagefind 全文検索、多言語、バージョン切替、ダークモード対応。'
+description = 'ドキュメント指向の軽量 Hugo テーマ。MiniSearch 全文検索、多言語、バージョン切替、ダークモード対応。'
 homepage = 'https://github.com/ochipin/notey'
 demosite = 'https://github.com/ochipin/notey'
-tags = ['documentation', 'docs', 'responsive', 'multilingual', 'dark-mode', 'pagefind']
-features = ['documentation navigation', 'pagefind search', 'i18n', 'versioning', 'dark mode', 'shortcodes', 'mermaid', 'math']
+tags = ['documentation', 'docs', 'responsive', 'multilingual', 'dark-mode', 'minisearch']
+features = ['documentation navigation', 'minisearch search', 'i18n', 'versioning', 'dark mode', 'shortcodes', 'mermaid', 'math']
 min_version = '0.166.0'
 
 [author]

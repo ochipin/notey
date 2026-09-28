@@ -58,7 +58,7 @@ Mermaid 12.0.0 をテーマに同梱しています。図があるページだ�
 ```mermaid
 flowchart LR
   A[content/*.md] --> B(hugo)
-  B --> C[public/]
-  C --> D(pagefind)
-  D --> E[検索インデックス]
+  B --> C[HTML と検索データ]
+  C --> D[ブラウザーの MiniSearch]
+  D --> E[検索結果]
 ```

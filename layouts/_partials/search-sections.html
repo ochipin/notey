@@ -1,0 +1,65 @@
+{{- /* Work from final rendered content so heading anchors also match inside
+     nested shortcodes. Hidden tabs/details remain searchable and are revealed
+     by the normal fragment-navigation handler when a result is opened. */ -}}
+{{- $html := printf "%s" (partial "render-content.html" .) -}}
+{{- $html = replaceRE `(?is)<!--.*?-->|<script\b[^>]*>.*?</script\s*>|<style\b[^>]*>.*?</style\s*>|<template\b[^>]*>.*?</template\s*>` "" $html -}}
+{{- $pageURL := .RelPermalink -}}
+{{- $sections := slice -}}
+{{- $title := "" -}}
+{{- $url := $pageURL -}}
+{{- $text := slice -}}
+{{- $heading := false -}}
+{{- $headingText := slice -}}
+{{- $ignoreTag := "" -}}
+{{- $ignoreDepth := 0 -}}
+{{- $void := slice "area" "base" "br" "col" "embed" "hr" "img" "input" "link" "meta" "param" "source" "track" "wbr" -}}
+{{- range findRE `(?s)<(?:[^>"']|"[^"]*"|'[^']*')*>|[^<]+|<` $html -}}
+  {{- $token := . -}}
+  {{- $isTag := gt (len (findRE `(?s)^</?[A-Za-z].*>$` $token)) 0 -}}
+  {{- $tag := "" -}}
+  {{- $closing := false -}}
+  {{- $selfClosing := false -}}
+  {{- if $isTag -}}
+    {{- $tag = replaceRE `^</?([A-Za-z][A-Za-z0-9:-]*)\b[\s\S]*$` "$1" $token | lower -}}
+    {{- $closing = strings.HasPrefix $token "</" -}}
+    {{- $selfClosing = or (in $void $tag) (strings.HasSuffix $token "/>") -}}
+  {{- end -}}
+  {{- if gt $ignoreDepth 0 -}}
+    {{- if eq $tag $ignoreTag -}}
+      {{- if $closing }}{{ $ignoreDepth = sub $ignoreDepth 1 }}
+      {{- else if not $selfClosing }}{{ $ignoreDepth = add $ignoreDepth 1 }}{{ end -}}
+    {{- end -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- if and $isTag (not $closing) (gt (len (findRE `(?i)\s(data-search-ignore|data-pagefind-ignore)(?:\s|=|/?>)|\saria-hidden\s*=\s*(?:"true"|'true'|true(?:\s|/?>))` $token)) 0) -}}
+    {{- if not $selfClosing }}{{ $ignoreTag = $tag }}{{ $ignoreDepth = 1 }}{{ end -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- if and $isTag (in (slice "h1" "h2" "h3" "h4" "h5" "h6") $tag) -}}
+    {{- if $closing -}}
+      {{- $title = delimit $headingText "" | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+      {{- $heading = false -}}
+    {{- else -}}
+      {{- $content := delimit $text "" | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+      {{- if or $title $content }}{{ $sections = $sections | append (dict "title" $title "url" $url "content" $content) }}{{ end -}}
+      {{- $text = slice -}}
+      {{- $headingText = slice -}}
+      {{- $heading = true -}}
+      {{- $title = "" -}}
+      {{- $url = $pageURL -}}
+      {{- with findRE `(?i)\sid\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)` $token 1 -}}
+        {{- $anchor := index . 0 | replaceRE `(?i)^\sid\s*=\s*` "" | strings.TrimPrefix `"` | strings.TrimSuffix `"` | strings.TrimPrefix "'" | strings.TrimSuffix "'" | htmlUnescape -}}
+        {{- $url = printf "%s#%s" $pageURL $anchor -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else if $isTag -}}
+    {{- if in (slice "p" "div" "section" "article" "aside" "blockquote" "pre" "li" "dt" "dd" "tr" "td" "th" "br" "hr" "figcaption" "summary") $tag -}}
+      {{- if $heading }}{{ $headingText = $headingText | append " " }}{{ else }}{{ $text = $text | append " " }}{{ end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- if $heading }}{{ $headingText = $headingText | append $token }}{{ else }}{{ $text = $text | append $token }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- $content := delimit $text "" | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+{{- if or $title $content }}{{ $sections = $sections | append (dict "title" $title "url" $url "content" $content) }}{{ end -}}
+{{- return $sections -}}

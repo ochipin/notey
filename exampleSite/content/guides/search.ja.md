@@ -1,34 +1,58 @@
 ---
 draft: false
-title: "検索（Pagefind）"
+title: "検索（MiniSearch）"
 weight: 20
-description: "ビルド後に検索インデックスを生成する"
+description: "Hugo が自動生成するデータをブラウザーで検索する"
 params:
   icon: "search"
 ---
 
 ## 仕組み
 
-Notey は検索 UI だけをテーマに持ち、インデックスは [Pagefind](https://pagefind.app/) が生成します。日本語も分割して検索できます。
+Notey は [MiniSearch](https://github.com/lucaong/minisearch) 7.2.0 を同梱しています。Hugo が言語ごとの本文データを生成し、検索画面を初めて開くときにブラウザーがデータとライブラリを読み込んで索引を作ります。以降の検索には同じ索引を使います。
+
+日本語は `Intl.Segmenter` で単語に分割します。未対応のブラウザーでは文字単位で分割します。前方一致に対応し、複数語を入力するとすべての語を含む記事を検索します。漢字・ひらがな・カタカナは1文字から前方一致するため、「数」でも「数式」が見つかります。英数字の前方一致は2文字以上です。外部 CDN や検索サーバーは使いません。
 
 ## ビルド手順
 
 ```bash
 hugo --minify
-npx -y pagefind@1.5.2 --site public
 ```
 
-{{< info title="CI に入れる" >}}
-GitHub Actions では `hugo` の後に `npx -y pagefind@1.5.2 --site public` を実行するステップを追加するだけです。
+これだけで検索用ファイルも生成されます。`hugo server` でも検索を使えます。検索のための Node.js やビルド後の追加コマンドは不要です。
+
+{{< info title="公開するファイル" >}}
+`search/` と `vendor/` を含む、Hugo の生成サイト全体を公開してください。検索は最初に現在の言語の本文データを取得するため、記事数が多いサイトでは転送量と初回の索引作成時間も確認してください。
 {{< /info >}}
+
+## 検索結果
+
+一致した記事の総件数と、記事ごとのタイトル・パス・抜粋を表示します。一致した見出しや、その配下の本文に検索語がある箇所は、記事ごとに最大3件表示します。
+
+記事タイトルを選ぶと記事の先頭へ、見出しを選ぶと該当箇所へ移動します。タブや折りたたみの中の見出しにも移動できます。
 
 ## 検索対象の指定
 
-本文は `data-pagefind-body` が付いた領域のみが対象です。除外したい要素には `data-pagefind-ignore` を付けます。
+記事のタイトル・説明・本文が検索対象です。ページ全体を除外するには front matter で指定します。
+
+```yaml
+params:
+  search: false
+```
+
+本文の一部を除外する場合は、要素に `data-search-ignore` を付けます。
 
 ```html
-<div data-pagefind-ignore>この部分は検索対象外</div>
+<div data-search-ignore>この部分は検索対象外</div>
 ```
+
+既存の `data-pagefind-ignore` も認識します。ナビゲーションやフッター、クレジットは本文データに含みません。
+
+## Pagefind から移行する場合
+
+CI や npm scripts の Pagefind 実行を外してください。検索の順位や一致範囲はエンジンが異なるため変わります。
+
+旧 `static/pagefind/`、公開先の `pagefind/`・`licenses/pagefind/` が残っていれば、旧検索を使わないことを確認して整理できます。テーマの更新で既存ファイルを自動削除することはありません。
 
 ## ショートカット
 

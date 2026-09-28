@@ -9,7 +9,7 @@ const theme = path.resolve(__dirname, '..');
 const work = fs.mkdtempSync(path.join(os.tmpdir(), 'notey-credits-'));
 const output = path.join(work, 'public');
 const origin = 'https://notey.test';
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff': 'font/woff', '.woff2': 'font/woff2', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.txt': 'text/plain' };
+const mime = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.woff': 'font/woff', '.woff2': 'font/woff2', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.txt': 'text/plain' };
 
 function build(multilingual) {
   const content = path.join(work, 'content');
@@ -18,7 +18,7 @@ function build(multilingual) {
   const languages = multilingual ? ['ja', 'en'] : ['ja'];
   for (const language of languages) {
     fs.writeFileSync(path.join(content, '_index.' + language + '.md'), '---\ntitle: Credits home\ndraft: false\n---\nA home page with theme credits.\n');
-    fs.writeFileSync(path.join(content, 'article.' + language + '.md'), '---\ntitle: Credits article\ndraft: false\n---\n## Introduction\n\nAn article with theme credits.\n');
+    fs.writeFileSync(path.join(content, 'article.' + language + '.md'), '---\ntitle: Credits article\ndraft: false\n---\n## Introduction\n\nA needle article with theme credits.\n');
   }
   const prefix = multilingual ? '/review' : '';
   const config = {
@@ -54,7 +54,7 @@ async function check(browser, language, prefix) {
   const creditsFile = path.join(output, decodeURIComponent(creditsPath.slice(prefix.length)));
   assert(fs.existsSync(creditsFile), 'The shared credits fragment is published');
   assert(!rawArticle.includes('class=credits-list') && !rawArticle.includes('class="credits-list"'), 'Article HTML omits the credits inventory');
-  for (const notice of ['/licenses/notey/LICENSE.txt', '/fonts/NOTICE.txt', '/vendor/mermaid/12.0.0/LICENSE', '/licenses/pagefind/dependencies/']) {
+  for (const notice of ['/licenses/notey/LICENSE.txt', '/fonts/NOTICE.txt', '/vendor/mermaid/12.0.0/LICENSE', '/vendor/minisearch/7.2.0/LICENSE.txt']) {
     assert(!rawArticle.includes(notice), 'Article HTML does not embed license destinations: ' + notice);
   }
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
@@ -65,16 +65,6 @@ async function check(browser, language, prefix) {
     if (url.origin !== origin || !url.pathname.startsWith(prefix + '/')) {
       missing.push(url.href); return route.abort();
     }
-    if (url.pathname === prefix + '/pagefind/pagefind.js') return route.fulfill({ contentType: 'text/javascript', body: `
-      export async function options() {}
-      export async function init() {}
-      export async function debouncedSearch(query) {
-        const url = location.pathname;
-        return { results: [{ data: async () => ({ url, meta: { title: 'Matching article' },
-          excerpt: 'Search result for ' + query, sub_results: [{ title: 'Introduction',
-          url: url + '#introduction', excerpt: query, anchor: { element: 'h2' } }] }) }] };
-      }
-    ` });
     if (url.href === creditsURL) {
       creditsRequests.push(url.href);
       if (creditsInterceptor) return creditsInterceptor(route);
@@ -132,8 +122,8 @@ async function check(browser, language, prefix) {
     assert.equal(await dialog.count(), 1);
     assert.equal(await title.count(), 1);
     assert.equal(await dialog.getAttribute('aria-labelledby'), 'credits-title');
-    assert.equal(await dialog.getAttribute('data-pagefind-ignore'), '');
-    assert.equal(await page.locator('[data-pagefind-body] #credits-dialog').count(), 0, 'Credits are outside indexed article content');
+    assert.equal(await dialog.getAttribute('data-search-ignore'), '');
+    assert.equal(await page.locator('[data-search-body] #credits-dialog').count(), 0, 'Credits are outside indexed article content');
     assert.equal(await footer.textContent(), language === 'ja' ? 'ライセンス・クレジット' : 'Licenses & credits');
     assert.equal(creditsRequests.length, 0, 'Page loading does not fetch credits');
     assert.equal(await content.locator('*').count(), 0, 'The initial dialog contains only an empty content placeholder');
@@ -142,7 +132,7 @@ async function check(browser, language, prefix) {
     assert.equal(creditsRequests.length, 1, 'The first open fetches the shared credits fragment once');
     const items = dialog.locator('details.credits-item');
     const names = await items.locator('.credits-name').allTextContents();
-    assert.deepEqual(names.map(name => name.trim()), ['Notey', 'Material Symbols Rounded', 'Mermaid', 'KaTeX', 'Pagefind']);
+    assert.deepEqual(names.map(name => name.trim()), ['Notey', 'Material Symbols Rounded', 'Mermaid', 'KaTeX', 'MiniSearch']);
     for (const selector of ['.credits-purpose', '.credits-license', '.credits-toggle']) {
       const labels = await items.locator(selector).allTextContents();
       assert.equal(labels.length, 5);
@@ -160,7 +150,7 @@ async function check(browser, language, prefix) {
       const file = path.join(output, decodeURIComponent(url.pathname.slice(prefix.length)));
       assert(fs.existsSync(file) && fs.statSync(file).isFile(), 'License links resolve to published files, not directories: ' + link.href);
     }
-    assert.equal(localLinks, 129, 'All license texts and dependency notice files remain individually linked');
+    assert.equal(localLinks, 98, 'All bundled license texts and dependency notice files remain individually linked');
     assert.equal(links.length - localLinks, 5, 'Each component retains its upstream source link');
 
     const overview = await dialog.evaluate(el => {

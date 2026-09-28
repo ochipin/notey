@@ -1,0 +1,27 @@
+{
+  "auditDate": "2026-09-28",
+  "npmPackage": {
+    "name": "minisearch",
+    "version": "7.2.0",
+    "url": "https://registry.npmjs.org/minisearch/-/minisearch-7.2.0.tgz",
+    "sha256": "cb3b8126a3ea65d6b387787294f0792b0ea4a40b70f8f37688066a5638e0218a",
+    "integrity": "sha512-dqT2XBYUOZOiC5t2HRnwADjhNS2cecp9u+TJRiJ1Qp/f5qjkeT5APcGPjHw+bz89Ms8Jp+cG4AlE+QZ/QnDglg==",
+    "repository": {
+      "url": "https://github.com/lucaong/minisearch.git",
+      "type": "git"
+    },
+    "license": "MIT",
+    "dependencies": {}
+  },
+  "sourceFile": "package/dist/es/index.js",
+  "sourceFileSHA256": "0393b3ba253b809d5e55707c7b0875ef9b518a296a006c6739b28876e154edb3",
+  "processing": {
+    "tool": "hugo v0.166.0-78400b4de8adc99273d3e674ed6c4d14c3bdf669 linux/amd64 BuildDate=2026-09-09T14:45:02Z VendorInfo=gohugoio",
+    "steps": [
+      "Remove sourceMappingURL comment (source maps are not distributed).",
+      "Minify with Hugo resources.Minify.",
+      "Prepend the complete original MIT copyright and permission notice."
+    ]
+  },
+  "entryPoint": "minisearch.min.mjs"
+}

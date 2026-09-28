@@ -10,7 +10,7 @@ ui:
   search_empty: "No results found"
   search_running: "Searching…"
   search_failed: "Could not load search results. Please try again."
-  search_missing: "Search index not found. Run npx pagefind@1.5.2 --site public after hugo build."
+  search_missing: "Could not load the search files. Check that the complete Hugo-generated site has been published."
   search_count:
     one: "{count} article found"
     other: "{count} articles found"
@@ -70,8 +70,7 @@ credits:
   icons: "Material Symbols Rounded by Google, adapted into the Notey icon font. Licensed under Apache 2.0."
   mermaid: "Diagram rendering. Mermaid itself is MIT-licensed; its bundled dependencies retain their own licenses."
   katex: "Math styles and fonts. The stylesheet is MIT-licensed, and the fonts use the SIL Open Font License 1.1."
-  pagefind: "Document search. The search files are generated separately; these notices refer to version 1.5.2. Pagefind itself is MIT-licensed; its dependencies include GPLv3 components."
-  reference_version: "reference version"
+  minisearch: "Document search, bundled with the theme and served from your site. MIT-licensed with no external runtime dependencies."
   license: "License text"
   notices: "Notices"
   source: "Source code"
