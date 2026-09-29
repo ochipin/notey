@@ -1,4 +1,5 @@
 name = 'Notey'
+version = '0.1'
 license = 'MIT'
 licenselink = 'https://github.com/ochipin/notey/blob/main/LICENSE'
 description = 'ドキュメント指向の軽量 Hugo テーマ。Pagefind 全文検索、多言語、バージョン切替、ダークモード対応。'
