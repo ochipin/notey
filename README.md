@@ -3,7 +3,7 @@
 ドキュメント専用サイトのための Hugo テーマ。Starlight 系のレイアウト（左サイドバー + 本文 + 右目次）を、素の CSS / JavaScript だけで構成しています。
 
 - **トップページ** — ヒーロー、スペック帯、カード、段組み、CTA を Markdown とショートコードで自由に組み立て
-- **Pagefind 全文検索** — 記事の総件数、一致した見出しを記事ごとに最大3件表示。Ctrl/⌘ + K、`/`、キーボード操作、日本語対応
+- **全文検索（MiniSearch）** — 記事の総件数、一致した見出しを記事ごとに最大3件表示。Ctrl/⌘ + K、`/`、キーボード操作、日本語対応
 - **多言語（i18n）** — `/ja/` `/en/` のサブディレクトリ構成、言語切替
 - **バージョン切替** — `params.versions` からドロップダウンを生成。`params.showVersion` で表示切替
 - **ライト / ダーク** — 初回は OS 設定、以降は localStorage、切替時に Mermaid も再描画
@@ -21,7 +21,6 @@
 |:--|:--|
 | Hugo | v0.166.0 以上（extended 不要） |
 | Git | 更新日時の表示（`enableGitInfo`） |
-| Node.js | Pagefind の実行 |
 
 Hugo v0.166.0 で導入された `return` の仕様を使用しているため、v0.162.0 など、それ以前のバージョンではビルドできません。
 
@@ -82,10 +81,9 @@ languages:
 
 ```bash
 hugo --minify
-npx -y pagefind@1.5.2 --site public
 ```
 
-Pagefind を実行しないと検索ダイアログにインデックス未生成のメッセージが表示されます（他の機能は動作します）。
+検索インデックスは Hugo のビルド時に言語ごとの JSON（`search/<言語>.<ハッシュ>.json`）として生成されます。ビルド後に別のコマンドを実行する必要はなく、`hugo server` のプレビューでも検索できます。検索には同梱の [MiniSearch](https://github.com/lucaong/minisearch) 7.2.0 を使い、最初に検索ダイアログを開いたときにブラウザが MiniSearch とインデックスを読み込みます。外部サービスへの通信はありません。日本語などの単語の区切りがない文章は 2 文字ずつに分けて索引を作るため、語の途中からでも検索できます。
 
 検索結果には記事の総件数と、各記事のタイトル・パス・抜粋を表示します。
 さらに、検索語が見出しまたはその配下の本文に一致した箇所を、記事ごとに最大3件表示します。
@@ -156,7 +154,7 @@ params:
 {{< section title="必要な情報を見つける" >}}
 {{< card-grid variant="feature" >}}
 {{< card title="全文検索" icon="search" href="/guides/search/" >}}
-**Pagefind** でドキュメント本文を検索できます。
+**MiniSearch** でドキュメント本文を検索できます。
 {{< /card >}}
 {{< card title="画像" icon="overview" href="/reference/images/" >}}
 記事と画像を同じフォルダーで管理できます。
@@ -382,7 +380,7 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 ## v1（旧 Notey）からの移行
 
 - ショートコード名は互換です（`info` `tips` `warning` `danger` `card` `card-grid` `tab` `num` `icon`）。`tab` の `active` 指定もそのまま使えます。
-- 検索は Fuse.js + `search.json` から Pagefind に置き換わりました。`outputs.home` の `JSON` と `outputFormats.JSON` の設定は削除できます。
+- 検索は Fuse.js + `search.json` から MiniSearch（Hugo が生成するインデックス）に置き換わりました。`outputs.home` の `JSON` と `outputFormats.JSON` の設定は削除できます。
 - `page.word.html`（Word 出力）と `outputs.page: [HTML, word]` は同梱していません。必要なら v1 の該当ファイルを `layouts/` に戻してください。
 - 見出し ID を使うため `autoHeadingID: false` は外してください。
 - アイコンの名前・コードポイントと `icomoon.woff` のファイル名は互換性のため維持しています。48 個すべての図形を Google 公式の Material Symbols Rounded に置き換えたため、以前と形状が変わるものがあります。`proxmox`・`tux`（`linux`）・`docker`・`windows` は配布対象に含みません。
@@ -391,15 +389,13 @@ HuPongo の本文で `{{<` を入力し、候補の詳細を開くと確認で�
 
 テーマ本体は [MIT](LICENSE) です。アイコンの元 SVG と、それらから生成したフォントには [Apache License 2.0](LICENSES/Apache-2.0.txt) が適用されます。48 個すべてを Google 公式の Material Symbols Rounded から取得し直し、出典が未確定だった旧フォントの図形は使用していません。
 
-各ページのフッターと検索画面の「ライセンス・クレジット」から、共通のダイアログを開けます。最初は Notey、Material Symbols、Mermaid、KaTeX、Pagefind の名前・用途・ライセンスをコンパクトに表示し、各項目の「詳細」から説明・ライセンス原文・出典を確認できます。依存ライブラリの一覧は詳細内で展開できます。開き直すと一覧表示に戻ります。日英表示・モバイル・ダークモードに対応し、検索中に開いた場合も検索内容を保持します。Esc、閉じるボタン、背景のクリックで閉じられます。
+各ページのフッターと検索画面の「ライセンス・クレジット」から、共通のダイアログを開けます。最初は Notey、Material Symbols、Mermaid、KaTeX、MiniSearch の名前・用途・ライセンスをコンパクトに表示し、各項目の「詳細」から説明・ライセンス原文・出典を確認できます。依存ライブラリの一覧は詳細内で展開できます。開き直すと一覧表示に戻ります。日英表示・モバイル・ダークモードに対応し、検索中に開いた場合も検索内容を保持します。Esc、閉じるボタン、背景のクリックで閉じられます。
 
-クレジット本文は各記事の HTML に埋め込まず、ダイアログを初めて開くときに同じサイトの共通ファイルから読み込みます。同じページ内では読み込み済みの内容を再利用し、失敗した場合は「再試行」できます。Hugo が言語ごとに `credits/<言語>.min.<ハッシュ>.html` を生成するため、追加設定や外部サービスは不要です。公開時は、この `credits/` ディレクトリも含めて生成サイト全体を配置してください。本文は `layouts/_partials/credits-content.html`、ダイアログの枠は `layouts/_partials/credits.html` で管理し、クレジット本文は Pagefind の検索対象から除外しています。
+クレジット本文は各記事の HTML に埋め込まず、ダイアログを初めて開くときに同じサイトの共通ファイルから読み込みます。同じページ内では読み込み済みの内容を再利用し、失敗した場合は「再試行」できます。Hugo が言語ごとに `credits/<言語>.min.<ハッシュ>.html` を生成するため、追加設定や外部サービスは不要です。公開時は、この `credits/` ディレクトリも含めて生成サイト全体を配置してください。本文は `layouts/_partials/credits-content.html`、ダイアログの枠は `layouts/_partials/credits.html` で管理しています。クレジット本文は記事ではないため、検索の対象になりません。
 
-同梱の Mermaid・KaTeX とその依存ライブラリ・フォントには、それぞれのライセンスが適用されます。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と `static/vendor/` 内のライセンス・出典ファイルを参照してください。生成サイトにもコピーされるこれらのファイルは、アプリやサイトを再配布する際も保持してください。
+同梱の Mermaid・KaTeX・MiniSearch とその依存ライブラリ・フォントには、それぞれのライセンスが適用されます。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と `static/vendor/` 内のライセンス・出典ファイルを参照してください。生成サイトにもコピーされるこれらのファイルは、アプリやサイトを再配布する際も保持してください。
 
-検索に使う Pagefind 本体の [MIT ライセンス原文](LICENSES/Pagefind-MIT.txt) と、確認できたブラウザ用依存ライブラリの表記は `static/licenses/pagefind/` に収録しています。Hugo はこのディレクトリを生成サイトの `licenses/pagefind/` にコピーし、「ライセンス・クレジット」内の Pagefind の項目から案内を開けます。検索インデックスの `pagefind/` とは別の場所にあるため、インデックスを再生成しても保持されます。公開・配布する際は、このディレクトリも含めてください。収録内容は Pagefind 1.5.2 を基準としているので、使用バージョンを変更する場合は対応するライセンス・依存コードの表記も確認してください。
-
-**Pagefind の配布条件には確認が残っています。** 1.5.2 の検索用 WebAssembly が依存する `pagefind_microjson 0.1.4` には GPLv3 のライセンスと著作権表示があります。Pagefind 本体の MIT とは別の条件であり、表記を追加するだけでは GPL の再配布・対応するソースコードの提供に関する要件への対応は完了しません。サイト公開やアプリ同梱の前に確認が必要です。調査結果と収録範囲は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md#distribution-review-required-for-a-webassembly-dependency) に記録しています。テーマ本体のライセンスを変更するものではありません。
+検索に使う MiniSearch は [MIT ライセンス](LICENSES/MiniSearch-MIT.txt) です。変更していない公式の ES モジュールを `static/vendor/minisearch/7.2.0/` に、ライセンス原文・出典とともに収録しています。
 
 取得元のコミット、アイコンごとの URL・SHA-256・名前の対応は [manifest.json](icons/material-symbols/manifest.json)、加工内容と配布時の扱いは [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) に記録しています。`icomoon` という名前は既存の CSS とファイル名の互換性のために残しており、現在のフォント生成には FontTools を使用します。
 

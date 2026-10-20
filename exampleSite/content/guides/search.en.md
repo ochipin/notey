@@ -1,34 +1,31 @@
 ---
 draft: false
-title: "Search (Pagefind)"
+title: "Search"
 weight: 20
-description: "Generate a search index after building your site"
+description: "Full-text search that needs only a Hugo build"
 params:
   icon: "search"
 ---
 
 ## How it works
 
-Notey provides the search interface, while [Pagefind](https://pagefind.app/) generates the index. Pagefind also segments Japanese text for searching.
+Notey includes the search interface and [MiniSearch](https://github.com/lucaong/minisearch) 7.2.0, which runs the search. Hugo generates a search index for each language as JSON at build time, and the browser loads it the first time the search dialog opens. No external service is contacted.
+
+Text without spaces between words, such as Japanese, is indexed in two-character pieces, so you can search from the middle of a word.
 
 ## Build steps
 
 ```bash
 hugo --minify
-npx -y pagefind@1.5.2 --site public
 ```
 
-{{< info title="Add search to CI" >}}
-In GitHub Actions, add a step that runs `npx -y pagefind@1.5.2 --site public` after `hugo`.
+{{< info title="No extra step" >}}
+You do not need to run another command after the build. Search also works in the `hugo server` preview.
 {{< /info >}}
 
-## Choose what gets indexed
+## What gets indexed
 
-Only content within the area marked with `data-pagefind-body` is indexed. Add `data-pagefind-ignore` to any elements you want to exclude.
-
-```html
-<div data-pagefind-ignore>This content is excluded from search</div>
-```
+Article titles, headings, and body text are indexed. Results show the total number of matching articles and up to three matching headings per article.
 
 ## Keyboard shortcuts
 

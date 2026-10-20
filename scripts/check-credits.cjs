@@ -54,7 +54,7 @@ async function check(browser, language, prefix) {
   const creditsFile = path.join(output, decodeURIComponent(creditsPath.slice(prefix.length)));
   assert(fs.existsSync(creditsFile), 'The shared credits fragment is published');
   assert(!rawArticle.includes('class=credits-list') && !rawArticle.includes('class="credits-list"'), 'Article HTML omits the credits inventory');
-  for (const notice of ['/licenses/notey/LICENSE.txt', '/fonts/NOTICE.txt', '/vendor/mermaid/12.0.0/LICENSE', '/licenses/pagefind/dependencies/']) {
+  for (const notice of ['/licenses/notey/LICENSE.txt', '/fonts/NOTICE.txt', '/vendor/mermaid/12.0.0/LICENSE', '/vendor/minisearch/7.2.0/LICENSE']) {
     assert(!rawArticle.includes(notice), 'Article HTML does not embed license destinations: ' + notice);
   }
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
@@ -65,16 +65,6 @@ async function check(browser, language, prefix) {
     if (url.origin !== origin || !url.pathname.startsWith(prefix + '/')) {
       missing.push(url.href); return route.abort();
     }
-    if (url.pathname === prefix + '/pagefind/pagefind.js') return route.fulfill({ contentType: 'text/javascript', body: `
-      export async function options() {}
-      export async function init() {}
-      export async function debouncedSearch(query) {
-        const url = location.pathname;
-        return { results: [{ data: async () => ({ url, meta: { title: 'Matching article' },
-          excerpt: 'Search result for ' + query, sub_results: [{ title: 'Introduction',
-          url: url + '#introduction', excerpt: query, anchor: { element: 'h2' } }] }) }] };
-      }
-    ` });
     if (url.href === creditsURL) {
       creditsRequests.push(url.href);
       if (creditsInterceptor) return creditsInterceptor(route);
@@ -132,8 +122,9 @@ async function check(browser, language, prefix) {
     assert.equal(await dialog.count(), 1);
     assert.equal(await title.count(), 1);
     assert.equal(await dialog.getAttribute('aria-labelledby'), 'credits-title');
-    assert.equal(await dialog.getAttribute('data-pagefind-ignore'), '');
-    assert.equal(await page.locator('[data-pagefind-body] #credits-dialog').count(), 0, 'Credits are outside indexed article content');
+    const indexPath = new URL(await page.locator('#search-dialog').getAttribute('data-search-index'), origin).pathname;
+    const index = fs.readFileSync(path.join(output, decodeURIComponent(indexPath.slice(prefix.length))), 'utf8');
+    assert(index.includes('Credits article') && !index.includes('Material Symbols'), 'Credits are outside the search index');
     assert.equal(await footer.textContent(), language === 'ja' ? 'ライセンス・クレジット' : 'Licenses & credits');
     assert.equal(creditsRequests.length, 0, 'Page loading does not fetch credits');
     assert.equal(await content.locator('*').count(), 0, 'The initial dialog contains only an empty content placeholder');
@@ -142,7 +133,7 @@ async function check(browser, language, prefix) {
     assert.equal(creditsRequests.length, 1, 'The first open fetches the shared credits fragment once');
     const items = dialog.locator('details.credits-item');
     const names = await items.locator('.credits-name').allTextContents();
-    assert.deepEqual(names.map(name => name.trim()), ['Notey', 'Material Symbols Rounded', 'Mermaid', 'KaTeX', 'Pagefind']);
+    assert.deepEqual(names.map(name => name.trim()), ['Notey', 'Material Symbols Rounded', 'Mermaid', 'KaTeX', 'MiniSearch']);
     for (const selector of ['.credits-purpose', '.credits-license', '.credits-toggle']) {
       const labels = await items.locator(selector).allTextContents();
       assert.equal(labels.length, 5);
@@ -160,7 +151,7 @@ async function check(browser, language, prefix) {
       const file = path.join(output, decodeURIComponent(url.pathname.slice(prefix.length)));
       assert(fs.existsSync(file) && fs.statSync(file).isFile(), 'License links resolve to published files, not directories: ' + link.href);
     }
-    assert.equal(localLinks, 129, 'All license texts and dependency notice files remain individually linked');
+    assert.equal(localLinks, 99, 'All license texts and dependency notice files remain individually linked');
     assert.equal(links.length - localLinks, 5, 'Each component retains its upstream source link');
 
     const overview = await dialog.evaluate(el => {
@@ -214,14 +205,14 @@ async function check(browser, language, prefix) {
     }
     await closeCredits('Escape', footer, false);
     await page.locator('.hdr-search [data-search-open]').click();
-    await input.fill('needle');
+    await input.fill('introduction');
     await page.waitForFunction(() => document.querySelectorAll('#search-results > .sdlg-result').length === 1);
     const results = await page.locator('#search-results').innerHTML();
     for (const method of ['Escape', 'button', 'backdrop']) {
       await openCredits(searchCredit);
       await shortcutsStayInCredits(true);
       await closeCredits(method, searchCredit, true);
-      assert.equal(await input.inputValue(), 'needle');
+      assert.equal(await input.inputValue(), 'introduction');
       assert.equal(await page.locator('#search-results').innerHTML(), results, 'Credits preserve search results and heading links');
     }
 

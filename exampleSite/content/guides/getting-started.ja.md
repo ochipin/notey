@@ -11,7 +11,6 @@ params:
 
 - Hugo v0.166.0 以上（extended 不要）
 - Git（更新日時の表示に使用）
-- Node.js（Pagefind の実行に使用）
 
 ## インストール
 

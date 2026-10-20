@@ -59,6 +59,5 @@ The theme includes Mermaid 12.0.0. It loads locally only on pages with diagrams,
 flowchart LR
   A[content/*.md] --> B(hugo)
   B --> C[public/]
-  C --> D(pagefind)
-  D --> E[Search index]
+  B --> D[Search index]
 ```

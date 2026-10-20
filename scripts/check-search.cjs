@@ -26,18 +26,45 @@ for (const language of ['ja', 'en']) {
 }
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.woff': 'font/woff', '.woff2': 'font/woff2', '.png': 'image/png', '.json': 'application/json', '.wasm': 'application/wasm' };
 
+// A generated index replaces Hugo's for predictable counts, ordering and races;
+// the real MiniSearch module still runs. Shape: layouts/_partials/search-index.html.
+function mockIndex(language) {
+  const pages = [], docs = [];
+  const add = (title, sections, intro) => {
+    const p = pages.length;
+    pages.push({ u: prefix + '/' + language + '/article/?article=' + p, t: title, c: 'Docs / Search' });
+    docs.push({ p, a: '', h: title, x: intro || '' });
+    for (const [a, h, x] of sections) docs.push({ p, a, h, x });
+  };
+  const sections = word => [
+    ['install', 'Install <literal>', word + ' install'],
+    ['install', 'Install duplicate', word + ' duplicate anchor'],
+    ['upgrade', 'Upgrade', word + ' upgrade'],
+    ['troubleshooting', 'Troubleshooting', word + ' troubleshoot'],
+    ['extra', 'Extra', word + ' fourth heading']
+  ];
+  for (let i = 0; i < 13; i++) add('normal article ' + i, sections('normal keys'), 'Article excerpt normal keys ' + i);
+  add('plainmatch article', [], 'Only the page text matches plainmatch.');
+  for (let i = 0; i < 6; i++) add('fresh article ' + i, sections('fresh'), 'Article excerpt fresh ' + i);
+  return JSON.stringify({ v: 1, pages, docs });
+}
+
 async function contextFor(browser, mock) {
   const context = await browser.newContext({ viewport: { width: 1200, height: 950 } });
   const errors = [], missing = [];
-  await context.addInitScript(() => {
-    window.__searchTest = { queries: {}, calls: [], rows: [], pending: [], completed: [], release: {}, clicks: [] };
-  });
-  await context.route('**/*', route => {
+  const control = { hold: null, fail: 0, requests: 0 };
+  await context.addInitScript(() => { window.__searchTest = { clicks: [] }; });
+  await context.route('**/*', async route => {
     const url = new URL(route.request().url());
     if (url.origin !== origin || !url.pathname.startsWith(prefix + '/')) {
       missing.push(url.href); return route.abort();
     }
-    if (mock && url.pathname === prefix + '/pagefind/pagefind.js') return route.fulfill({ path: path.join(fixture, 'mock-pagefind.js'), contentType: 'text/javascript' });
+    if (mock && /\/search\/(ja|en)\.[0-9a-f]+\.json$/.test(url.pathname)) {
+      control.requests++;
+      if (control.fail) { control.fail--; return route.fulfill({ status: 500, body: 'error' }); }
+      if (control.hold) await control.hold;
+      return route.fulfill({ body: mockIndex(url.pathname.match(/\/search\/(ja|en)\./)[1]), contentType: 'application/json' });
+    }
     let file = path.join(output, decodeURIComponent(url.pathname.slice(prefix.length)));
     if (url.pathname.endsWith('/')) file = path.join(file, 'index.html');
     if (!fs.existsSync(file)) { missing.push(url.href); return route.abort(); }
@@ -45,95 +72,96 @@ async function contextFor(browser, mock) {
   });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
-  return { context, page, errors, missing };
+  return { context, page, errors, missing, control };
 }
 
 async function mockChecks(browser, language) {
-  const { context, page, errors, missing } = await contextFor(browser, true);
+  const { context, page, errors, missing, control } = await contextFor(browser, true);
   try {
+    // Opening the dialog starts the download. If it and the search's own
+    // attempt fail, a message is shown, and the next search tries again.
+    control.fail = 2;
+    let releaseIndex;
     await page.goto(origin + prefix + '/' + language + '/');
     const input = page.locator('#search-input');
     const more = page.locator('#search-more');
     const summary = page.locator('#search-summary');
+    const status = page.locator('#search-status');
     const articles = page.locator('#search-results > .sdlg-result');
     const open = async () => {
       await page.locator('.hdr-search [data-search-open]').click();
       await page.waitForFunction(() => document.activeElement === document.querySelector('#search-input'));
     };
     const rows = count => page.waitForFunction(count => document.querySelectorAll('#search-results > .sdlg-result').length === count, count);
-    const settings = (query, value) => page.evaluate(({ query, value }) => { window.__searchTest.queries[query] = value; }, { query, value });
-    const pending = key => page.waitForFunction(key => window.__searchTest.pending.includes(key), key);
-    const release = async key => {
-      await page.evaluate(key => { window.__searchTest.release[key](); }, key);
-      await page.waitForFunction(key => window.__searchTest.completed.includes(key), key);
-      await page.evaluate(() => new Promise(requestAnimationFrame));
-    };
-    const releaseRows = async query => {
-      await page.evaluate(query => {
-        for (const [key, resolve] of Object.entries(window.__searchTest.release)) if (key.startsWith(query + ':row:')) resolve();
-      }, query);
-      await page.waitForFunction(query => window.__searchTest.pending.filter(key => key.startsWith(query + ':row:')).every(key => window.__searchTest.completed.includes(key)), query);
-      await page.evaluate(() => new Promise(requestAnimationFrame));
-    };
     const titles = () => page.locator('.sdlg-hit-title').allTextContents();
-    const expected = (query, count) => Array.from({ length: count }, (_, i) => query + ' article ' + i);
+    const expected = (word, count) => Array.from({ length: count }, (_, i) => word + ' article ' + i);
+    const articleURL = i => prefix + '/' + language + '/article/?article=' + i;
 
     await open();
-    await settings('normal', { holdRowsFrom: 6 });
-    await input.fill('normal'); await rows(6);
+    await input.fill('normal');
+    await page.waitForFunction(text => document.querySelector('#search-status').textContent === text, await page.evaluate(() => document.documentElement.lang.startsWith('ja')) ? '検索インデックスを読み込めませんでした。ページを再読み込みしてください。' : 'Could not load the search index. Please reload the page.');
+    await input.fill('normal '); await rows(6);
+    assert.equal(control.requests, 3, 'A failed index download is retried by the next search');
+
     assert.equal(await summary.isVisible(), true);
     assert.match(await summary.textContent(), /13/);
-    assert.deepEqual(await titles(), expected('normal', 6));
+    assert((await titles()).every(title => /^normal article \d+$/.test(title)));
     for (let i = 0; i < 6; i++) {
       const article = articles.nth(i);
-      const url = prefix + '/' + language + '/article/?query=normal&article=' + i;
-      assert.equal(await article.locator('a.sdlg-hit').getAttribute('href'), url, 'Article links open the article, not its first heading');
+      const url = await article.locator('a.sdlg-hit').getAttribute('href');
+      assert.match(url, new RegExp('^' + prefix + '/' + language + '/article/\\?article=\\d+$'), 'Article links open the article, not its first heading');
       assert.equal(await article.locator('a.sdlg-hit').getAttribute('data-search-hit'), '');
-      assert.deepEqual(await article.locator('a.sdlg-subhit').evaluateAll(links => links.map(link => link.getAttribute('href'))), ['install', 'upgrade', 'troubleshooting'].map(anchor => url + '#' + anchor));
+      const subs = await article.locator('a.sdlg-subhit').evaluateAll(links => links.map(link => link.getAttribute('href')));
+      assert.equal(subs.length, 3, 'At most three headings per article');
+      assert.equal(new Set(subs).size, 3, 'Duplicate anchors are shown once');
+      for (const sub of subs) assert(['install', 'upgrade', 'troubleshooting', 'extra'].map(anchor => url + '#' + anchor).includes(sub), sub);
       assert.equal(await article.locator('[data-search-hit]').count(), 4);
-      assert.equal(await article.locator('a.sdlg-subhit em').count(), 0, 'Heading titles must be escaped');
-      assert.match(await article.locator('a.sdlg-subhit').first().textContent(), /Install <literal>/);
-      assert(!/Page-level result|Install duplicate|Empty anchor|Fourth heading/.test(await article.textContent()));
+      assert.equal(await article.locator('a.sdlg-subhit em, a.sdlg-subhit literal').count(), 0, 'Heading titles must be escaped');
+      if (subs.some(sub => sub.endsWith('#install'))) assert.match((await article.locator('a.sdlg-subhit').allTextContents()).join(' '), /Install (<literal>|duplicate)/);
+      assert.equal(await article.locator('a.sdlg-hit mark').first().textContent(), 'normal', 'Matches are marked in the excerpt');
     }
-    // A second click while rows are pending must not request the same batch twice.
-    await more.evaluate(button => { button.click(); button.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
-    await pending('normal:row:6'); assert.equal(await more.isDisabled(), true);
-    await releaseRows('normal'); await rows(12);
+    await more.click(); await rows(12);
     assert.match(await summary.textContent(), /13/, 'Total counts articles across all batches');
-    await more.click(); await pending('normal:row:12'); await releaseRows('normal'); await rows(13);
+    await more.click(); await rows(13);
     assert.equal(await more.isHidden(), true);
-    assert.deepEqual(await titles(), expected('normal', 13));
-    const fetched = await page.evaluate(() => window.__searchTest.rows.filter(key => key.startsWith('normal:')));
-    assert.equal(fetched.length, 13); assert.equal(new Set(fetched).size, 13);
+    assert.deepEqual((await titles()).sort(), expected('normal', 13).sort());
 
-    await settings('plainmatch', { count: 1, noHeadings: true }); await input.fill('plainmatch'); await rows(1);
+    await input.fill('plainmatch'); await rows(1);
     assert.equal(await articles.first().locator('a.sdlg-hit').isVisible(), true);
     assert.equal(await articles.first().locator('a.sdlg-subhit').count(), 0);
     assert.match(await summary.textContent(), language === 'en' ? /1 article found/ : /1/);
     assert.equal(await more.isHidden(), true);
 
-    await settings('empty', { count: 0 }); await input.fill('empty');
-    await page.waitForFunction(() => window.__searchTest.calls.includes('empty') && !document.querySelector('#search-status').hidden && !document.querySelector('#search-results').children.length);
+    await input.fill('absentword');
+    await page.waitForFunction(() => !document.querySelector('#search-status').hidden && !document.querySelector('#search-results').children.length && !document.querySelector('#search-summary').hidden);
     assert.equal(await more.isHidden(), true);
-    assert.equal(await summary.isVisible(), true);
     assert.match(await summary.textContent(), /0/);
     assert(!/13/.test(await summary.textContent()), 'Zero results must not retain the previous count');
-    assert.match(await page.locator('#search-status').textContent(), language === 'ja' ? /見つかりません|ありません/ : /No results/);
+    assert.match(await status.textContent(), language === 'ja' ? /見つかりません|ありません/ : /No results/);
 
-    await settings('heldsearch', { holdSearch: true }); await input.fill('heldsearch'); await pending('heldsearch:search');
-    await input.fill('fresh'); await rows(6); await release('heldsearch:search');
-    assert.deepEqual(await titles(), expected('fresh', 6), 'Stale API response must not replace the new query');
-
-    await settings('heldbatch', { holdRowsFrom: 6 }); await input.fill('heldbatch'); await rows(6); await more.click(); await pending('heldbatch:row:6');
-    await input.fill('newbatch'); await rows(6); await releaseRows('heldbatch');
-    assert.deepEqual(await titles(), expected('newbatch', 6), 'Stale load-more results must not append to the new query');
-
-    await settings('clear', { holdRowsFrom: 0 }); await input.fill('clear'); await pending('clear:row:0'); await input.fill(''); await releaseRows('clear');
+    await input.fill(''); 
     assert.equal(await articles.count(), 0); assert.equal(await more.isHidden(), true); assert.equal(await summary.isHidden(), true);
+    await input.press('Escape');
 
-    await settings('closing', { holdRowsFrom: 0 }); await input.fill('closing'); await pending('closing:row:0'); await input.press('Escape');
+    // While the index downloads, a newer query replaces an older one, and
+    // closing the dialog discards the pending search.
+    await page.reload();
+    control.hold = new Promise(resolve => { releaseIndex = resolve; });
+    await open();
+    await input.fill('normal'); await input.fill('fresh');
+    await page.waitForTimeout(200);
+    releaseIndex(); control.hold = null;
+    await rows(6);
+    assert.deepEqual((await titles()).sort(), expected('fresh', 6).sort(), 'A stale query must not replace the new one');
+    assert.equal(await more.isHidden(), true);
+    await input.press('Escape');
+
+    await page.reload();
+    control.hold = new Promise(resolve => { releaseIndex = resolve; });
+    await open(); await input.fill('normal'); await page.waitForTimeout(200); await input.press('Escape');
     assert.equal(await page.locator('#search-dialog').evaluate(el => el.open), false);
-    await releaseRows('closing'); await open();
+    releaseIndex(); control.hold = null;
+    await page.waitForTimeout(200); await open();
     assert.equal(await input.inputValue(), ''); assert.equal(await articles.count(), 0); assert.equal(await summary.isHidden(), true);
 
     await input.fill('keys'); await rows(6);
@@ -145,31 +173,31 @@ async function mockChecks(browser, language) {
       const link = event.target.closest('a[data-search-hit]');
       if (link) { event.preventDefault(); event.stopImmediatePropagation(); window.__searchTest.clicks.push(link.getAttribute('href')); }
     }, true));
+    const first = articles.first();
+    const firstURL = await first.locator('a.sdlg-hit').getAttribute('href');
+    const [subURL, nextURL] = await first.locator('a.sdlg-subhit').evaluateAll(links => links.slice(0, 2).map(link => link.getAttribute('href')));
     await input.press('ArrowDown'); await input.press('ArrowDown');
-    const subURL = prefix + '/' + language + '/article/?query=keys&article=0#install';
     assert.equal(await page.locator('[data-search-hit].is-active').getAttribute('href'), subURL);
     await input.press('Enter');
     assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), subURL, 'Arrow selection + Enter opens a heading');
     await input.press('ArrowUp'); await input.press('Enter');
-    const articleURL = prefix + '/' + language + '/article/?query=keys&article=0';
-    assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), articleURL, 'Arrow selection + Enter opens an article');
+    assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), firstURL, 'Arrow selection + Enter opens an article');
 
-    await articles.first().locator('a.sdlg-hit').focus(); await page.keyboard.press('Tab');
+    await first.locator('a.sdlg-hit').focus(); await page.keyboard.press('Tab');
     assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), subURL, 'Tab reaches the heading link');
     await page.keyboard.press('Enter');
     assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), subURL, 'Native Enter follows the focused link despite a different arrow selection');
     await page.keyboard.press('ArrowDown');
-    const upgradeURL = prefix + '/' + language + '/article/?query=keys&article=0#upgrade';
-    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), upgradeURL, 'Arrow navigation also moves focus when a result link has focus');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), nextURL, 'Arrow navigation also moves focus when a result link has focus');
     await page.keyboard.press('Enter');
-    assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), upgradeURL);
+    assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), nextURL);
     await page.keyboard.press('ArrowUp');
     await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Enter');
-    assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), articleURL, 'Native Enter follows the focused article link');
+    assert.equal(await page.evaluate(() => window.__searchTest.clicks.at(-1)), firstURL, 'Native Enter follows the focused article link');
     await input.focus(); await input.press('Escape');
     assert.equal(await page.locator('#search-dialog').evaluate(el => el.open), false);
     assert.deepEqual(errors, []); assert.deepEqual(missing, []);
-    console.log(language + ': mock counts, headings, paging, stale responses, clear/Escape and keyboard PASS');
+    console.log(language + ': mock counts, headings, paging, retry, stale searches, clear/Escape and keyboard PASS');
   } finally { await context.close(); }
 }
 
@@ -184,7 +212,7 @@ async function realChecks(browser, language) {
     const article = page.locator('.sdlg-result').filter({ has: page.locator('a.sdlg-hit[href="' + prefix + '/' + language + '/article/"]') });
     assert.equal(await article.count(), 1);
     const links = await article.locator('a.sdlg-subhit').evaluateAll(els => els.map(el => el.getAttribute('href')));
-    assert.equal(links.length, 3, 'Real Pagefind yields matching heading links, limited to three');
+    assert.equal(links.length, 3, 'The real index yields matching heading links, limited to three');
     for (const href of links) {
       const url = new URL(href, origin);
       const file = path.join(output, url.pathname.slice(prefix.length), 'index.html');
@@ -239,14 +267,21 @@ async function realChecks(browser, language) {
     await page.locator('a.sdlg-subhit').click();
     await page.waitForFunction(() => !document.querySelector('#search-dialog').open);
     await checkRevealed();
+    // Japanese text is found from the middle of a word and by one character.
+    for (const query of ['れた見', '隠']) {
+      await page.locator('.hdr-search [data-search-open]').click();
+      await page.locator('#search-input').fill(query);
+      await page.waitForFunction(() => document.querySelectorAll('a.sdlg-subhit').length === 1);
+      assert.equal(await page.locator('a.sdlg-subhit .sdlg-subhit-title').textContent(), '隠れた見出し', query);
+      await page.locator('#search-input').press('Escape');
+    }
     assert.deepEqual(errors, []); assert.deepEqual(missing, []);
-    console.log(language + ': real Pagefind article count and heading navigation PASS');
+    console.log(language + ': real index article count, heading navigation and Japanese PASS');
   } finally { await context.close(); }
 }
 
 (async () => {
   execFileSync(process.env.NOTEY_HUGO || 'hugo', ['--source', work, '--cacheDir', path.join(work, 'cache'), '--minify', '--panicOnWarning'], { stdio: 'inherit' });
-  execFileSync(process.env.NOTEY_PAGEFIND || 'pagefind', ['--site', output], { stdio: 'inherit' });
   const browser = await chromium.launch({ ...(process.env.NOTEY_BROWSER ? { executablePath: process.env.NOTEY_BROWSER } : {}), headless: true });
   try {
     for (const language of ['ja', 'en']) { await mockChecks(browser, language); await realChecks(browser, language); }

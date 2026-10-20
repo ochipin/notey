@@ -63,6 +63,14 @@ def main() -> None:
                 require((root / component['noticeFile']).is_file(), f'Missing ELK dependency notice: {component["name"]}')
             require((root / 'LICENSES/EPL-1.0.txt').is_file() and (root / 'LICENSES/EPL-2.0.md').is_file(), 'Missing Eclipse license texts')
             print(f'Mermaid: {len(modules)} modules, {len(provenance["npmPackages"])} npm license records, {len(provenance["elkCompiledLibraries"])} compiled-library source records')
+        elif manifest['name'] == 'minisearch':
+            source = (root / 'minisearch.js').read_text()
+            require(not re.search(r'(?:^|\n)\s*import\s', source), 'MiniSearch must be a self-contained ES module')
+            require('export { MiniSearch as default }' in source, 'Unexpected MiniSearch module export')
+            package = provenance['npmPackages'][0]
+            require(package['name'] == 'minisearch' and package['license'] == 'MIT' and package['sha256'] and package['integrity'], 'Incomplete MiniSearch provenance')
+            require('Permission is hereby granted' in (root / 'LICENSE').read_text(), 'Missing MiniSearch MIT license')
+            print('MiniSearch: self-contained ES module, MIT license')
         elif manifest['name'] == 'katex':
             css = (root / 'katex.min.css').read_text()
             urls = re.findall(r'url\([\"\']?([^\)\"\']+)[\"\']?\)', css)

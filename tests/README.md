@@ -30,12 +30,12 @@ while subsequent diagrams still render.
 The temporary site is deleted after the check. The vendor check is offline
 and verifies provenance records, licenses, resource references and checksums.
 
-The search check also requires the Pagefind CLI (`pagefind` on PATH, or
-`NOTEY_PAGEFIND` set to its executable). It builds a temporary multilingual
-site and a real search index, then checks article counts, up to three matching
-heading links per article, pagination, keyboard navigation, stale searches,
-and heading navigation into tabs and collapsed details. Search requests are
-also mocked to exercise asynchronous updates and empty results predictably.
+The search check builds a temporary multilingual site with Hugo's search
+index, then checks article counts, up to three matching heading links per
+article, pagination, keyboard navigation, stale searches, Japanese searches
+from the middle of a word, and heading navigation into tabs and collapsed
+details. The index download is also replaced with a generated index, delayed
+or failed, to check retries, stale queries and empty results predictably.
 
 The navigation check builds a multilingual site with many categories and a long
 site title. It checks header overflow, mouse-wheel and keyboard navigation,

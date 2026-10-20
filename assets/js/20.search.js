@@ -1,4 +1,6 @@
-/* Notey search — Pagefind */
+/* Notey search — MiniSearch (MIT, static/vendor/minisearch). Hugo builds the
+   index JSON (layouts/_partials/search-index.html); the browser downloads it on
+   the first search and indexes it locally, so no post-build step is needed. */
 (function () {
   "use strict";
   var doc = document;
@@ -20,24 +22,119 @@
     count: "{{ i18n "ui.search_count" (dict "Count" 2) }}",
     countOne: "{{ i18n "ui.search_count" (dict "Count" 1) }}"
   };
-  var BASE = "{{ "pagefind/pagefind.js" | relURL }}";
+  var INDEX = dlg.getAttribute("data-search-index");
+  var LIB = dlg.getAttribute("data-search-lib");
   var LANG = doc.documentElement.lang || "";
 
-  var pf = null, loading = null, results = [], shown = 0, PAGE = 6, timer = 0;
+  var engine = null, loading = null, results = [], shown = 0, PAGE = 6, timer = 0;
   var focusTimer = 0, searchVersion = 0;
-  var pendingBatch = null;
+
+  // Japanese and other CJK text has no spaces between words. Runs of CJK
+  // characters are indexed as overlapping two-character terms; other text is
+  // split into words. A one-character CJK query matches as a prefix.
+  var CJK = /[\u3005\u3006\u30fc\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f\uac00-\ud7af]/;
+  function norm(s) { return String(s == null ? "" : s).normalize("NFKC").toLowerCase(); }
+  function terms(s) {
+    var out = [];
+    (norm(s).match(/[\p{L}\p{N}_]+/gu) || []).forEach(function (word) {
+      var run = "", latin = "";
+      function flushRun() {
+        if (run.length === 1) out.push(run);
+        for (var i = 0; i + 1 < run.length; i++) out.push(run.substr(i, 2));
+        run = "";
+      }
+      function flushLatin() { if (latin) out.push(latin); latin = ""; }
+      Array.from(word).forEach(function (ch) {
+        if (CJK.test(ch)) { flushLatin(); run += ch; } else { flushRun(); latin += ch; }
+      });
+      flushRun();
+      flushLatin();
+    });
+    return out;
+  }
+  function same(t) { return t; }
 
   function load() {
-    if (pf) return Promise.resolve(pf);
+    if (engine) return Promise.resolve(engine);
     if (loading) return loading;
-    loading = import(BASE)
-      .then(function (m) {
-        return Promise.resolve(m.options({ language: LANG }))
-          .then(function () { return m.init(); })
-          .then(function () { pf = m; return pf; });
+    loading = Promise.all([
+      import(LIB),
+      fetch(INDEX, { credentials: "same-origin" }).then(function (r) {
+        if (!r.ok) throw new Error("index " + r.status);
+        return r.json();
       })
-      .catch(function () { loading = null; return null; });
+    ]).then(function (v) {
+      var MiniSearch = v[0].default, data = v[1];
+      data.docs.forEach(function (d, i) { d.i = i; });
+      var ms = new MiniSearch({
+        idField: "i",
+        fields: ["h", "x"],
+        tokenize: terms,
+        processTerm: same,
+        searchOptions: {
+          tokenize: terms,
+          processTerm: same,
+          boost: { h: 3 },
+          combineWith: "AND",
+          prefix: function (term) { return !CJK.test(term) || term.length === 1; }
+        }
+      });
+      return ms.addAllAsync(data.docs, { chunkSize: 500 }).then(function () {
+        engine = { ms: ms, pages: data.pages, docs: data.docs };
+        return engine;
+      });
+    }).catch(function () { loading = null; return null; });
     return loading;
+  }
+
+  // Groups matching documents by page: the page score is its best section's
+  // score plus a little for each further match, and headings are sub-results.
+  function query(api, q) {
+    var byPage = new Map();
+    api.ms.search(q).forEach(function (hit) {
+      var d = api.docs[hit.id];
+      var g = byPage.get(d.p);
+      if (!g) { g = { p: d.p, score: 0, best: null, subs: [] }; byPage.set(d.p, g); }
+      if (!g.best || hit.score > g.best.score) g.best = { doc: d, score: hit.score };
+      g.score = Math.max(g.score, hit.score) + hit.score * 0.1;
+      if (d.a) g.subs.push({ doc: d, score: hit.score });
+    });
+    return Array.from(byPage.values()).sort(function (a, b) { return b.score - a.score; });
+  }
+
+  // A short excerpt around the first match, with matches marked.
+  function excerpt(text, q) {
+    text = String(text || "");
+    var words = norm(q).split(/\s+/).filter(Boolean).sort(function (a, b) { return b.length - a.length; });
+    if (!words.length) return esc(text.slice(0, 120));
+    var pattern = new RegExp(words.map(function (w) {
+      return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }).join("|"), "gi");
+    var first = text.search(pattern);
+    var start = Math.max(0, first - 30);
+    var cut = text.slice(start, start + 120);
+    var html = "", last = 0;
+    cut.replace(pattern, function (m, at) {
+      html += esc(cut.slice(last, at)) + "<mark>" + esc(m) + "</mark>";
+      last = at + m.length;
+      return m;
+    });
+    html += esc(cut.slice(last));
+    return (start > 0 ? "…" : "") + html + (start + 120 < text.length ? "…" : "");
+  }
+
+  function toHit(api, g, q) {
+    var page = api.pages[g.p];
+    var seen = new Set();
+    var subs = g.subs.sort(function (a, b) { return b.score - a.score; }).filter(function (s) {
+      if (seen.has(s.doc.a)) return false;
+      seen.add(s.doc.a);
+      return true;
+    }).slice(0, 3).map(function (s) {
+      return { url: page.u + "#" + encodeURIComponent(s.doc.a), title: s.doc.h, excerpt: excerpt(s.doc.x, q) };
+    });
+    var best = g.best.doc;
+    return { url: page.u, title: page.t, crumb: page.c, excerpt: excerpt(best.x || best.h, q), subs: subs };
   }
 
   function open() {
@@ -71,32 +168,12 @@
     });
   }
 
-  function crumb(hit) {
-    var parts = (hit.meta && hit.meta.crumb) || "";
-    if (parts) return esc(parts);
-    var p = (hit.url || "").replace(/^\/|\/$/g, "").split("/");
-    p.pop();
-    return esc(p.join(" / "));
-  }
-
-  function headings(hit) {
-    var seen = new Set();
-    return (hit.sub_results || []).filter(function (sub) {
-      // Pagefind also returns a page-level result before the first heading.
-      if (!sub.anchor || !sub.url || !sub.title || !/^h[1-6]$/i.test(sub.anchor.element)) return false;
-      var hash = sub.url.indexOf("#");
-      if (hash < 0 || hash === sub.url.length - 1 || seen.has(sub.url)) return false;
-      seen.add(sub.url);
-      return true;
-    }).slice(0, 3);
-  }
-
   function resultHTML(hit) {
-    var sections = headings(hit);
+    var sections = hit.subs;
     var html =
       '<a class="sdlg-hit" data-search-hit href="' + esc(hit.url) + '">' +
-      '<span class="sdlg-hit-crumb">' + crumb(hit) + "</span>" +
-      '<span class="sdlg-hit-title">' + esc((hit.meta && hit.meta.title) || hit.url) + "</span>" +
+      '<span class="sdlg-hit-crumb">' + esc(hit.crumb) + "</span>" +
+      '<span class="sdlg-hit-title">' + esc(hit.title || hit.url) + "</span>" +
       '<span class="sdlg-hit-excerpt">' + (hit.excerpt || "") + "</span></a>";
     if (sections.length) {
       html += '<ul class="sdlg-subresults">';
@@ -111,52 +188,29 @@
   }
 
   function render(reset) {
-    if (!dlg.open || pendingBatch) return;
-    var version = searchVersion;
+    if (!dlg.open) return;
     if (reset) { list.innerHTML = ""; shown = 0; }
     var slice = results.slice(shown, shown + PAGE);
-    if (!slice.length) { more.hidden = true; return; }
-    var batch = { start: shown };
-    pendingBatch = batch;
-    more.disabled = true;
-    function current() { return dlg.open && version === searchVersion && pendingBatch === batch; }
-    Promise.all(slice.map(function (r) {
-      return Promise.resolve().then(function () { return r.data(); });
-    })).then(function (rows) {
-      if (!current()) return;
-      var fragment = doc.createDocumentFragment();
-      rows.forEach(function (d) {
-        var li = doc.createElement("li");
-        li.className = "sdlg-result";
-        li.innerHTML = resultHTML(d);
-        fragment.appendChild(li);
-      });
-      list.appendChild(fragment);
-      shown = batch.start + slice.length;
-      status.hidden = true;
-      more.hidden = shown >= results.length;
-    }).catch(function () {
-      if (!current()) return;
-      status.hidden = false;
-      status.textContent = T.failed;
-      // Keep the same offset so a retry cannot skip any failed results.
-      more.hidden = false;
-    }).finally(function () {
-      if (pendingBatch !== batch) return;
-      pendingBatch = null;
-      more.disabled = false;
+    var fragment = doc.createDocumentFragment();
+    slice.forEach(function (hit) {
+      var li = doc.createElement("li");
+      li.className = "sdlg-result";
+      li.innerHTML = resultHTML(hit);
+      fragment.appendChild(li);
     });
+    list.appendChild(fragment);
+    shown += slice.length;
+    status.hidden = true;
+    more.hidden = shown >= results.length;
   }
 
   function resetResults() {
-    pendingBatch = null;
     results = [];
     shown = 0;
     list.innerHTML = "";
     summary.hidden = true;
     summary.textContent = "";
     more.hidden = true;
-    more.disabled = false;
   }
 
   function run(q) {
@@ -167,16 +221,13 @@
     load().then(function (api) {
       if (!dlg.open || version !== searchVersion) return;
       if (!api) { status.textContent = T.missing; return; }
-      return api.debouncedSearch(q, {}, 120).then(function (res) {
-        if (!res || !dlg.open || version !== searchVersion) return;
-        results = res.results;
-        summary.textContent = (results.length === 1 ? T.countOne : T.count)
-          .replace("{count}", results.length.toLocaleString(LANG || undefined));
-        summary.hidden = false;
-        if (!results.length) { list.innerHTML = ""; status.textContent = T.empty; more.hidden = true; return; }
-        status.hidden = true;
-        render(true);
-      });
+      results = query(api, q).map(function (g) { return toHit(api, g, q); });
+      summary.textContent = (results.length === 1 ? T.countOne : T.count)
+        .replace("{count}", results.length.toLocaleString(LANG || undefined));
+      summary.hidden = false;
+      if (!results.length) { list.innerHTML = ""; status.textContent = T.empty; more.hidden = true; return; }
+      status.hidden = true;
+      render(true);
     }).catch(function () {
       if (!dlg.open || version !== searchVersion) return;
       status.hidden = false;

@@ -1,0 +1,49 @@
+{{- /*
+Builds the MiniSearch index for the current language and returns its URL.
+Call with partialCached "search-index.html" . site.Language.Lang so the index
+is built once per language. No post-build step (and no Node.js) is needed:
+the browser downloads this JSON on the first search and indexes it locally.
+
+Each page contributes one document for the text before its first heading and
+one document per heading, so results can list up to three matching headings.
+Page bodies come from render-content.html, which finalizes heading IDs.
+Button labels (such as the code block's "Copy") are left out.
+
+JSON (keys are short to keep the file small):
+  {"v":1,"pages":[{"u":URL,"t":title,"c":breadcrumb}],
+   "docs":[{"p":page index,"a":anchor or "","h":heading or page title,"x":text}]}
+*/ -}}
+{{- $pages := slice -}}
+{{- $docs := slice -}}
+{{- $marker := "@@NOTEYSEC@@" -}}
+{{- range where site.Pages "Kind" "in" (slice "home" "section" "page") -}}
+  {{- if not .RelPermalink -}}{{- continue -}}{{- end -}}
+  {{- $crumb := slice -}}
+  {{- range .Ancestors.Reverse -}}
+    {{- if and .Title (not .IsHome) -}}{{- $crumb = $crumb | append .LinkTitle -}}{{- end -}}
+  {{- end -}}
+  {{- $p := len $pages -}}
+  {{- $pages = $pages | append (dict "u" .RelPermalink "t" (.Title | plainify) "c" (delimit $crumb " / ")) -}}
+  {{- $html := printf "%s" (partial "render-content.html" .) -}}
+  {{- /* Button labels (such as "Copy" on code blocks) are not content. */ -}}
+  {{- $html = replaceRE `<button\b[\s\S]*?</button>` " " $html -}}
+  {{- /* Mark every content heading that has an ID, then split on the marks. */ -}}
+  {{- $html = replaceRE `(<h[1-6]\b[^>]*\bid="([^"]*)"[^>]*>)` (printf "%s$2%s$1" $marker "@@ID@@") $html -}}
+  {{- $chunks := split $html $marker -}}
+  {{- $intro := index $chunks 0 | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+  {{- $docs = $docs | append (dict "p" $p "a" "" "h" (.Title | plainify) "x" $intro) -}}
+  {{- range after 1 $chunks -}}
+    {{- $parts := split . "@@ID@@" -}}
+    {{- $anchor := index $parts 0 | htmlUnescape -}}
+    {{- $rest := delimit (after 1 $parts) "@@ID@@" -}}
+    {{- $head := index (findRE `^[\s\S]*?</h[1-6]>` $rest 1) 0 | default "" -}}
+    {{- $title := $head | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+    {{- $text := strings.TrimPrefix $head $rest | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+    {{- if $title -}}
+      {{- $docs = $docs | append (dict "p" $p "a" $anchor "h" $title "x" $text) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $json := dict "v" 1 "pages" $pages "docs" $docs | jsonify -}}
+{{- $res := resources.FromString (printf "search/%s.json" site.Language.Lang) $json | fingerprint -}}
+{{- return $res.RelPermalink -}}

@@ -11,7 +11,6 @@ params:
 
 - Hugo v0.166.0 or later (the extended edition is not required)
 - Git (used to display the last updated date)
-- Node.js (used to run Pagefind)
 
 ## Installation
 
