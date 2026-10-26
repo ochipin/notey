@@ -25,6 +25,14 @@ Highlight anything that needs extra care.
 Warn about actions that cannot be undone.
 {{< /danger >}}
 
+GitHub-style alerts written as Markdown blockquotes (`> [!NOTE]` `> [!TIP]` `> [!IMPORTANT]` `> [!WARNING]` `> [!CAUTION]`) render in the same boxes. Text after `[!NOTE]` on the same line becomes the title.
+
+> [!WARNING]
+> A blockquote alert renders as a warning box.
+
+> [!TIP] Custom title
+> The text after `[!TIP]` is used as the title.
+
 ## Tabs
 
 {{< tab title="macOS" active="true" >}}

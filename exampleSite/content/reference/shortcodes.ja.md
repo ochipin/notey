@@ -25,6 +25,14 @@ params:
 取り返しがつかない操作の警告を書きます。
 {{< /danger >}}
 
+Markdown の引用で書く GitHub 式のアラート（`> [!NOTE]` `> [!TIP]` `> [!IMPORTANT]` `> [!WARNING]` `> [!CAUTION]`）も、同じ箱で表示します。`[!NOTE]` の続きに書いた文字は見出しになります。
+
+> [!WARNING]
+> 引用の書き方でも、注意の箱になります。
+
+> [!TIP] 見出しを変える
+> `[!TIP]` の後ろに書いた文字が見出しです。
+
 ## タブ
 
 {{< tab title="macOS" active="true" >}}

@@ -46,6 +46,7 @@ ui:
   tip: "ヒント"
   warning: "注意"
   danger: "危険"
+  important: "重要"
   skip_to_content: "本文へスキップ"
   built_with: "Built with Hugo + Notey"
 error:

@@ -48,6 +48,7 @@ ui:
   tip: "Tip"
   warning: "Warning"
   danger: "Danger"
+  important: "Important"
   skip_to_content: "Skip to content"
   built_with: "Built with Hugo + Notey"
 error:

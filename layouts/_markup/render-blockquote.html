@@ -1,0 +1,27 @@
+{{- /*
+GitHub 式のアラート（> [!NOTE] など）を、ショートコードの info / tips / warning / danger と同じ箱で表示します。
+Hugo 0.132 以降は、引用の先頭が [!NOTE] [!TIP] [!IMPORTANT] [!WARNING] [!CAUTION] のとき .Type が "alert" になります。
+同じ行の続きの文字（> [!NOTE] 見出し）は見出しになります（.AlertTitle。Hugo 0.134 以降）。ふつうの引用はそのままです。
+
+  > [!WARNING]
+  > 操作の前に確認してください。
+*/ -}}
+{{- if eq .Type "alert" -}}
+  {{- $kinds := dict
+    "note"      (dict "class" "info"   "icon" "info"    "title" "ui.note")
+    "tip"       (dict "class" "tips"   "icon" "tips"    "title" "ui.tip")
+    "important" (dict "class" "info"   "icon" "info"    "title" "ui.important")
+    "warning"   (dict "class" "warn"   "icon" "warning" "title" "ui.warning")
+    "caution"   (dict "class" "danger" "icon" "danger"  "title" "ui.danger")
+  -}}
+  {{- $k := index $kinds .AlertType | default (index $kinds "note") -}}
+  {{- $title := .AlertTitle | default (i18n $k.title) -}}
+<aside class="note note--{{ $k.class }}">
+  <p class="note-title"><span class="icon icon-{{ $k.icon }}" aria-hidden="true"></span>{{ $title }}</p>
+  <div class="note-body">{{ .Text }}</div>
+</aside>
+{{- else -}}
+<blockquote>
+{{ .Text }}
+</blockquote>
+{{- end -}}

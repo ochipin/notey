@@ -284,6 +284,28 @@ Hugo の `transform.ToMath` で HTML と MathML を生成するため、閲覧�
 
 使用例は [数式のサンプル記事](exampleSite/content/reference/math.ja.md)、配布物の出典・ライセンスは [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を参照してください。同梱版は固定しているため、ライブラリの更新はテーマの更新として行います。
 
+## 注意書き（GitHub 式のアラート）
+
+ショートコードの `info` `tips` `warning` `danger` のほかに、Markdown の引用で書く GitHub 式のアラートも同じ箱で表示します（`layouts/_markup/render-blockquote.html`。Hugo 0.132 以降）。
+
+```markdown
+> [!WARNING]
+> 操作の前に確認してください。
+
+> [!TIP] 見出しを変える
+> `[!TIP]` の後ろに書いた文字が見出しになります。
+```
+
+| 書き方 | 箱 | 見出しの初期値（i18n） |
+|---|---|---|
+| `[!NOTE]` | info | `ui.note` |
+| `[!TIP]` | tips | `ui.tip` |
+| `[!IMPORTANT]` | info | `ui.important` |
+| `[!WARNING]` | warning | `ui.warning` |
+| `[!CAUTION]` | danger | `ui.danger` |
+
+ふつうの引用（`> 文`）はそのまま `<blockquote>` です。
+
 ## 主な params
 
 | キー | 既定 | 説明 |
